@@ -1,0 +1,77 @@
+Installing Emacs on PC via bootstrap:
+
+  * [necessary?] start PC Emacs via "start emacs"
+    * may need to change username in PC ~/.emacs or fix HOME if get splash screen
+    * "force recompile elisp"
+    * exit emacs
+
+
+
+Bootstrap takes care of:
+
+  * add user environment variable HOME (control panel->system->advanced)
+    to C:\Users\Mark\Documents
+    [on Vista: right click my computer -> advanced system settings]
+    * reboot
+
+  * create C:\Program Files[ (x86)]\Emacs  (aka, ~pf32/Emacs)
+
+  * extract from PC ~/setup/emacs-24.5-bin-i386.zip directly to ~pf32/Emacs/
+    * may need to unblock it first if Vista
+    * move contents of ~pf32/Emacs/emacs-24.5 to ~pf32/Emacs/
+
+  * execute addpm.exe from ~pf32/Emacs/bin
+
+  * copy ~/.emacs to %HOME%
+
+  * cd ~/elisp; make to_PC
+    * copy to_PC/* to %HOME%/elisp   
+    [or create elisp then "pull elisp"]
+    -- not quite -- must manually move vr.exe, etc.
+
+  * [at an administrator Windows command prompt]
+  
+      ftype elisp_file=C:\Program Files\Emacs\bin\runemacs "%1"
+      ftype txtfile=C:\Program Files\Emacs\bin\runemacs "%1"
+      ftype Vocola_file=C:\Program Files\Emacs\bin\runemacs "%1"
+      
+         -or 64 bit-
+      
+      ftype elisp_file=C:\Program Files (x86)\Emacs\bin\runemacs "%1"
+      ftype txtfile=C:\Program Files (x86)\Emacs\bin\runemacs "%1"
+      ftype Vocola_file=C:\Program Files (x86)\Emacs\bin\runemacs "%1"
+      
+    then:
+      
+      assoc .el=elisp_file
+      
+      assoc .vch=Vocola_file
+      assoc .vcl=Vocola_file
+
+  * start->run->"shell:sendto"
+    * new->create-shortcut; make shortcut to runemacs.exe
+      called "emacs"
+      probably at "C:\Program Files (x86)\Emacs\bin\runemacs.exe"
+      [Vista] ??(may have to remove/alter deny everyone ACL to 
+         c:\Users\LillibridgeM\SendTo)
+    * copy and paste shortcut to desktop [Icons folder]
+
+
+
+========================================  Experiments:
+
+
+install Ghostscript (PF\gs) then ghostview (PF\ghostgum)
+
+
+set the environment variable ALTERNATE_EDITOR to runemacs.exe
+
+
+
+Download and install libpng from GnuWin32
+
+move libpng12.dll, zlib1.dll from C:\Program Files (x86)\GnuWin32\bin to
+bin directory of emacs
+
+need more dlls for other image types.
+

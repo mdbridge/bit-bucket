@@ -1,0 +1,9 @@
+ace-jump-mode.el       from https://github.com/winterTTr/ace-jump-mode/wiki
+align-regexp.el.orig   from https://github.com/emacsattic/align-regexp/blob/master/align-regexp.el
+browse-kill-ring.el    from https://github.com/browse-kill-ring/browse-kill-ring
+csharp-mode.el         from https://github.com/josteink/csharp-mode
+haml-mode.el           from https://github.com/nex3/haml-mode
+linum-22.el            from https://github.com/nex3/haml-mode, renamed to linum22.el
+nlinum.el              from https://elpa.gnu.org/packages/nlinum.html
+ruby-mode.el           from web (only need for Emacs pre-version 23)
+wb-line-number.el.orig from http://homepage1.nifty.com/blankspace/emacs/elisp.html

@@ -1,0 +1,25 @@
+0a1,3
+> ;; workaround for bug in vertical-motion
+> (load "~/elisp/vertical-motion-patch")
+> 
+652c655
+<                    ;; avoiding needless vertical-motion
+---
+>                    ;; avoiding needless UIM-vertical-motion
+676c679
+<                   (setq rows   (vertical-motion wh win)
+---
+>                   (setq rows   (UIM-vertical-motion wh win)
+690c693
+<           (vertical-motion 1 win)
+---
+>           (UIM-vertical-motion 1 win)
+704c707
+<               (vertical-motion 1 win))))
+---
+>               (UIM-vertical-motion 1 win))))
+710c713,714
+<                  (dest (min (+ i (ceiling  (/ (* wh wh) max-line))) rows)))
+---
+> 		 ;; [MDL] bug fix: ensure no overflow by limit to wh-1  <<<>>>
+>                  (dest (min (+ i (ceiling  (/ (* wh wh) max-line))) rows (1- wh))))

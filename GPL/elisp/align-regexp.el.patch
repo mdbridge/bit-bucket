@@ -1,0 +1,17 @@
+0a1,4
+> ;;; 
+> ;;; This version modified to rename align-regexp with a prefix of steve.
+> ;;; - Mark
+> 
+52a57
+> ;;;###autoload
+87c92,93
+< (defun align-regexp (regexp begin end &optional no-space pad-char
+---
+> ;;;###autoload
+> (defun steve-align-regexp (regexp begin end &optional no-space pad-char
+178c184,185
+<     (setq case-fold-search old-case-fold-search))) 
+---
+>     (setq case-fold-search old-case-fold-search)))
+> 

@@ -1,0 +1,9 @@
+;
+;  Under Xemacs, setnu mode may work better:
+;
+;(load "~/elisp/setnu")
+;(load "~/elisp/setnu+")    ; recent bug fixes...
+;
+; unlike wb-line-number mode, setnu mode must be turned on a buffer by buffer 
+; basis; here we turn it on by default just for Java buffers:
+;(add-hook 'java-mode-hook 'turn-on-setnu-mode)
