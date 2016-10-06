@@ -1,0 +1,14 @@
+    This is my code for loading words and properties (as well as
+deletion) using the NatLink API.
+
+* as of DNS 10, dumping and loading of word properties stopped working
+* as of DNS 11, written\spoken changed to written\\ spoken
+* as of DNS 11, adding and deleting of "special" words stopped working
+
+"Special" words include things like letter Alpha and (:open paren.
+
+(More precisely, "special" words end up added twice -- two copies in the
+vocabulary.)
+
+load_words.py has a few debugging changes -- I was trying to get things
+to work when I took this snapshot.

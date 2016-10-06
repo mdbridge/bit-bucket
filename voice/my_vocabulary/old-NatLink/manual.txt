@@ -1,0 +1,26 @@
+### 
+### Words that for one reason or another cannot be automatically loaded
+### 
+
+  # these generate an ILexPronounce error;  cannot add manually either:
+rmail-buffer:R mail buffer  # from emacs.txt
+Program Files		     # from pathnames.txt
+
+
+e-mail::alt(email)
+e-mailed::alt(emailed)
+e-mailer::alt(emailer)
+e-mailers::alt(emailers)
+e-mailing::alt(emailing)
+e-mails::alt(emails)
+
+
+
+
+# DNS has this as tight!; DNS 10.1 don't let fix easily
+# fix by make format following numbers as numerals
+modulo::{alt+b}{up_4}{down}
+
+
+
+quad space::alt("    ")
