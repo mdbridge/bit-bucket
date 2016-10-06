@@ -1,0 +1,116 @@
+### 
+###  Vocabulary for programming in C and C++
+### 
+
+## 
+## Keywords:
+## 
+
+const:short constant
+enum:short enumeration
+namespace
+sizeof:keyword size of
+typedef
+typedef: keyword type def
+typename
+typename:keyword type name
+nullptr: keyword null pointer
+
+
+## 
+## Namespaces:
+## 
+
+std\:\::standard prefix:p
+std: short standard
+
+
+## 
+## Constants:
+## 
+
+null
+null:computer null
+null:lower null               # appears to need training <<<>>>
+NULL:upper null
+
+npos:N position               # from string::npos
+std\:\:endl:standard end line
+
+
+## 
+## Variables and field names:
+## 
+
+cin:C in
+cout:C out
+cerr:C error
+
+const_iterator:constant iterator
+
+
+## 
+## Types:
+## 
+
+_t:underscore tango:s
+
+size_t:size T
+
+ptr:short pointer
+unique_ptr:unique pointer
+shared_ptr:shared pointer
+
+istream:I stream
+ostream:O stream
+
+int32_t:int thirty two T
+int64_t:int sixty four T
+
+uint32_t:unsigned int thirty two T
+uint64_t:unsigned int sixty four T
+
+
+
+## 
+## Functions and methods:
+## 
+
+.c_str():as C string:s
+putchar:put char
+sprintf:S print F  # printf is in standard vocabulary
+strcopy:short string copy
+strlen:short string length
+substr:short substring
+malloc:Malik
+
+
+## 
+## Other:
+## 
+
+stdio:short standard IO
+pthread:P thread
+pthreads:P threads
+
+__VA_ARGS__:pre-variable args
+
+
+
+## 
+## experiments:
+## 
+
+%d:percent Delta
+%i:percent India
+%f:percent Foxtrot
+%p:percent Papa          # pointer address
+%s:percent Sierra
+%x:percent X Ray
+
+%ld:percent long Delta
+%lx:percent long X Ray
+
+%lld:percent long long Delta
+%lli:percent long long India
+%llx:percent long long X Ray

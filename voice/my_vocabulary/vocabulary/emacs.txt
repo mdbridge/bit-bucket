@@ -1,0 +1,18 @@
+### 
+### Vocabulary for using Emacs:
+### 
+
+## 
+## Spoken names below are only for obvious pronunciation:
+## 
+
+elisp:E lisp
+etag: E tag
+etags:E tags
+incremental search
+ispell:I spell
+meta-x:meta X
+mini-buffer
+Rmail:R mail
+rmail-buffer:R mail buffer
+switch-to-buffer

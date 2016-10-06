@@ -1,0 +1,8 @@
+### 
+###  Vocabulary for programming in C# 
+### 
+
+var
+var:short variable
+
+WriteLine

@@ -1,0 +1,109 @@
+### 
+### Vocabulary useful for programming in given programming languages:
+### 
+###   Covered separately: (E)list, Java, shell commands, HTML, Voice, C[++]
+### 
+
+
+declaration:computer declaration
+lexer
+
+
+## 
+## Useful for programming multiple programming languages:
+## 
+
+addr   :short address
+alloc
+alloc  :short allocate
+
+arg
+args
+argv:arg V
+argc:arg C
+
+buf    :short buffer
+concat
+def    :short define
+doc    :short documentation
+perror :P error
+pragma
+
+datatype::-
+datatypes::-
+data type
+data types
+
+eval
+
+stdin: short standard in
+stdout:short standard out
+stderr:short standard error
+
+
+  # types:
+bignum
+bool:short boolean
+boolean
+byte:byte type
+int
+int:int type
+int:integer type  # "int type" isn't being recognized well at home <<<>>>
+str:short string
+
+
+## 
+## Latex:
+## 
+
+cdots:C dots
+ldots:L dots
+mbox:M box
+
+emph:short emphasis
+etal:short et al
+
+~KB:latex kilobyte:s
+~MB:latex megabyte:s
+~GB:latex gigabyte:s
+
+
+## 
+## Perl:
+## 
+
+elsif:Perl else if
+scalar
+scaler::-
+
+
+## 
+## Python:
+## 
+
+elif:Python else if
+len:short length
+re:symbol RE
+repr:short representation
+sep:short separator
+sys:short system
+None  # poorly recognized
+None:computer none
+
+
+## 
+## Ruby:
+## 
+
+elsif:Ruby else if
+gsub:G sub
+rand:short random
+Enumerable
+puts:Ruby out
+
+
+## 
+## SQL:
+## 
+
+SELECT:SQL select

@@ -1,0 +1,280 @@
+###
+### Vocabulary for shell commands
+###
+###   See also: pathnames
+###
+
+
+## 
+## MS-DOS-only command names (rest are Unix or both):
+## 
+
+cmd:CMD
+cmd:short command
+dir
+dir:short directory
+
+
+##
+## Command names confused with other words/capitalization:
+##
+
+bg:       Unix background
+cat:      Unix cat
+cd:       Unix CD
+cleanup:  Unix cleanup
+cp:       Unix copy
+df:       Unix DF
+diff:     Unix diff
+du:       Unix DU 
+echo:     Unix echo
+emacs:    Unix Emacs
+fg:       Unix foreground
+git:	  Unix git
+gem:      Unix gem
+gnuemacs: Unix GNU Emacs
+grep:     Unix grep
+kill:     Unix kill
+ln -s:    Unix symlink
+ln:       Unix link
+ls:       Unix LS
+ls:       Unix list
+mairix:   Unix matrix
+make:     Unix make
+mkdir:    Unix make dir
+mkdir:    Unix make directory
+more:     Unix more
+munpack:  Unix mime unpack  # caused confusion w/ mime unpack buffer command
+mv:       Unix move
+mysql:    Unix MySQL
+perl:     Unix Perl
+ps:       Unix PS
+python:   Unix Python
+rm:       Unix delete
+rm:       Unix remove
+rmdir:    Unix remove dir
+rmdir:    Unix remove directory
+rspec:    Unix R spec
+ruby:     Unix Ruby
+sed:      Unix said
+svn:      Unix Subversion
+svn:      Unix sub
+wc -l:    Unix line count
+wc:       Unix word count
+xpra:	  Unix X pray
+
+rake:     R rake  # too close to make otherwise?
+
+## 
+## Command names:
+## 
+
+autobuild: auto build
+awk
+bg:BG
+bibtex:bib tech
+bkill:B kill
+cd:CD
+CD::-
+chmod:CH mod
+chown:CH own
+chgrp:CH group
+cmake:C make
+cp:CP
+csh:C shell
+csh:CSH
+deptool:depends tool
+df:DF
+diff                # diff -C 3 for context...
+doxygen:D oxygen
+du:DU
+dvips:DVI PS
+ebrowse:E browse
+egrep:E grep
+enscript
+fetchmail
+g++:G plus plus
+gcc:GCC
+GDB::-
+gdb:GDB
+gnuemacs
+gnumake
+gprof:G prof
+gunzip:G unzip
+gzip:G zip
+irb:IRB
+irb:interactive Ruby
+latex
+latex:lay tech
+lpq:LPQ
+lpr:LPR
+LS::-
+ls:LS
+mkdir:make dir
+md5sum:MD five sum
+mysqld:MySQL D
+mv:MV
+pdflatex:PDF latex
+ps2pdf:PS two PDF
+pwd:PWD
+pushd:push D
+popd:pop D
+printenv:print environment
+rmdir:remove dir
+renice:re nice
+rmdir:RM dir
+setenv:set environment
+sh:SH
+ssh:SSH
+strace:S trace
+su:SU
+sudo:SU do
+sudo:Sue do
+tcpdump:TCP dump
+tcsh:TCSH
+tcsh:T shell
+unalias
+unlimit
+unsetenv:unset environment
+wc:WC
+xdvi:XD VI
+xprop:X prop
+xtelnet:X telnet
+xterm:X term
+yacc
+yum
+xrdb:X R DB
+xwininfo:X win info
+
+
+## 
+## Option names
+## 
+
+# use "minus one" for -1
+
+#
+# Single letter flags:
+#
+
+-a:option Alpha
+-b:option Bravo
+-c:option Charlie
+-d:option Delta
+-e:option echo
+-f:option foxtrot
+-g:option golf
+-h:option Hotel
+-i:option India
+-j:option Juliett
+-k:option kilo
+-l:option Lima
+-m:option Mike
+-n:option November
+-o:option Oscar
+-p:option Papa
+-q:option Quebec
+-r:option Romeo
+-s:option Sierra
+-t:option tango
+-u:option uniform
+-v:option Victor
+-w:option whiskey
+-x:option X ray
+-y:option Yankee
+-z:option Zulu
+
+-A:big option Alpha
+-B:big option Bravo
+-C:big option Charlie
+-D:big option Delta
+-E:big option echo
+-F:big option foxtrot
+-G:big option golf
+-H:big option Hotel
+-I:big option India
+-J:big option Juliett
+-K:big option kilo
+-L:big option Lima
+-M:big option Mike
+-N:big option November
+-O:big option Oscar
+-P:big option Papa
+-Q:big option Quebec
+-R:big option Romeo
+-S:big option Sierra
+-T:big option tango
+-U:big option uniform
+-V:big option Victor
+-W:big option whiskey
+-X:big option X ray
+-Y:big option Yankee
+-Z:big option Zulu
+
+
+#
+# Multiple letter flags:
+#
+
+--:long option:p       # for GNU's --XXX options
+-HUP:option hangup
+
+# for find:
+-exec:	option exec
+-ls:	option LS
+-name:	option name
+-print:	option print
+-type:	option type
+
+
+
+## 
+## Common Unix command phrases for better recognition:
+## 
+
+chmod a+x:    CH mod executable
+chmod a-x:    CH mod non-executable
+chmod -R a+w: CH mod writable
+chmod -R a-w: CH mod non-writable
+chmod -R a-w: CH mod read-only
+chmod og=:    CH mod private
+
+svn diff:   Unix subversion diff
+svn revert: Unix subversion revert
+
+git checkout:    Unix git checkout
+git merge --log: Unix git merge
+
+make clean
+McLean::-       # confused with make clean
+McClean::-      # confused with make clean
+make compare
+make compile
+
+tail -f:tail option foxtrot
+
+
+##
+## Abbreviations for common command/options pairs:
+##
+
+ls -A:full ls
+ls -l:long ls
+ls -lA:full long ls
+ls -R:recursive ls
+
+rm -rf: Unix please remove recursively
+
+
+## 
+## Shell variables:
+## 
+
+coredumpsize:core dump size
+
+
+## 
+## Miscellaneous:
+## 
+
+shell:computer shell  # often confused with shall

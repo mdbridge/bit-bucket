@@ -1,0 +1,12 @@
+### 
+### Vocabulary for dictating URLs:
+### 
+
+http:HTTP
+
+.cpq:    dot CPQ:s
+.cpqcorp:dot CPQ Corp:s
+hp.com:  HP dot com
+hpe.com:  HPE dot com
+.hpl:    dot HPL:s
+hpl.hp.com

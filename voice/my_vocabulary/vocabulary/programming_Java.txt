@@ -1,0 +1,57 @@
+### 
+### Vocabulary particular to programming in Java:
+### 
+
+# 
+# Java package name/components:
+# 
+nio:NIO
+java.
+java.io
+java.io:Java dot IO
+java.lang
+java.nio:java dot network IO
+java.util
+
+com.:com dot:p
+com.hp
+com.hp.hpl.:com dot HP dot HPL dot:p
+
+
+javac:Java C
+javadoc:Java dock
+
+
+# 
+# Keywords:
+# 
+instanceof:instance of
+
+
+# 
+# Standard method names:
+# 
+endsWith
+hasNext():has next empty paren
+next():next empty paren
+notifyAll
+notifyAll():notify all empty paren
+toString
+toString(:to string left paren
+toString():to string empty paren
+
+
+# 
+# Standard library class names:
+# 
+BufferUnderflowException
+Externalizable
+FileNotFoundException
+IndexOutOfBoundsException
+IOException:IO exception
+#LinkedList
+NoSuchElementException
+OutputStream
+Runnable
+Throwable
+WritableByteChannel

@@ -1,0 +1,102 @@
+### 
+### Vocabulary for dictating pathnames
+### 
+
+
+## 
+## Complete pathnames:
+## 
+
+/etc/passwd:slash etc slash password
+/dev/null:slash dev slash null
+/dev/null:dev null
+
+
+## 
+## Pathname prefixes:
+## 
+
+/bin
+/dev:slash dev
+/etc:slash et cetera
+/sbin:slash S bin
+/usr:slash user
+/var:slash VAR
+/var:slash var
+/tmp:slash temp
+
+
+## 
+## Pathname components:
+## 
+
+..:dot dot
+..:parent directory
+
+.gitignore:dot git ignore
+Makefile
+Program Files
+README
+Tmp:big temp
+cygdrive:Cygwin drive
+l1:L one
+lib
+proc:short procedure
+src:short source
+tmp:short temp
+udir:U dir
+
+
+## 
+## Filename extensions:
+## 
+
+# 
+# Programming language files:
+# 
+
+.c:    dot C:s
+.cs:   dot CS:s
+.cpp:  dot CPP:s
+.h:    dot H:s
+.hpp:  dot HPP:s
+.o:    dot O:s
+
+.ahk:  dot AHK:s
+.css:  dot CSS:s
+.el:   dot EL:s
+.java: dot Java:s
+.js:   dot JS:s
+.pl:   dot PL:s
+.py:   dot PY:s
+.rb:   dot RB:s
+.sql:  dot SQL:s
+.vch:  dot VCH:s
+.vcl:  dot VCL:s
+
+
+# 
+# Documentation formats:
+# 
+
+.bib:  dot bib:s
+.pdf:  dot PDF:s
+.ps:   dot PS:s
+.tex:  dot tech:s
+
+# 
+# Data formats:
+# 
+
+.csv:  dot CSV:s
+.tsv:  dot TSV:s
+.xlsx: dot XLSX:s
+.xml:  dot XML:s
+
+# 
+# Misc.:
+# 
+
+.gz:   dot GZ:s
+.dll:  dot DLL:s		# standard dictionary is lacking suffix property
+.tar:  dot tar

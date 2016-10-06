@@ -1,0 +1,85 @@
+### 
+### Vocabulary for the Tube project:
+### 
+
+StoreOnce:trademark store once
+
+
+
+## 
+## Abbreviations:
+## 
+
+io		  :lower IO
+IO		  :upper IO
+
+params		  :short parameters
+param		  :short parameter
+
+
+CSize		  :short combined size
+
+4months		  :short four months
+2years		  :short two years
+mc4k		  :short Marathon cheese
+
+cycle30		  :short cycle
+2years-cycle30	  :short two years cycle
+workgroup-cycle30 :short workgroup cycle
+
+yyy		  :triple Yankee
+yyy_v1024	  :triple Yankee one
+yyy_v10240	  :triple Yankee ten
+
+
+
+## 
+## Filename extensions:
+## 
+
+.fpt:dot FPT:s
+.seg:dot seg:s
+
+
+## 
+## Spoken names below are only for obvious pronunciation:
+## 
+
+backend
+backends
+
+front end
+front ends
+front-end process
+front-end blade
+
+
+chunklite
+
+CERA
+
+StoreOnce
+
+Tube
+Tube project
+
+Stratford
+
+VTL
+
+indexer.c
+vary_limit
+vary_sparseness
+
+make pull
+
+
+## 
+## Class names for metadata design
+## 
+
+#DataAccess:symbol data access
+#MetaFilePtr:symbol MFP
+
+# See also metadata_classes.txt, copied from symbols.txt in
+# /home/mdl/deduplication/tube/Eiger/metadata (created by make symbols)

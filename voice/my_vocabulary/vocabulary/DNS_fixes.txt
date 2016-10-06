@@ -1,0 +1,32 @@
+# -*- encoding: windows-1252 -*-
+### 
+### Fix various DNS vocabulary problems.  Adds no non-obvious spoken forms.
+### 
+###   See also letters.txt.
+### 
+
+
+## 
+## Fix some DNS 12+ entries that use non-ASCII characters:
+## 
+
+  # DNS 12-:
+–:dash:alt(--)
+…:dot dot dot:alt(...) alt_s()
+…:ellipsis:   alt(...) alt_s()
+
+
+
+## 
+## Fixing DNS mistaken formatting:
+## 
+
+
+
+## 
+## Bad words in DNS vocabulary:
+## 
+
+commandline::-
+keyvalue::-
+key value

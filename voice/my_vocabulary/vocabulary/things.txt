@@ -1,0 +1,129 @@
+### 
+### Vocabulary: Thing names
+### 
+### 
+###   Places, including websites, are pulled out into places.txt
+### 
+
+## 
+## Non-obvious spoken names:
+## 
+
+Debian	    :computer Debian    # was being misrecognized
+POE:Poe
+The Machine :trademark the machine
+Win32Pad    :water pad
+charset	    :short character set
+
+
+
+## 
+## Spoken names below are only for obvious pronunciation:
+## 
+
+ACL
+ACLs
+AutoHotkey:auto hot key
+BitTorrent
+Bloom filter
+Bluescape:blue scape
+CADM
+CAPTCHA:captcha
+CAPTCHAs:captchas
+Cygwin:sig win
+DEC:deck
+Data Domain
+Elephant Store
+ExpanDrive:expand drive
+FlexyMike
+Freesr:free SR
+GeForce
+GitHub
+GitLab
+Gnutella
+HAML:Hamill
+HPE
+HPQ
+Hewlett Packard Enterprise   # no hyphen!
+Hewlett Packard Labs   # no hyphen!
+IBRIX:I bricks
+InfiniBand
+Innovan
+jQuery: J query
+KnowBrainer
+Korra
+LRU
+Latex
+Legend of Korra
+Lintel
+MD5:MD five
+Media Lamp
+Musictella              # from limiter paper
+MySQL
+NetApp
+PC COE
+PDFs
+Permabit
+PolyServe
+RAID:raid
+RSIGuard: RSI guard
+RSpec:R spec
+Rakefile:rake file
+Reflection X
+Rolodexes
+Rsync:R sync
+SHA-1:Shaw 1
+SIPB:sippy
+Samba
+SmartNav
+SOC::-
+SoC:SOC
+SoCs:SOCs
+StarCraft
+StarCraft II:StarCraft two
+Subversion
+Sudoku
+Tivo
+UNIX#::-      # systems with actual UNIX source code (e.g., not Linux)
+UTF-8:UTF eight
+Unix:U nicks  # the generic name for all UNIX-like operating systems
+VFINX
+VFS
+Vertica
+VoiceCode
+Warcraft
+Warcraft II:Warcraft two
+WebOS:web OS
+X Windows
+X server
+Yapalizer
+Zendo
+Zillow
+Zork
+centos:cent toss
+citeseerx: sightseer X
+eDiscovery:E discovery
+eMicrophones
+evite
+evites
+gmail:G mail
+iTunes
+keymap
+malware
+markdown:mark down
+memristor
+metabox
+mouseless browsing
+mutex
+nop:no op
+nops:no ops
+ocaml:O camel
+regexp
+sbcglobal:SBC global
+sharepoint
+sml:SML
+subprocess
+symlink
+symlinks
+wget:W get
+xterms

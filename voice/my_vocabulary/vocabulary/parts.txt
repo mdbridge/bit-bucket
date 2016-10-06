@@ -1,0 +1,9 @@
+### 
+### Experiment for building words not in active vocabulary  <<<>>>
+### 
+
+un  :prefix UN:p
+
+d   :suffix D:s
+ed  :suffix ED:s
+ing :suffix ING:s

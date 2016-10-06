@@ -1,0 +1,86 @@
+### 
+### Vocabulary for The Machine project:
+### 
+
+## 
+## Non-obvious spoken names:
+## 
+
+Psylocke:trademark Psylocke
+Psylockes:trademark Psylockes
+
+HDFS4TM:H D F S for the machine
+4TM:for the machine:s
+
+JSON: computer Jason
+
+cas64:Kaz sixty four
+cas128:Kaz one twenty eight
+
+Pham::-
+FAM:Pham
+fam_:Pham underscore:p
+
+bold_ptr: bold pointer
+
+(int64_t):  cast sixty four:p
+(int64_t*): cast sixty four star:p
+(void*):    cast void star:p
+(size_t):   cast size:p
+
+/lfs:slash LFS:s
+
+Epoque::-
+epoch:Epoque
+
+
+
+## 
+## Spoken names below are only for obvious pronunciation:
+## 
+
+NVRAM: NV RAM
+RVMA
+
+DL580:D L five eighty
+DragonHawk
+L4TM:L for T M     # this has bad recognition? <<<>>>
+L4TM:Linux for T M
+Mystique
+Psylocke
+Psylockes
+SS4TM:S S for T M
+TrustZone
+Zbridge:Z bridge
+Zswitch:Z switch
+
+MFT
+
+open_region: open underscore region
+close_region: close underscore region
+
+LFS
+pmem:P mem
+libpmem:lib P mem
+fba:FBA
+
+hLinux:H linux
+pregion:P region
+TMAS:T mass
+
+Kaz::-
+CAS:Kaz
+JSON: J son
+
+SIGBUS:sig bus
+
+
+## 
+## Phrases
+## 
+
+Memory Fabric Testbed
+wholesale memory broker
+wholesale broker
+memory broker
+software ERS

@@ -1,0 +1,65 @@
+### 
+### Misc. vocabulary:
+### 
+
+
+## 
+## Units:
+## 
+
+KB:short kilobyte
+MB:short megabyte
+GB:short gigabyte
+
+Mbps:mega bits per second
+MBps:mega bytes per second
+
+GHz:gigahertz
+
+
+## 
+## Custom abbreviations:
+## 
+
+iff:short if and only if
+mdl:MDL
+
+[own]:	  bracket own
+[hold]:	  bracket hold
+[holdx2]: bracket hold two
+[phold]:  bracket P hold
+[mhold]:  bracket M hold
+
+*sigh*:star sigh
+
+
+
+## 
+## Interjections:
+## 
+
+Argh: noise Alpha
+Hmmm: noise hotel
+Mmmm: noise Mike
+
+
+
+## 
+## Mail related:
+## 
+
+Re\::Rhee colon
+
+mitca:MIT CA
+
+
+
+## 
+## Other:
+## 
+
+init:short initialize
+pref
+proj
+sig
+# TWiki built in and spoken T wiki

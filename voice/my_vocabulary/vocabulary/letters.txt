@@ -1,0 +1,89 @@
+# -*- encoding: windows-1252 -*-
+### 
+### As of DPI 14, only letter A and the like is defined.
+### 
+
+
+a:letter Alpha
+b:letter Bravo
+c:letter Charlie
+d:letter Delta
+e:letter echo
+f:letter foxtrot
+g:letter golf
+h:letter Hotel
+i:letter India
+j:letter Juliett
+k:letter kilo
+l:letter Lima
+m:letter Mike
+n:letter November
+o:letter Oscar
+p:letter Papa
+q:letter Quebec
+r:letter Romeo
+s:letter Sierra
+t:letter tango
+u:letter uniform
+v:letter Victor
+w:letter Whiskey
+x:letter X ray
+y:letter Yankee
+z:letter Zulu
+
+
+# Experiment:  <<<>>>
+
+a:lower Alpha
+b:lower Bravo
+c:lower Charlie
+d:lower Delta
+e:lower echo
+f:lower foxtrot
+g:lower golf
+h:lower Hotel
+i:lower India
+j:lower Juliett
+k:lower kilo
+l:lower Lima
+m:lower Mike
+n:lower November
+o:lower Oscar
+p:lower Papa
+q:lower Quebec
+r:lower Romeo
+s:lower Sierra
+t:lower tango
+u:lower uniform
+v:lower Victor
+w:lower whiskey
+x:lower X ray
+y:lower Yankee
+z:lower Zulu
+
+A:upper Alpha
+B:upper Bravo
+C:upper Charlie
+D:upper Delta
+E:upper echo
+F:upper foxtrot
+G:upper golf
+H:upper Hotel
+I:upper India
+J:upper Juliett
+K:upper kilo
+L:upper Lima
+M:upper Mike
+N:upper November
+O:upper Oscar
+P:upper Papa
+Q:upper Quebec
+R:upper Romeo
+S:upper Sierra
+T:upper tango
+U:upper uniform
+V:upper Victor
+W:upper whiskey
+X:upper X ray
+Y:upper Yankee
+Z:upper Zulu

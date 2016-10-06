@@ -1,0 +1,112 @@
+### 
+### Homonyms:
+### 
+
+# air
+error	:computer error
+
+an      :short an
+and	:Alpha and
+end	:echo  end
+in	:India in
+
+ate	:Alpha   ate
+eight	:written eight  # turns into 8 after a (written) #
+
+bare	:Alpha bare
+bear	:echo  bear
+
+# bite 
+byte	:computer byte
+bytes	:computer bytes
+
+cache	:computer cache
+caches	:computer caches
+cached	:computer cached
+caching	:computer caching
+# cash
+
+fill	:Foxtrot fill   
+# Phil
+
+Hi	:short hi
+# high
+
+Lennix::-                  # someone's last name; recognized instead of Linux
+Linux	:computer Linux
+
+marshal :computer marshal
+# Marshall
+
+node    :computer node  
+# note
+
+# peak
+peek	:computer peek
+peeks	:computer peeks
+peeked	:computer peeked
+
+# Q
+queue	:computer queue
+
+right	:Romeo   right
+rights	:Romeo   rights
+write	:whiskey write
+writes	:whiskey writes
+
+root	:computer root
+# route
+
+# some
+sum	:computer sum
+
+# sink
+sync	:computer sync
+
+their	:India their
+there   :echo  there
+
+than	:Alpha than
+then	:echo  then
+
+#2      :numeral 2
+to	:short   to  
+too	:long    too 
+two	:written two   # turns into 2 after a (written) #
+
+wait	:short wait
+weight	:long  weight
+
+width	:long  width
+with	:short with
+
+
+
+## 
+## Convention: the written version of common words with both a written and
+## symbolic (e.g., comma vs. ,) form can be obtained by using the
+## prefix "written".
+## 
+
+  # for escaping "written":
+written:  written written
+
+
+  # DNS dictation commands:
+cap:      written cap
+caps:     written caps
+capping:  written capping
+
+newline:  written newline
+newlines: written newlines
+space:    written space
+tab:      written tab
+
+
+  # symbols (e.g., punctuation):
+# most symbols whose names do not contain a hyphen in symbols.in
+# automatically have generated written forms.
+
+point:    written point:  alt(point)
+dash:     written dash:	  alt(dash)
+period:   written period: alt(period)

@@ -1,0 +1,19 @@
+## 
+## Vocabulary for UNIX system calls
+## 
+
+fopen:F open
+fread:F read
+fwrite:F write
+fclose:F close
+
+flock:F lock
+
+mmap:M map
+mmapped:M mapped
+munmap:M unmap
+munmapped:M unmapped
+
+errno:error no
+
+posix_fallocate: POSIX F allocate

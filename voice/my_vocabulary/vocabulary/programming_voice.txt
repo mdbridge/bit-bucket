@@ -1,0 +1,58 @@
+### 
+### Vocabulary for creating voice commands (Advanced Scripting,
+### mini-Vocola, Vocola):
+### 
+
+## 
+## Advanced scripting:
+## 
+
+AppBringUp
+ButtonClick
+HeardWord
+MsgBoxConfirm:message box confirm
+SendKeys
+SendDragonKeys
+SendSystemKeys
+SetMousePosition
+Wait
+WaitForWindow
+
+ListVar: list var
+ListVar1:list var one
+ListVar2:list var two
+
+instr
+instr:short in string
+
+
+## 
+## NatLink:
+## 
+
+NatLink
+NatLink:Nat Link  # recognition is poor without this?
+
+
+## 
+## Vocola:
+## 
+
+Vocola
+Vocola:written Vocola
+
+Vocola development
+
+VocolaUserDirectory
+
+SendInput
+
+<_anything>: under anything
+
+
+## 
+## Unimacro:
+## 
+
+Unimacro
+Unimacro:uni macro

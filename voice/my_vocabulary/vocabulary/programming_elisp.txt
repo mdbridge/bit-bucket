@@ -1,0 +1,74 @@
+### 
+###  Vocabulary for programming in (E)lisp:
+### 
+
+defun
+defun:D fun
+defvar:define var
+setq:set Q
+
+
+  # non-rare special forms:
+(and:                 paren and
+(catch ':             paren catch:p
+(cond (:              paren condition:p
+(defconst:            paren define constant
+(defvar:              paren define var
+(defvar:              paren define variable
+(function:            paren function
+(if:                  paren if
+(interactive:         paren interactive
+#'(lambda (:	      paren function lambda: p
+(let (:               paren let:p
+(let* (:              paren let star:p
+(or:                  paren or
+(prog1:               paren prog one
+(progn:               paren prog N
+(quote:               paren quote
+# may need a newline in output here?
+(save-current-buffer: paren save current buffer
+(save-excursion:      paren save excursion
+(save-restriction:    paren save restriction
+(setq-default:        paren setq default
+(setq:                paren set Q
+(unwind-protect:      paren unwind protect
+(while:               paren while
+
+
+  # highlighted keywords:
+  # (if, (while, (defun needed to be trained last time
+(defun:               paren D fun
+(dolist:              paren do list
+(lambda (:            paren lambda:p
+(loop:                paren loop
+(throw ':             paren throw:p
+(unless:              paren unless
+(when:                paren when
+(with-current-buffer: paren with current buffer
+
+#defmarco
+#eval-when-compile
+(require ': paren require:p
+
+
+  # common operators:
+(not:     paren not
+(=:       paren equals
+(>:       paren greater then
+(>=:      paren greater then or =
+(<:       paren less than
+(<=:      paren less than or equals
+(-:       paren minus
+(+:       paren plus
+(/:       paren slash
+(*:       paren star
+(string=: paren string equals
+
+
+)):  double close paren:s
+))): triple close paren:s
+)))):quad close paren:s
+
+
+# symbols via open single symbol (= 'symbol)
+#&optional

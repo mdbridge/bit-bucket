@@ -1,0 +1,29 @@
+### 
+### Phrases for better recognition; no nonobvious spoken forms.
+### 
+
+cats' claws
+programming language
+programming languages
+
+chunk container
+chunk containers
+chunk-based
+data deduplication
+deduplication factor
+deduplication quality
+extreme binning
+forward assembly area
+full chunk index
+max hash
+min hash
+
+error handling
+
+research corpus
+show tables
+
+controlled lock violation
+fence key
+high fence key
+low fence key

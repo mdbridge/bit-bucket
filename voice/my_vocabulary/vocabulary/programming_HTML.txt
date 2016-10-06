@@ -1,0 +1,54 @@
+### 
+### Vocabulary for writing HTML documents
+### 
+
+&amp;:XML ampersand
+&nbsp;:XML space
+
+# see symbols.in for XML bend...
+
+
+<h1>:                begin H one     :p
+<h2>:                begin H two     :p
+<h3>:                begin H three   :p
+<b>:                 begin bold	     :p
+<code>:              begin code      :p
+<em>:                begin emphasis  :p
+<i>:                 begin italics   :p
+<p>:                 begin paragraph :p
+<span class="code">: begin span      :p
+<strong>:            begin strong    :p
+<td>:                begin TD        :p
+<tr>:                begin TR        :p
+<ul>:                begin UL        :p
+<ol>:                begin OL        :p
+<li>:                begin LI        :p
+<dl>:                begin DL        :p
+<dt>:                begin DT        :p
+<dd>:                begin DD        :p
+<!--:                begin comment
+
+</h1>:	   end H one     :s
+</h2>:	   end H two     :s
+</h3>:	   end H three   :s
+</b>:	   end bold	 :s
+</code>:   end code      :s
+</em>:	   end emphasis  :s
+</i>:	   end italics   :s
+</p>:	   end paragraph :s
+</span>:   end span      :s
+</strong>: end strong    :s
+</td>:	   end TD        :s
+</tr>:	   end TR        :s
+</ul>:	   end UL        :s
+</ol>:	   end OL        :s
+</li>:	   end LI        :s
+</dl>:	   end DL        :s
+</dt>:	   end DT        :s
+</dd>:	   end DD        :s
+-->:	   end comment
+
+
+</a>:end anchor
+<br />:break tag
+<hr />:HR tag

@@ -1,0 +1,25 @@
+### 
+### Remaining vocabulary from the umbrella deduplication project:
+### 
+
+## 
+## Non-obvious spoken names:
+## 
+
+dedup  :short dedupe
+dedupe :long dedupe
+TTTD   :triple TD
+
+
+## 
+## Spoken names here are only for obvious pronunciation:
+## 
+
+HDAG:age tag
+HDAGs
+async:A sink
+dedupe
+dupe::-             # prevent de-dupe
+fulls
+incrementals
+sub-HDAG

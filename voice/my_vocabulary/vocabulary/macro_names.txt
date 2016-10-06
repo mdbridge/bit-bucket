@@ -1,0 +1,15 @@
+### 
+### How to spell/pronounce the weirder made-up macro names:
+### 
+###   No nonobvious spoken forms.
+### 
+
+cap-a-word
+lower-a-word
+upper-a-word
+
+PullWord
+
+start-of-line
+
+zortch
