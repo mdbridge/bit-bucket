@@ -1,0 +1,70 @@
+I and others use Dragon NaturallySpeaking to program by voice; it uses
+the wh_JournalPlayback hook to send synthetic keystrokes to programs
+like Emacs when you dictate words or execute voice commands.  This
+method of sending synthetic keystrokes is roughly equivalent to the old
+version of SendKeys or AutoHotkey's Send Play mode.  Unfortunately, with
+Vista and particularly with Windows 7, initial synthetic keystrokes sent
+this way are often dropped or doubled.  For example, dictating "Fred"
+may result in "fred" (dropped the initial shift key) and dictating
+"hello" may result in "hhello" (doubled the initial "h").  More rarely,
+later keystrokes may be affected as well.  This bug seems bursty, at
+times occurring practically every time and the rest of the time
+occurring seldom.
+
+I have been trying to track down, produce a reliable recipe for
+demonstrating it, or fix this bug for over a year; web searches don't
+turn up anything other than the occasional other person having trouble
+with SendKeys.  The web's advice tends to be to stop doing that (using
+this method of synthetic key generation).  Unfortunately, Dragon
+NaturallySpeaking is closed source and I have no ability to patch it to
+use a different method.  :-(
+
+Can anyone help me?  It smells like a Microsoft operating system race
+condition bug.  The fact it is bursty seems to imply that some other
+intermittent process makes it far worst at times.
+
+
+Test code for AutoHotkey (dropping.ahk, requires UAC off):
+
+    #SingleInstance Force
+    
+    f11::
+     SendMode Play
+     Send AutoHotkey SendMode Play:{enter}
+     Loop, 5 {
+      Loop, 10 {
+        Send .{space}
+        Send {,}{space}
+      }
+      Send {!}{enter}
+     }
+     Send {space}{enter}
+     return
+    
+    f12::
+     SendMode Play
+     Send AutoHotkey SendMode Play:{enter}
+     Loop, 4 {
+      Loop, 25 {
+        Send D{space}
+      }
+      Send {space}{enter}
+     }
+     Send {space}{enter}
+     return
+
+
+Sample bad ouput to emacs:
+
+    AutoHotkey SendMode Play:
+    . , . , . , . , . , . , . , . , . , . , !
+    . , .  .  . , . , . , . , . , . , . , !
+    . , .  . , . , . , . , . , . , . , . , !
+    . , . , . , . , . , . , . , . , . , . , !
+    . , . ,, . , . , . , . , . , . , . , . , !
+     
+    AutoHotkey SendMode Play:
+    D D D D D D D D D D D D D D D D D D D D D D D D D  
+    D D D D D D D D D D D D D d D D D D D D D D D D D  
+    D D D D D D D D D D D D D D D D D D D d D D D D D  
+    D D D d D D D D D D D D D D D D D D D D D D D D D  

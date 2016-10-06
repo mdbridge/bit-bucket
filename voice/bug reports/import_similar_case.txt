@@ -1,0 +1,52 @@
+import list of words fails for words with written and spoken forms that are the same except for case
+
+If you try to use the word list importer (vocabulary->import list of words or phrases…) on a word with the same written and spoken forms (examples below) then Dragon silently drops the spoken part. For example, given input file:
+
+<code>
+qz\QZ
+</code>
+
+It incorrectly creates the word "qz" with no spoken part. Using the new word format does not fix this:
+<code>
+@Version=Plato
+zq\\ZQ
+</code>
+
+I'm guessing that Dragon has code to drop the spoken part when it is the same as the written but the programmers accidentally made this a case-insensitive compare by mistake.
+
+I do not know if this bug also exists in DNS 10.1. 
+
+
+Note that the Vocabulary Editor add function adds these words correctly with no problem.
+
+Note that also words like POE\Poe have the spoken part dropped. 
+
+
+----------------------------------------
+
+import list of words fails for words with written and spoken forms that are the same except for case
+
+
+If you try to use the word list importer (vocabulary->import list of words or phrases…) on a word with the same written and spoken forms (examples below) then Dragon silently drops the spoken part. For example, given input file:
+
+@Version=Plato-UTF8
+zq\\ZQ
+
+It incorrectly creates the word "zq" with no spoken part (equivalently, it has a spoken part of "zq" rather than the correct "ZQ").
+
+I'm guessing that Dragon has code to drop the spoken part when it is the same as the written but the programmers accidentally made this a case-insensitive compare by mistake. 
+
+Note that the Vocabulary Editor add function adds these words correctly with no problem.
+
+If you use the import XML feature (sample below), it *does* work:
+
+<?xml version="1.0" encoding="utf-16"?>
+
+<!DOCTYPE WordExport SYSTEM "http://dragoncontent.nuance.com/dtds/Words10.dtd">
+
+<WordExport NatspeakVersion="14.00.000.180" NatspeakEdition="ProfessionalIndividual" User="new" Topic="General - Medium" Language="ENX" MRECVersion="1.28.100.16375">
+
+	<Word name="qz\\QZ">
+	</Word>
+
+</WordExport>

@@ -1,0 +1,3 @@
+The spacing of the word "modulo" is wrong.  If you do "edit words"->modulo->properties, you will see that it should have normal spacing properties.  However, if you use it in a sentence like counter modulo two, you will see that it has zero spacing before and after properties (e.g., you get "countermodulotwo").  Altering the word spacing properties or deleting and re-creating the word does not help.
+
+Workaround: change the word properties of modulo so that following numbers are formatted as numerals; this seems to fix the spacing issues.

@@ -1,0 +1,20 @@
+The NatLink add-on (http://sourceforge.net/projects/natlink/) fails to load (see snapshot); relevant log lines are:
+17:47:09 LOG (Perf): Loading compatibility modules...
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 S2: Info: SpeechThreshold 20
+17:47:09 CMThread: Error 0x80004002 loading {DD990001-BB89-11D2-B031-0060088DC929}
+17:47:09 Exception thrown (E:\work\1200main\voicebar\cmthread.cpp, 626).
+17:47:09 
+17:47:09 COM returned an unexpected error code: Details are E_NOINTERFACE
+17:47:09 NATSPEAK: DGNCOMPMNGR is initialized.
+
+NatLink is a add-on written by Joel Gould, an Ex-Nuance employee. It allows the creation of substantially more powerful voice commands (e.g., command sequences, lists allowing arbitrary dictation) than the built-in Advanced Scripting commands.  I list this issue as critical because without this crucial functionality I and many others will pass on upgrading to DNS 12 and most likely any future versions as well.
+
+This may be an accidental bug (e.g., interface changed slightly and NatLink code needs to be updated) or an intentional decision on Nuance's part. If the former, I can help with any code adjustment that needs to be made. If the latter, I would request the opportunity to plead my case for retaining this functionality in some form on behalf of myself and the many, largely partially to severely disabled, users of this functionality.
+
+- Thanks,
+  Mark

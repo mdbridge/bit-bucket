@@ -1,0 +1,10 @@
+DNS bug with elevated programs in Vista
+
+I found another bug in DNS. If you are using Vista and the focus is on an elevated application (e.g., a privileged application), then the numerical keypad + hotkey does not work, as Vista passes it directly to the elevated application without letting DNS see it.
+
+To replicate this bug:
+
+Start the TaskManager normally (e.g., ctrl+alt+del => start TaskManager) and put focus on it. Note that the hotkey for toggling the microphone works fine.
+
+Now elevate the TaskManager by clicking show processes from all users on the processes tab and answering the UAC dialog box in the affirmative. Notice that the hotkey no longer toggles the microphone.
+

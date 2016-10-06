@@ -1,0 +1,41 @@
+#160215-001402
+
+import XML list of words fails for words spoken and written forms separately already exist in the vocabulary?
+
+
+I'm not sure exactly what triggers this, but I can give you two
+examples.  Add the following words to the vocabulary:
+
+  Poe Ray
+  POE RAY
+
+Now import (vocabulary->import list of words or phrases…) the following file:
+
+<?xml version="1.0" encoding="utf-16"?>
+
+<!DOCTYPE WordExport SYSTEM "http://dragoncontent.nuance.com/dtds/Words10.dtd">
+
+<WordExport NatspeakVersion="14.00.000.180" NatspeakEdition="ProfessionalIndividual" User="Mark virgin" Topic="General - Medium" Language="ENX" MRECVersion="1.28.100.16375">
+
+	<Word name="POE RAY\\Poe Ray">
+	</Word>
+	<Word name="POE\\Poe">
+	</Word>
+
+</WordExport>
+
+Note that Dragon erroneously claims that there are no new words found,
+when it should find two new words.
+
+I think the problem may be that the vocabulary importer checks to see if
+the spoken and written forms already exist, but does not ensure they
+exist in the *same* word.
+
+Note that in my default US medium vocabulary the following vocabulary
+words already exist:
+
+  Poe
+  POE
+
+Dragon also refuses to correctly add du\DU.
+

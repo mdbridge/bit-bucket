@@ -1,0 +1,73 @@
+Initial vocabulary:
+
+  * bad words "keyvalue" (#160209-000004), "commandline" (#160209-000005)
+
+  * military alphabet for spelling no longer works
+    even "letter Alpha" is gone
+
+ Fixed:
+
+  * modulo has bad formatting properties
+
+  * email, etc., was misspelled e-mail
+
+
+Loading custom words (.txt):
+
+  * importing certain dictation-like words yields duplicate word entries
+    Particularly punctuation symbols with spoken forms
+    (#160209-000010)
+
+  * if import a word with written and spoken forms the same modulo case,
+    the spoken form is dropped
+    (#160210-001995)
+
+
+Loading custom words (.xml):
+
+  * importing certain dictation-like words yields duplicate word entries
+    Particularly punctuation symbols with spoken forms
+    (#160209-000010)
+
+  * fails to promote backup words 
+    (#160211-000000)
+
+  * import XML list of words fails for words spoken and written forms
+    separately already exist in the vocabulary?
+    (#160215-001402)
+
+  * importing into DPI 14 XML words exported from DNS 12.5 fails
+    Even upgrading your profile then exporting it fails.
+    (#160215-001430)
+
+
+Vocabulary Editor:
+
+  * Vocabulary Editor search works incorrectly with non-alphabetical
+    written forms
+    (#160215-001464)
+
+
+NatLink vocabulary API:
+
+  * no longer able to set/get word properties since before 11.5
+
+  * creating certain dictation-like words yields duplicate word entries
+    Particularly punctuation symbols with spoken forms
+
+
+Other:
+
+  * dictating (into) a chart title doesn't work in Excel 2013 (not office 365)
+    (#160211-000001)
+
+  * serious bug with complicated grammars and switching windows
+    (#160303-000781)
+
+  * doubling/dropping bug with SendDragonKeys and dictation to
+    nonstandard applications
+    (#130203-000041)
+
+  * commands containing numbers ending with -one are no longer recognized
+    (#160316-000008)
+

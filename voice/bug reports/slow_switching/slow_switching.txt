@@ -1,0 +1,49 @@
+DPI 14: serious bug with complicated grammars and switching windows
+
+    When I switch from a window with a complicated grammar (e.g.,
+thousands of commands) to a different window, the next utterance is not
+recognized until DPI 14 has done some kind of excessive housekeeping,
+taking multiple seconds in some cases.  For example, when I switch from
+Emacs to another window, the next utterance is delayed about five
+seconds.  During the delay, natspeak.exe pegs one of my cores at 100% I
+see this delay with both BestMatch IV and V.  I see no evidence of this
+delay with DNS 12.5.  This bug is extremely annoying -- it applies, for
+example, to the spelling window when trying to make corrections -- and
+if not fixable or workable around, I will probably have to abandon DPI
+14 and revert back to DNS 12.5.
+
+
+Instructions for replicating:
+
+    I am attaching a .XML file with 3000 simple notepad commands, each
+of the form:
+
+    command {word} {word} {word}
+
+where each {word} is a word chosen randomly from a huge American
+dictionary.  E.g., one of the commands is: "command abactors vivisects
+twitchiness".
+
+    First the control condition: open notepad and another window.
+Select notepad and say something.  Switch to the other window then say
+something.  Time how long it takes for that recognition to start.  I
+measure from when I stop speaking to the appearance of the results box,
+but I think any consistent method will work.  You can also watch the
+task manager window to see the behavior of NatSpeak.exe.  At least on my
+computer, for my measuring scheme, I get values of one second or so.
+
+    Next, the test condition: import the 3000 commands to the command
+browser (these are advance scripting commands) then repeat the test.  I
+get two or more seconds now, with NatSpeak.exe pegging a core during
+the delay.
+
+
+    I chose simple commands to keep the number of variables down, but I
+suspect that more complicated commands (e.g., with lists)
+disproportionately add to the delay.
+
+
+    Has anyone else run into this problem?  Can anyone else replicate
+this?  I'm curious if it occurs in DNS 13 as well.
+
+- Mark

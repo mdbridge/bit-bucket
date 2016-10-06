@@ -1,0 +1,15 @@
+    In DNS 8.1 and earlier, you could use "letter alpha", "letter
+Bravo", and the like to spell words or to denote single characters in the
+middle of an utterance.  This is no longer working as of DNS 9.5.
+
+    Note that the vocabulary for words like Mike with spoken form m is
+not an acceptable replacement as I need both Mike the name and letter
+Mike (aka, m) to be recognized correctly on the first try.  The
+spell command it is also not an acceptable replacement as it cannot be
+used in the middle of an utterance.
+
+Workaround: in DNS 10.1, manually add 26 words of the form "a\letter
+Alpha".  This should not work, but does.  In particular, "letter alpha
+letter bravo" produces "ab" (which it does in DNS 8.1) in spite of the
+fact that the formatting properties specify "a b" (it's two normal
+words).

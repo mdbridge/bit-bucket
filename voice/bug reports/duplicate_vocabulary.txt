@@ -1,0 +1,36 @@
+#160209-000010
+
+importing certain dictation-like words yields duplicate word entries
+
+First, note that the word "(" with spoken form "left parenthesis" already exists as a standard built-in word. Now, try importing the following word list via vocabulary->import list of words or phrases...:
+
+<code>
+@Version=Plato-UTF8
+(\\left parenthesis
+</code>
+
+You'll note that Dragon erroneously claims that this is a new word and adds it! If you open the vocabulary editor, you will see two copies of this word, one of which is marked as a custom word.
+
+You can verify these are separate words by independently setting their properties to different values.
+
+I have seen this effect with many of the punctuation symbols with spoken forms. I have not seen it with more normal words.
+
+I'm not able to add duplicate words in this way using the Vocabulary Editor itself. 
+
+[this bug has been present since at least version 11.]
+
+====================
+
+The same problem happens using the import XML feature; example import
+file below:
+
+<?xml version="1.0" encoding="utf-16"?>
+
+<!DOCTYPE WordExport SYSTEM "http://dragoncontent.nuance.com/dtds/Words10.dtd">
+
+<WordExport NatspeakVersion="14.00.000.180" NatspeakEdition="ProfessionalIndividual" User="new" Topic="General - Medium" Language="ENX" MRECVersion="1.28.100.16375">
+
+	<Word name="(\\left parenthesis">
+	</Word>
+
+</WordExport>

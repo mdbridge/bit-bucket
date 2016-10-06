@@ -1,0 +1,519 @@
+[REPOST] New DNS 11.5 bug: @ sent via alt-numpad keys
+
+(This thread was originally posted on speech computing.com; I am
+reposting it here so I can refer to it.)
+
+
+# New DNS 11.5 bug: @ sent via alt-numpad keys
+
+Submitted by mdl on Thu, 08/25/2011 - 04:41.
+
+I'm still working on a good reproducible bug report for this, but I'm posting
+this anyways in case other people are running into it.
+
+In DNS 11.5, if you call SendDragonKeys on text containing a "@", or even just
+dictate a @ ("at-sign"), but not SendSystemKeys or "press at-sign", DNS sends
+the @ character via alt-numpad-0, alt-numpad-0, alt-numpad-6, alt-numpad-4.
+This normally works for most Windows applications, but does very weird things
+in some cases. For example, when I dictate @ in this text field at the moment,
+Firefox 6.0 jumps to a different tab (e.g., different page)! In other text
+fields, I have gotten a diamond symbol instead of an @. I think the first case
+may be related to mouseless browsing, and I think the second case is related
+to a website using a different code page.
+
+It also causes problems with nonstandard applications that don't understand
+the alt-numpad keyboard input method (e.g., unmodified Emacs).
+
+Only the @ character appears to be affected. I assume this is a broken "fix"
+for the problems we been seeing with DNS 11 used with foreign keyboard layouts
+(see [http://www.speechcomputing.com/node/3712](http://www.speechcomputing.com
+/node/3712)).
+
+
+Please post if you have seen this problem and where.
+
+
+======================================================================
+
+### [Yup, the first case (jumping](3822.html#comment-17419)
+
+Submitted by mdl on Sat, 09/03/2011 - 23:58.
+
+Yup, the first case (jumping tabs in Firefox) was indeed due to mouseless
+browsing. I reconfigured to use alt+ctrl instead of alt as the modifier and it
+no longer jumps tabs. I probably should've done this earlier as I was
+inadvertently causing words like naïve to jump tabs as well when dictated. :-(
+
+In case anyone is wondering, here's the relevant Vocola code:
+
+<pre><code>
+##
+## Clicking links/gizmos:
+##
+  
+#
+# These commands require the mouseless browsing extension.
+#
+# Plug-in configuration:
+#
+# General->not execute automatically without pressing enter
+# ID-types->all modifiers = Ctrl+alt
+## Keys->Postfix key to open link in new tab = MULTIPLY (press num pad star)
+# Keys->blur active element = ctrl+DIVIDE
+# (press control num pad slash)
+#
+# Also, remove Dragon's use of MULTIPLY and DIVIDE
+#
+  
+Blur() := {ctrl+NumKey/};
+Toggle() := {NumKey.};
+  
+pick> := ( pick = {shift}{enter} | go pick = {shift}
+| push pick = {shift}{ctrl+enter} # stay but open new tab w/ link
+| tab pick = {shift}{ctrl+shift+enter}
+| window pick = {shift}{shift+enter}
+);
+  
+<pick> 0..9 = {alt+ctrl+$2} $1;
+<pick> 0..9 0..9 = {alt+ctrl+$2}{alt+ctrl+$3} $1;
+<pick> 0..9 0..9 0..9 = {alt+ctrl+$2}{alt+ctrl+$3}{alt+ctrl+$4} $1;
+  
+  
+show numbers = Blur() Toggle();
+refresh numbers = Blur() Toggle() Toggle();`
+Still working on the second case.
+</pre></code>
+
+======================================================================
+
+### [MDL, Some of this may relate](3822.html#comment-17420)
+
+Submitted by Chuck Runquist on Sun, 09/04/2011 - 02:38.
+
+MDL,
+
+Some of this may relate to the "known issues" in the DNS 11.5 release notes,
+which you can obtain and review at the following link:
+
+[http://supportcontent.nuance.com/dragon/11/DNS11-5...](http://supportcontent.nuance.com/dragon/11/DNS11-5_Service_Pack_Release_Notes.pdf)
+
+Chuck Runquist
+
+======================================================================
+
+### [Dead on as usual, Chuck. ](3822.html#comment-17421)
+
+Submitted by mdl on Sun, 09/04/2011 - 16:52.
+
+Dead on as usual, Chuck. Thanks! The relevant bit is:
+
+DICTATION
+
+When dictating in an application for which Dragon does not provide Full Text
+Control, special characters may be rendered incorrectly. These are typically
+characters rendered by pressing a Ctrl+Alt+key sequence. The following are
+example characters that may not appear correctly:
+
+e appears instead of €
+
+q appears instead of @
+
+8 appears instead of [
+
+9 appears instead of ]`
+
+So I guess they already know about this bug and I don't need to report it. On
+to workarounds...
+
+======================================================================
+
+### [I submitted this as bug](3822.html#comment-17491)
+
+Submitted by mdl on Sat, 09/24/2011 - 02:10.
+
+I submitted this as bug #110923-001349 just in case as the above text is
+somewhat ambiguous as @ is not typically rendered by pressing a control alt
+key sequence.
+
+======================================================================
+
+### [I found an example of a](3822.html#comment-17445)
+
+Submitted by mdl on Sun, 09/11/2011 - 17:11.
+
+I found an example of a webpage where I'm seeing the diamond case: [https://www.mckinseyquarterly.com/sign_in.aspx](https://www.mckinseyquarterly.com/sign_in.aspx) (email field)
+
+Here, @ in a SendDragonKeys sometimes shows up as a black diamond and
+sometimes doesn't show up at all.
+
+It appears to be partly dependent on how many non-@s occur before the @. The
+first command here fails but the second two work:
+
+please Dragon put = "0123456789@ejej";
+please system put = SendSystemKeys("0123456789@ejej");
+  
+please short Dragon put = "01@ejej";
+
+======================================================================
+
+### [Some experimentation shows](3822.html#comment-17446)
+
+Submitted by mdl on Sun, 09/11/2011 - 17:21.
+
+Some experimentation shows that it seems to take six characters before
+problems start occurring:
+
+please Dragon put 0..20 = Repeat($1,"0") "@ejej";
+
+======================================================================
+
+### [The mystery deepens. ](3822.html#comment-17447)
+
+Submitted by mdl on Sun, 09/11/2011 - 17:31.
+
+The mystery deepens. SendSystemKeys also sends @ by the alt-numpad method! So
+using SendSystemKeys is not a workaround for Emacs and the like.
+
+Those of you using Emacs can see this by saying "press at-sign" into a buffer
+and then doing ctrl-h then l to show recent keystrokes:
+
+`<M-kp-0> <M-kp-0> <M-kp-6> <M-kp-4>`
+
+======================================================================
+
+### [Experimenting, for](3822.html#comment-17448)
+
+Submitted by mdl on Sun, 09/11/2011 - 17:40.
+
+Experimenting, for workarounds, I tried:
+
+`@ {@} {shift+@} {shift+2}`
+
+Only the last of these worked (e.g., actually sent a @ instead of using
+alt+numpad). So we have a workaround for standard English keyboards -- just
+replace all @s with {shift+2}'s. You can do this via the Replace function:
+
+include "string.vch";
+  
+Safe(keys) := Replace($keys, "@", "{shift+2}");
+
+# example use:
+please Dragon put = Safe("0123456789@ejej");`
+
+======================================================================
+
+### [Hello mdl, that mess is all](3822.html#comment-17449)
+
+Submitted by udo on Tue, 09/13/2011 - 07:09.
+
+Hello mdl,
+
+that mess is all the same, remember my post (and that I'm using a German DNS)
+
+[http://www.speechcomputing.com/node/3712](http://www.speechcomputing.com/node/3712)
+
+and the older one
+
+[http://www.speechcomputing.com/node/3385](http://www.speechcomputing.com/node/3385)
+
+As mentioned there, I have found a workaround for the '@' (look for "At least
+for the "@" I have a workaround.", but that solution doesn't work for the '\'.
+
+When you compare the US keyboard layout
+
+[http://de.wikipedia.org/wiki/Datei:KB_United_State...](http://de.wikipedia.org/wiki/Datei:KB_United_States.svg)
+
+with the German one
+
+[http://de.wikipedia.org/wiki/Datei:KB_Germany.svg](http://de.wikipedia.org/wiki/Datei:KB_Germany.svg)
+
+you can see that some keys have triple functions. From wikipedia (link German
+keyboard layout above): "The characters ², ³, {, [, ], }, \, @, €, |, µ, and ~
+are accessed by holding the Alt Gr key and tapping the other key". Summarized,
+the behaviour depends on the keyboard layout. What I don't understand is that
+the '@' is working with SendSystemKeys and '\' not (the result is a 'ß').
+Because I have defined appr. 400 pathes that nasty problem is meanwhile a real
+show killer for me. I have contacted the German branch of Nuance, but no
+solution so far.
+
+Greetings
+
+Udo
+
+======================================================================
+
+### [It is by now clear, I think](3822.html#comment-17450)
+
+Submitted by Quintijn on Tue, 09/13/2011 - 09:46.
+
+It is by now clear, I think there is a Dragon bug with different keyboards,
+and now geven giving problems on US keyboards. It is a complicated matter I
+think, but I hope Nuance will find a solution.
+
+About a workaround: the SCLIP "Unimacro Shorthand Command", which can also be
+used from Vocola, sends text via the clipboard to the screen. This trick seems
+to work.
+
+Quintijn
+
+======================================================================
+
+### [Using the clipboard doesn't](3822.html#comment-17469)
+
+Submitted by mdl on Mon, 09/19/2011 - 03:29.
+
+Using the clipboard doesn't work for applications like Emacs, especially in
+incremental search mode.
+
+======================================================================
+
+### [When this is required this](3822.html#comment-17470)
+
+Submitted by Quintijn on Mon, 09/19/2011 - 07:30.
+
+When this is required this function should go through "meta actions".
+
+Inside incremental search will be difficult though, I think.
+
+Quintijn
+
+======================================================================
+
+### [Workaround for gnuemacs](3822.html#comment-17475)
+
+Submitted by mdl on Mon, 09/19/2011 - 21:57.
+
+After some work, I found a way to improve my previous method of handling the
+alt+numpad character input method for gnuemacs so it works in incremental
+search mode as well. The new elisp is:
+
+;;
+;; Dragon attempts to insert non-ASCII characters (e.g., accented
+;; letters) using Window's hold down alt key and press 4 numeric
+;; keypad digits method. The following code implements the part of
+;; this input method used by Dragon for Gnuemacs. In particular, it
+;; assumes input of the form {alt+NumKey0} {alt+NumKeyA} {alt+NumKeyB}
+;; {alt+NumKeyC}, A, B, & C digits, to enter the unicode character
+;; with number ABC (in decimal). E.g., use {alt+NumKey0}
+;; {alt+NumKey2} {alt+NumKey3} {alt+NumKey9} to enter an i with 2 dots
+;; above it (character number 239).
+;;
+;; This code works whether or not Emacs is using the alt key as a
+;; meta-modifier (this turns A-kp-0 into M-kp-0, for example).
+;;
+;; If you're using an X server, you'll need to make sure that at
+;; least the left alt key (the one used by Dragon for inputting
+;; characters) is passed to X applications. For Reflection X, this is
+;; settings->keyboard->Alt key reserved for Windows->Left: no check
+;; mark.
+;;
+;; This code was inspired by code originally written by Jonathan
+;; of the VoiceCoders list.
+;;
+  
+(defun mdl-get-digit (event)
+"Convert events with form M-kp-n or A-kp-n, n in 0..9, to
+the integer n. For other events, returns some number between 0
+and 9 inclusive."
+(if (symbolp event)
+(let* ((as-string (symbol-name event))
+(char (aref as-string (- (length as-string) 1))))
+(if (< char 48)
+0
+(if (< char 58)
+(- char 48)
+0)))
+0))
+
+ 
+defun mdl-handle-alt (prompt)
+"Read next 3 keyboard events and interpret them as alt numpad
+digits specifying a character number in decimal. E.g., M-kp-0
+M-kp-6 M-kp-4 yields the character 64 (@)."
+(let ((k1 (mdl-get-digit (read-event)))
+(k2 (mdl-get-digit (read-event)))
+(k3 (mdl-get-digit (read-event))))
+(vector (+ (* k1 100) (* k2 10) k3))
+))
+  
+; handling of translation keymaps was improved in version 23:
+(if (>= emacs-major-version 23)
+(progn
+(define-key input-decode-map [M-kp-0] 'mdl-handle-alt)
+(define-key input-decode-map [A-kp-0] 'mdl-handle-alt))
+(progn
+(define-key function-key-map [M-kp-0] 'mdl-handle-alt)
+(define-key function-key-map [A-kp-0] 'mdl-handle-alt)
+; function-key-map is only used if no binding is found in the
+; current keymap; unfortunately, isearch binds everything so we
+; have to unbind our keys there for our translation to work:
+(define-key isearch-mode-map [M-kp-0] nil)
+(define-key isearch-mode-map [A-kp-0] nil)))`
+
+======================================================================
+
+### [...how can I get Alt+NumKey](3822.html#comment-17478)
+
+Submitted by udo on Tue, 09/20/2011 - 21:28.
+
+...how can I get Alt+NumKey 4x working in Vocola?
+
+Many thanks and greetings
+
+Udo
+
+======================================================================
+
+### [DNS's event scripting](3822.html#comment-17482)
+
+Submitted by mdl on Wed, 09/21/2011 - 00:57.
+
+DNS's event scripting language doesn't support holding and keeping held a key
+(e.g., alt) while pressing a bunch of other keys in sequence. Since Vocola 2's
+built-ins are mostly limited to calling DNS's procedures, they can't support
+this either.
+
+That said, I'm pretty sure you could write a Python extension for Vocola 2
+that could do this.
+
+I'm not sure if Vocola 3 supports holding down keys continuously while typing
+multiple other keys or not.
+
+Do have a use for this ability?
+
+======================================================================
+
+### [When it would be possible to](3822.html#comment-17483)
+
+Submitted by udo on Wed, 09/21/2011 - 09:15.
+
+When it would be possible to use Alt+NumKey-combinations with Vocola and the
+problematic chars are created correctly of course, the next step would be to
+include a filter in Vocola for replacing them with those combinations.
+
+Greetings
+
+Udo
+
+======================================================================
+
+### [The whole point is the](3822.html#comment-17518)
+
+Submitted by mdl on Sat, 10/01/2011 - 17:58.
+
+The whole point is the alt+numpad method doesn't work for many applications /
+fields.
+
+======================================================================
+
+### [I discovered an interesting](3822.html#comment-17490)
+
+Submitted by mdl on Sat, 09/24/2011 - 01:59.
+
+I discovered an interesting corollary to this bug: Dragon cannot send {ctrl+@}
+under any circumstances to any application!
+
+It still sends @ via the alt+numpad method, which has no way of sending
+control variance.
+
+Note that {ctrl+@} is an ASCII character (0) and activates the set-mark-
+command in Emacs.
+
+My patch or any other for Emacs cannot help here as Dragon sends exactly the
+same characters for @ and {ctrl+@}.
+
+======================================================================
+
+### [I submitted this as bug](3822.html#comment-17492)
+
+Submitted by mdl on Sat, 09/24/2011 - 02:16.
+
+I submitted this as bug #110923-001351
+
+======================================================================
+
+### [Vocola 2 workaround for US keyboards](3822.html#comment-17519)
+
+Submitted by mdl on Sat, 10/01/2011 - 18:14.
+
+If pressing 2 with the shift key held down ("press shift two")
+generates an @ with your keyboard, then I think the following Vocola
+2.7.2[I] patch will work for you.
+
+* update to Vocola 2.7.2[I] if you aren't already there. [If you're  
+using the combined installer, you can find out the Vocola version
+number either by watching the startup messages or looking at the name
+of the installer program (NatLink...) under uninstall programs.
+
+* open VocolaUtils.py with your favorite text editor (if you used the  
+defaults, this file should be located at
+c:\NatLink\NatLink\MacroSystem\core\VocolaUtils.py)
+
+* Scroll down until you locate the following function:  
+
+def convert_keys(keys):
+# Roughly, {<keyname>_<count>}'s -> {<keyname> <count>}:
+# (is somewhat generous about what counts as a key name)
+#
+# Because we can't be sure of the current code page, treat all non-ASCII
+# characters as potential accented letters for now.
+keys = re.sub(r"""(?x)
+\{ ( (?: [a-zA-Z\x80-\xff]+ \+ )*
+(?:[^}]|[-a-zA-Z0-9/*+.\x80-\xff]+) )
+[ _]
+(\d+) \}""", r'{\1 \2}', keys)
+return keys
+
+* Add the following lines before the return keys statement:  
+
+ keys = re.sub(r"""(?x)
+\{ ( (?: [a-zA-Z\x80-\xff]+ \+ )* )
+@
+( (?: [ ] \d+)? ) \}""", r'{\1shift+2\2}', keys)
+keys = re.sub(r"""@""", "{shift+2}", keys)`
+  
+to make the function look like:
+
+def convert_keys(keys):
+# Roughly, {<keyname>_<count>}'s -> {<keyname> <count>}:
+# (is somewhat generous about what counts as a key name)
+#
+# Because we can't be sure of the current code page, treat all non-ASCII
+# characters as potential accented letters for now.
+keys = re.sub(r"""(?x)
+\{ ( (?: [a-zA-Z\x80-\xff]+ \+ )*
+(?:[^}]|[-a-zA-Z0-9/*+.\x80-\xff]+) )
+[ _]
+(\d+) \}""", r'{\1 \2}', keys)
+keys = re.sub(r"""(?x)
+\{ ( (?: [a-zA-Z\x80-\xff]+ \+ )* )
+@
+( (?: [ ] \d+)? ) \}""", r'{\1shift+2\2}', keys)
+keys = re.sub(r"""@""", "{shift+2}", keys)
+return keys
+
+  
+Note that the amount of leading space is important in Python so I
+strongly just recommend cutting and pasting here.
+
+* Save the file and restart DNS. At this point, any @'s sent through  
+Vocola (including things like {ctrl+@}) should work correctly. This
+applies no matter which method of sending keys is used (e.g.,
+SendSystemKeys, naked keystrokes, or SendDragonKeys). Keys not sent
+through Vocola are not affected so that dictating an @ is still
+problematic.
+
+- Enjoy!  
+Mark
+
+PS, if you can find a keystroke similar to {shift+2} that works for your
+keyboard, we should be able to modify this patch to work for you.
+
+======================================================================
+
+### [Sadly, these bugs are also](3822.html#comment-19858)
+
+Submitted by mdl on Wed, 07/10/2013 - 04:32.
+
+Sadly, these bugs are also present in DNS 12.5. :-(
+

@@ -1,0 +1,31 @@
+SendDragonKeys and dictation to non-full-text windows make mistakes
+
+    Dragon NaturallySpeaking's standard method of sending synthetic
+keystroke events to applications (e.g., SendDragonKeys and dictation to
+non-full-text-control applications but not SendSystemKeys) does not
+always work 100% correctly in Vista and later Windows operating
+systems.  In particular, the first event in a sequence of synthetic
+keystrokes may be dropped or doubled. 
+
+    For example, sending "hello" may result in "ello" or "hhello" being
+typed and sending "Hello" (really {shift down}{h down}{h up}{shift
+up}...) may result in "hello" (first press of shift dropped).  Likewise,
+sending {ctrl+x}{ctrl+c} via SendDragonKeys may result in x followed by
+control-c (the first control press being lost).
+
+This bug is been reported for DNS 10.1, 11.5, and 12 under Vista and
+Windows 7.  It is extremely annoying for people using custom commands or
+non-full-text-control applications.
+
+Lots more information at https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=15820&enterthread=y
+
+In spite of trying over a year, I don't have a recipe that reliably
+reproduces this problem on command.  Please feel free to contact me
+(mdl@alum.mit.edu) if I can be of any help with tracking down and
+eliminating this bug.
+
+
+#130203-000041
+
+I have confirmed that this bug is still present with DPI 14 on Windows 7 
+

@@ -1,0 +1,23 @@
+commands containing numbers ending with -one are no longer recognized
+
+With DNS 12.5, the following commands were recognized fine:
+
+   encode twenty-one 
+   encode twenty one 
+   just decode twenty one 
+   really decode 21 
+
+However with DPI 14, the first of these is no longer recognized.    In
+general, any command involving <number>-one  seems to no longer be
+recognized.  E.g.,
+
+   encode seventy-one 
+   encode forty-one 
+
+are all also not recognized.  Numbers ending in other digits (e.g., -two
+or -four) are recognized fine.
+
+This also applies to numbers in lists; e.g., encode <number> where
+<number> includes "twenty-one".
+
+#160316-000008

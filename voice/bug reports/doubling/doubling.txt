@@ -1,0 +1,195 @@
+https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=15820
+
+    This is a summary of my understanding of the dropping/doubling bug
+as of 1/19/2013: [UPDATED SINCE THEN]
+
+    Dragon NaturallySpeaking's standard method of sending synthetic
+keystroke events to applications (e.g., SendDragonKeys, SendKeys, and
+dictation to non-full-text-control applications but not SendSystemKeys
+or dictation to full-text-control applications) does not always work
+100% correctly in Vista and later Windows operating systems.  In
+particular, the first event in a sequence of synthetic keystrokes may be
+dropped or doubled.
+
+    For example, sending "hello" may result in "ello" or "hhello" being
+typed and sending "Hello" (really {shift down}{h down}{h up}{shift
+up}...) may result in "hello" (first press of shift dropped).  Likewise,
+sending {ctrl+x}{ctrl+c} via SendDragonKeys may result in x followed by
+control-c (the first control press being lost).
+
+    Although particular applications tend to see only either dropping or
+only doubling, I believe this is a single bug because all applications
+act up at the same time.  There are also applications where both
+doubling and dropping happens.
+
+    Additional testing reveals that in rare cases later events are
+dropped and I saw one case where "D " turned into "dd " -- that is, the
+first shift of that was dropped and the second "d" event doubled.
+
+    The frequency of this bug being triggered seems for me to be either
+something like 1 in 100 or 1000 or 9 in 10, with the later state only
+lasting for minutes at a time.  I have been unable to produce a recipe
+that reliably produces the bug on command.
+
+    Applications the bug has been seen with include: local Emacs
+(doubling *and* dropping), cygwin X window server (dropping), Word pad
+(doubling), Dragon pad (doubling), Word 2007 (doubling), notepad
+(doubling) , Xemacs, PuTTY, notepad++, eclipse, Citrix client, editplus,
+Excel 2007, Win32Pad (doubling), and Thunderbird.  It has been seen with
+DNS 10.1 through 12 and Vista and Windows 7.  It seems to be more common
+on Windows 7 then Vista.
+
+    This is probably the single most annoying bug of DNS 11.5 in my
+experience for people who use a lot of custom commands or non-full text
+control applications -- it's also present in DNS 12 but there are even
+more annoying bugs there.  I have not been able to find any workaround
+as yet.
+
+
+    Experimenting with AutoHotkey, I find that of the 3 available Send
+modes (http://www.autohotkey.com/docs/commands/Send.htm), only Play mode
+triggers the bug.  SendPlay mode uses the journal playback hook
+(wh_JournalPlayback) while the other modes use keybd_input and
+sendinput.  I suspect from this that Dragon may be using the journal
+playback method of sending keystrokes as well.  Apparently the Journal
+hook API was changed in Vista for greater security (it made keystroke
+loggers too easy), forcing Microsoft to change the SendKeys
+implementation (of .Net) to fall back on the sendinput method from the
+Journal hook method.
+
+    Does anyone know how to tell if Dragon is using the Journal hook
+method?  Experiments indicate that Dragon may trigger the bug over 25
+times more often than AutoHotkey.
+
+    If you have evidence contradicting any of the above, please reply to
+this post.
+
+- Mark
+
+
+Posts about this bug, the information from which is mostly summarized
+here:
+https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=15820
+https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=13566
+https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=14041
+https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=15770
+
+http://www.speechcomputing.com/node/2938
+http://www.speechcomputing.com/node/3466
+http://www.speechcomputing.com/node/3930
+http://www.speechcomputing.com/node/5095
+http://www.speechcomputing.com/node/8425
+
+http://stackoverflow.com/questions/15993499/problems-with-doubling-or-dropping-of-synthetic-keystrokes-generated-via-wh-jour
+
+==================================================
+
+    By using Windows detective
+(http://windowdetective.sourceforge.net/), it is possible to watch all
+the Window's messages an application receives.  In particular, you can
+watch for the WM_KEYDOWN and WM_KEYUP messages, which Windows sends to
+applications to indicate that a key has been pressed down or up
+respectively.  I've used this technique to verify my hypothesis that
+this bug indeed involves keystroke events being dropped or doubled.
+
+    For example, DNS tried to send " months" and the application
+actually received -{space} +m -m +o -o +n -n... where + denotes a
+WM_KEYDOWN message and - denotes a WM_KEYUP message; you will note that
+the initial +{space} was dropped.  Another example, "Thanks" sent +t -t
+-{shift} +h -h..., again with the initial event, +{shift} being dropped.
+By contrast, a dropping example was "and" sending +a +a -a +n -n...;
+notice that the first event, +a, is duplicated here.
+
+    Intriguingly, there appears to be enough information here(*) to
+allow reconstructing what DNS is trying to send so it might be possible
+to build a workaround.  I'm considering trying to patch the Cygwin X
+server to do this.
+
+- Mark
+(*) - Luckily, DNS sends "ID" as +{shift} +i -i -{shift} +{shift} +d -d
+-{shift} so the scope of the modifier keys is clear when only the first
+event is affected.
+
+==================================================
+
+Email:
+voice coder:3097:*:
+Subject: doubling/dropping character bug [WAS: Re: [VoiceCoder] Using Eclipse]
+voice: label dropping; also voice coder as well, same label
+
+Using {shift}{shift} doesn't work to protect
+  recent tries seem to indicate that {shift} does protect!
+
+{shift} does pass an event to xev
+
+Dragon pad problem may be uncorrelated with other apps
+    seems to drop entire SendDragonKeys rather than 1st event
+
+more common on work machine, especially the intense bursts of not
+  working
+
+bug occurs even with AutoHotkey not present
+
+no evidence fails with XP yet
+
+no evidence uppercase character ever doubled
+
+
+now have convincing evidence other than first event affected
+ [red area @ work:]
+ standard dropping tet (sendDragonKeys):
+                     ^
+ SendKeysvariant test (SendKeys):
+         ^ [above sent via SendDragonKeys]
+ ,.  . , . , . , . , . , . , . , . , . !
+  ^ [from SendKeys test]
+ [white area @work:]
+ D D D D D D D D D D D D D D D dd D D D D D D D D D  
+                               ^ [SendDragonKeys]
+  Thats a drop of shift *and* a doubling of the d!
+
+
+
+restarting DNS doesn't make bug burst stop
+
+compare frequency of AutoHotkey with Dragon
+
+whatever method Dragon uses to sense typed keys sees the results of the
+bug not what it tried to type.  This affects things like HeardWord on
+non-full text control applications; e.g., a doubled enter causes
+capitalization of the next word but not a single enter.
+
+Rick says:
+I've seen occasional doubled keys both with the .NET library function
+SendKeys.SendWait() and when sending explicit "key press" events.
+
+
+with Win32Pad, SendDragonKeys tends to double while sendplay to drop.
+
+much more common with my home machine now that it uses Windows 7 (new hardware)
+
+
+
+    FYI, I tried using some fairly evil code (i.e., it accesses kernel
+data structures by installing an untrusted driver) I found on the web @
+http://blog.airesoft.co.uk/2011/07/hookers-underneath-the-sheets/ that
+is supposed to list all Windows hooks currently being used and by what
+programs.  I was hoping I could use it to tell me whether or not the
+journal hook was being used by DNS.
+
+    Unfortunately, it doesn't show the journal hook being used even when
+I know it is being used (E.g., during AutoHotkey's SendPlay mode, which
+I looked at the source code for).  I also tried playing around with
+typing {ctrl+esc}, which is supposed to to stop journal playback, in the
+middle of dictation.  While it does interrupt SendDragonKeys but not
+SendInput, I can't seem to manage to type it fast enough in the middle
+of dictation being sent.
+
+    At this point I am out of ideas for determining whether or not
+dictation uses the journal hook to send characters to nonstandard
+windows short of reverse engineering the DNS binary (forbidden by the
+license I believe) or "bribing" a DNS employee.
+
+one credible user reports using DNS 10.1 with Windows 7 (32-bit) without
+seeing the doubling/dropping bug; they make frequent use of Emacs.
+

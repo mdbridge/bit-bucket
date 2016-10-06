@@ -1,0 +1,27 @@
+import words fails to promote backup words using XML format
+
+
+Oertli is a backup word, at least for medium vocabulary US, DPI 14.   If
+I import from:
+
+<?xml version="1.0" encoding="utf-16"?>
+
+<!DOCTYPE WordExport SYSTEM "http://dragoncontent.nuance.com/dtds/Words10.dtd">
+
+<WordExport NatspeakVersion="14.00.000.180" NatspeakEdition="ProfessionalIndividual" User="new" Topic="General - Medium" Language="ENX" MRECVersion="1.28.100.16375">
+
+	<Word name="Oertli">
+	</Word>
+
+</WordExport>
+
+it does not get added to my dictionary, whether I choose to overwrite it
+or not.
+
+However, if I use the TXT format:
+
+@Version=Plato-UTF8
+Oertli
+
+it does not ask me about overwriting and successfully promotes that word
+from the backup dictionary to be in my active dictionary.

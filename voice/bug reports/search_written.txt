@@ -1,0 +1,30 @@
+Bug #160215-001464
+
+Vocabulary Editor search works incorrectly with non-alphabetical written forms
+
+
+Example: add the following vocabulary words:
+
+  .o\dot O
+  .\dot op
+
+Now, search for "dot O" in the Vocabulary Editor "search for:" field.
+You will see the following results below:
+
+  .o\dot O
+  .\dot op
+  .org\dot ORG
+  .org\dot org
+
+Now hit tab; at this point you're supposed to be able to type a prefix
+of the written form to further narrow down your search.  However, typing
+"."  incorrectly moves you to:
+
+  .\dot op
+
+Maybe this is ok, but now (quickly) type "o" and notice it now has
+incorrectly selected:
+
+  .org\dot ORG
+
+This is clearly not okay since ".o" is in fact in the results list.

@@ -1,0 +1,10 @@
+dictating (into) a chart title doesn't work in Excel 2013 (not office 365)
+
+
+Open Excel 2007 and create a chart with a title in the usual way.
+
+Select a known cell near the chart and visible. Now select the chart title by clicking on it once (this should produce a solid or dashed line around the chart title). Dictate "Bob" then press the right arrow. You will see that "Bob" appears in the cell you selected, not the chart title.
+
+The same happens if you highlight a piece of the chart title and then dictate. The same problem appears to happen with other chart parts. 
+
+This is been broken since at least DNS 11 and Excel 2007.

@@ -1,0 +1,44 @@
+    As has been mentioned recently in passing, there is a new bug in
+town: SendDragonKeys as implemented in DPI 14 runs something like 13
+times slower than it used to when used with Windows 10 in particular
+applications.  To put this in perspective, the following statement takes
+over 13 seconds with DPI 14 and Windows 10 in Microsoft Word and
+Microsoft Office:
+
+    SendDragonKeys "nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
+
+(that's 60 lowercase Ns).  This slowdown is not seen with DPI 14 and
+previous versions of Windows.  There, the above takes about one second,
+probably largely due to application delays.
+
+
+    So far I've seen this problem with Microsoft Word 2013 and Outlook
+2013.  It does not occur with Emacs, local or remote.  As anyone else
+seen this with other applications?
+
+    This bug currently affects Vocola 2.  One workaround for Vocola is
+to switch to using SendInput (e.g., Keys.SendInput in Vocola), which
+also takes about a second.  Another for Advanced Scripting is to switch
+to SendKeys, which also does not suffer from this bug.  Be warned,
+however, that SendKeys uses a different method of encoding non-ASCII
+keys, which differs from that of SendDragonKeys, so you can't just
+change SendDragonKeys to SendKeys.  Keys.SendInput doesn't have this
+problem, but only handles the English variant of SendDragonKeys right
+now so might be a problem for non-English users.
+
+======================================================================
+
+    I done some more testing; the following additional applications are
+affected:
+
+  PowerPoint and Excel
+
+The following applications do not appear to be affected:
+
+  DragonPad
+  Lync
+  Win32Pad
+  Windows Explorer
+  WordPad
+  notepad
+  start menu
