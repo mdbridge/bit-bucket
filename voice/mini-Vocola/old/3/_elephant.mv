@@ -1,0 +1,19 @@
+#  run ant on target clean :
+ant clean =
+	"ant clean{Enter}";
+
+#  run ant on target distribution:
+ant distribution =
+	"ant dist{Enter}";
+
+#  copy files marked by make Delta:
+copy delta =
+	"i:\Archive\JavaClient\Windows\delta_copy{Enter}"
+	"i:\Archive\JavaClient\Windows\delta_copy2{Enter}";
+
+excel out =
+#	AppBringUp("excel_out", "excel.EXE i:\Archive\JavaClient\out.csv");
+	AppBringUp("excel_out", "excel.EXE i:\Archive\Sim\out.csv");
+
+copy client to my computer =
+	Shell("xcopy /y i:\Archive\JavaClient\Windows\client.exe c:\");

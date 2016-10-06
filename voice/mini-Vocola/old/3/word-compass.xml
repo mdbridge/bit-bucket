@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="[word-compass-rose]" group="word compass rose" enabled="true" states="">
+			<description>repeat word compass rose command once</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	argument = 1
+'	argument = Val(Left$(ListVar2,InStr(ListVar2+"\","\")-1))
+
+	command_info = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	go_forward = IIf(Mid$(command_info,1,1) = "+", True, False)
+	target_start = IIf(Mid$(command_info,2,1) = "s", True, False)
+	action = Mid$(command_info,3,1)
+
+	' look at text ahead of point in direction direction:
+	ahead = peek3(go_forward)
+	If ahead = "" Then
+		' nothing ahead or peek failed; abort
+		Beep
+		Exit Sub
+	End If
+
+	' calculate offset to targeted point:
+	If Not go_forward Then
+		ahead = StrReverse(ahead)
+		target_start = Not target_start
+	End If
+	offset = 0
+	For I = 1 To argument
+		If target_start Then
+			offset = word_start(ahead, offset)
+		Else
+			offset = word_end(ahead, offset)
+		End If
+		If offset < 0 Then
+			Exit For
+		End If
+	Next
+
+	If offset < 0 Then
+		' no target found
+		Beep
+		Exit Sub
+	End If
+
+	' compute text covered between point and target (from left to right)
+	covered = Left$(ahead, offset)
+	If Not go_forward Then
+		covered = StrReverse(covered)
+	End If
+
+	If action = "m" Then
+		keys = move(go_forward, offset)
+	ElseIf action = "d" Then
+		keys = delete(go_forward, offset)
+		Clipboard(covered)
+	Else
+		Beep
+	End If
+
+	SendDragonKeys keys
+
+	' for debugging:
+	ahead = Replace(ahead, " ", ".")
+	ahead = Replace(ahead, Chr(13), "!")
+	' MsgBox "'" + ahead + "' " + Len(ahead) + " " + Str(offset) + " '" + covered + "'"
+End Sub
+
+
+Function repeat_keys(forward_prefix, backward_prefix, go_forward, distance) As String
+	If distance < 0 Then
+		go_forward = Not go_forward
+		distance = -distance
+	End If
+
+	repeat_keys = "{" + IIf(go_forward, forward_prefix, backward_prefix) + Str(distance) + "}"
+End Function
+
+Function move(go_forward, distance) As String
+	move = repeat_keys("right", "left", go_forward, distance)
+End Function
+
+Function select_move(go_forward, distance) As String
+	select_move = repeat_keys("shift+right", "shift+left", go_forward, distance)
+End Function
+
+Function delete(go_forward, distance) As String
+	delete = repeat_keys("Del", "backspace", go_forward, distance)
+End Function
+
+
+' is character a word separator?  I.e., does it occur between words rather than in them
+Function is_separator_character(character) As Boolean
+	If InStr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'$%", character) = 0 Then
+		is_separator_character = True
+	Else
+		is_separator_character = False
+	End If
+End Function
+
+Function word_start(selection, offset) As Integer
+	previous_is_separator = False
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If previous_is_separator And (Not current_is_separator) Then
+			word_start = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_start = -1
+End Function
+
+Function word_end(selection, offset) As Integer
+	previous_is_separator = True
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If (Not previous_is_separator) And current_is_separator Then
+			word_end = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_end = -1
+End Function
+
+
+' peek functions =======================================================
+
+Function peek3(go_forward) As String
+'	this should work for anything except (in rare cases) command browser
+'	  (can fail on lines with more than eight spaces or tabs at the beginning)
+'	requires a modifiable field, leaves spaces if field doesn't support {ctrl+c}
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	fixup = ""
+	extra_end = 0
+	extra_front = 0
+	If go_forward Then
+		keys = "<>{left}{shift+end}{shift+left}"
+		fixup = "{backspace}{Del}"
+		extra_front = 1
+	Else
+		keys = "<>{left}{shift+home}"
+		fixup = "{backspace}{Del}"
+		extra_end = 1
+	End If
+
+	SendDragonKeys keys + "{ctrl+c}"
+	selection = Replace$(Clipboard(), Chr(10), "")
+
+	If selection = "" Then
+		peek3 = ""
+		Exit Function
+	End If
+
+	fixup = select_move(Not go_forward, Len(selection)) + fixup
+
+	selection = Left(selection, Len(selection)-extra_end)
+	peek3 = Right(selection, Len(selection)-extra_front)
+
+	' undo selection, leaving point in original location
+	SendDragonKeys fixup
+End Function
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[word-compass-rose] [1to100]" group="word compass rose" enabled="true" states="">
+			<description>repeat global word compass rose command N times</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+'	argument = 1
+	argument = Val(Left$(ListVar2,InStr(ListVar2+"\","\")-1))
+
+	command_info = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	go_forward = IIf(Mid$(command_info,1,1) = "+", True, False)
+	target_start = IIf(Mid$(command_info,2,1) = "s", True, False)
+	action = Mid$(command_info,3,1)
+
+	' look at text ahead of point in direction direction:
+	ahead = peek3(go_forward)
+	If ahead = "" Then
+		' nothing ahead or peek failed; abort
+		Beep
+		Exit Sub
+	End If
+
+	' calculate offset to targeted point:
+	If Not go_forward Then
+		ahead = StrReverse(ahead)
+		target_start = Not target_start
+	End If
+	offset = 0
+	For I = 1 To argument
+		If target_start Then
+			offset = word_start(ahead, offset)
+		Else
+			offset = word_end(ahead, offset)
+		End If
+		If offset < 0 Then
+			Exit For
+		End If
+	Next
+
+	If offset < 0 Then
+		' no target found
+		Beep
+		Exit Sub
+	End If
+
+	' compute text covered between point and target (from left to right)
+	covered = Left$(ahead, offset)
+	If Not go_forward Then
+		covered = StrReverse(covered)
+	End If
+
+	If action = "m" Then
+		keys = move(go_forward, offset)
+	ElseIf action = "d" Then
+		keys = delete(go_forward, offset)
+		Clipboard(covered)
+	Else
+		Beep
+	End If
+
+	SendDragonKeys keys
+
+	' for debugging:
+	ahead = Replace(ahead, " ", ".")
+	ahead = Replace(ahead, Chr(13), "!")
+	' MsgBox "'" + ahead + "' " + Len(ahead) + " " + Str(offset) + " '" + covered + "'"
+End Sub
+
+
+Function repeat_keys(forward_prefix, backward_prefix, go_forward, distance) As String
+	If distance < 0 Then
+		go_forward = Not go_forward
+		distance = -distance
+	End If
+
+	repeat_keys = "{" + IIf(go_forward, forward_prefix, backward_prefix) + Str(distance) + "}"
+End Function
+
+Function move(go_forward, distance) As String
+	move = repeat_keys("right", "left", go_forward, distance)
+End Function
+
+Function select_move(go_forward, distance) As String
+	select_move = repeat_keys("shift+right", "shift+left", go_forward, distance)
+End Function
+
+Function delete(go_forward, distance) As String
+	delete = repeat_keys("Del", "backspace", go_forward, distance)
+End Function
+
+
+' is character a word separator?  I.e., does it occur between words rather than in them
+Function is_separator_character(character) As Boolean
+	If InStr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'$%", character) = 0 Then
+		is_separator_character = True
+	Else
+		is_separator_character = False
+	End If
+End Function
+
+Function word_start(selection, offset) As Integer
+	previous_is_separator = False
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If previous_is_separator And (Not current_is_separator) Then
+			word_start = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_start = -1
+End Function
+
+Function word_end(selection, offset) As Integer
+	previous_is_separator = True
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If (Not previous_is_separator) And current_is_separator Then
+			word_end = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_end = -1
+End Function
+
+
+' peek functions =======================================================
+
+Function peek3(go_forward) As String
+'	this should work for anything except (in rare cases) command browser
+'	  (can fail on lines with more than eight spaces or tabs at the beginning)
+'	requires a modifiable field, leaves spaces if field doesn't support {ctrl+c}
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	fixup = ""
+	extra_end = 0
+	extra_front = 0
+	If go_forward Then
+		keys = "<>{left}{shift+end}{shift+left}"
+		fixup = "{backspace}{Del}"
+		extra_front = 1
+	Else
+		keys = "<>{left}{shift+home}"
+		fixup = "{backspace}{Del}"
+		extra_end = 1
+	End If
+
+	SendDragonKeys keys + "{ctrl+c}"
+	selection = Replace$(Clipboard(), Chr(10), "")
+
+	If selection = "" Then
+		peek3 = ""
+		Exit Function
+	End If
+
+	fixup = select_move(Not go_forward, Len(selection)) + fixup
+
+	selection = Left(selection, Len(selection)-extra_end)
+	peek3 = Right(selection, Len(selection)-extra_front)
+
+	' undo selection, leaving point in original location
+	SendDragonKeys fixup
+End Function
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Commands type="application">
+		<module>WINWORD</module>
+		<company>Microsoft Corporation</company>
+		<description>Microsoft Office Word</description>
+
+		<Command name="[word-compass-rose]" group="word compass rose" enabled="true" states="">
+			<description>repeat word compass rose command once</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	argument = 1
+'	argument = Val(Left$(ListVar2,InStr(ListVar2+"\","\")-1))
+
+	command_info = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	go_forward = IIf(Mid$(command_info,1,1) = "+", True, False)
+	target_start = IIf(Mid$(command_info,2,1) = "s", True, False)
+	action = Mid$(command_info,3,1)
+
+	' look at text ahead of point in direction direction:
+	ahead = word_peek(go_forward)
+	If ahead = "" Then
+		' nothing ahead or peek failed; abort
+		Beep
+		Exit Sub
+	End If
+
+	' calculate offset to targeted point:
+	If Not go_forward Then
+		ahead = StrReverse(ahead)
+		target_start = Not target_start
+	End If
+	offset = 0
+	For I = 1 To argument
+		If target_start Then
+			offset = word_start(ahead, offset)
+		Else
+			offset = word_end(ahead, offset)
+		End If
+		If offset < 0 Then
+			Exit For
+		End If
+	Next
+
+	If offset < 0 Then
+		' no target found
+		Beep
+		Exit Sub
+	End If
+
+	' compute text covered between point and target (from left to right)
+	covered = Left$(ahead, offset)
+	If Not go_forward Then
+		covered = StrReverse(covered)
+	End If
+
+	If action = "m" Then
+		keys = move(go_forward, offset)
+	ElseIf action = "d" Then
+		keys = delete(go_forward, offset)
+		Clipboard(covered)
+	Else
+		Beep
+	End If
+
+	SendDragonKeys keys
+
+	' for debugging:
+	ahead = Replace(ahead, " ", ".")
+	ahead = Replace(ahead, Chr(13), "!")
+	' MsgBox "'" + ahead + "' " + Len(ahead) + " " + Str(offset) + " '" + covered + "'"
+End Sub
+
+
+Function repeat_keys(forward_prefix, backward_prefix, go_forward, distance) As String
+	If distance < 0 Then
+		go_forward = Not go_forward
+		distance = -distance
+	End If
+
+	repeat_keys = "{" + IIf(go_forward, forward_prefix, backward_prefix) + Str(distance) + "}"
+End Function
+
+Function move(go_forward, distance) As String
+	move = repeat_keys("right", "left", go_forward, distance)
+End Function
+
+Function select_move(go_forward, distance) As String
+	select_move = repeat_keys("shift+right", "shift+left", go_forward, distance)
+End Function
+
+Function delete(go_forward, distance) As String
+	delete = repeat_keys("Del", "backspace", go_forward, distance)
+End Function
+
+
+' is character a word separator?  I.e., does it occur between words rather than in them
+Function is_separator_character(character) As Boolean
+	If InStr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'$%", character) = 0 Then
+		is_separator_character = True
+	Else
+		is_separator_character = False
+	End If
+End Function
+
+Function word_start(selection, offset) As Integer
+	previous_is_separator = False
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If previous_is_separator And (Not current_is_separator) Then
+			word_start = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_start = -1
+End Function
+
+Function word_end(selection, offset) As Integer
+	previous_is_separator = True
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If (Not previous_is_separator) And current_is_separator Then
+			word_end = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_end = -1
+End Function
+
+
+' peek functions =======================================================
+
+Function word_peek(go_forward) As String
+'	this version of peek is optimized for word; it may not work for any other application
+
+'	this function may change what line Word's cursor is on, but not where the point is located
+'	  (when the point is at the beginning of a line, the cursor may be at the beginning of that line or the far end
+'	   (beyond the newline or space) of the previous Line.)
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	trust_ending_return = False
+	If go_forward Then
+		' arbitrary extension below is OK so long as it guarantees a non-zero Word selection (the Clipboard may be empty):
+		SendDragonKeys "{shift+end}{shift+right 2}{shift+end}{shift+right 2}{ctrl+c}"
+	'SendDragonKeys "{shift+end}{shift+right 2}{ctrl+c}"
+		selection = Replace$(Clipboard(), Chr(10), "")
+		If selection = "" Then
+			selection = Chr(13)  ' all Word documents end with a new line
+		End If
+	Else
+		' below must produce at most one carriage return:
+		SendDragonKeys "{shift+home}{shift+left}{shift+home}{ctrl+c}"
+		selection = Replace$(Clipboard(), Chr(10), "")
+		If InStr(selection, Chr(13)) >= Len(selection) Then
+			trust_ending_return = True
+		End If
+	End If
+
+	If selection = "" Then
+		word_peek = ""
+		Exit Function
+	End If
+
+	If (Not trust_ending_return) And (Len(selection) > 0) Then
+		If Mid$(selection, Len(selection), 1) = Chr(13) Then
+			selection = Left$(selection, Len(selection)-1)
+		End If
+	End If
+	word_peek = selection
+
+	' undo selection, leaving point in original location
+	SendDragonKeys move(Not go_forward, 1)
+End Function
+
+
+Function peek3(go_forward) As String
+'	this should work for anything except (in rare cases) command browser
+'	  (can fail on lines with more than eight spaces or tabs at the beginning)
+'	requires a modifiable field, leaves spaces if field doesn't support {ctrl+c}
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	fixup = ""
+	extra_end = 0
+	extra_front = 0
+	If go_forward Then
+		keys = "<>{left}{shift+end}{shift+left}"
+		fixup = "{backspace}{Del}"
+		extra_front = 1
+	Else
+		keys = "<>{left}{shift+home}"
+		fixup = "{backspace}{Del}"
+		extra_end = 1
+	End If
+
+	SendDragonKeys keys + "{ctrl+c}"
+	selection = Replace$(Clipboard(), Chr(10), "")
+
+	If selection = "" Then
+		peek3 = ""
+		Exit Function
+	End If
+
+	fixup = select_move(Not go_forward, Len(selection)) + fixup
+
+	selection = Left(selection, Len(selection)-extra_end)
+	peek3 = Right(selection, Len(selection)-extra_front)
+
+	' undo selection, leaving point in original location
+	SendDragonKeys fixup
+End Function
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[word-compass-rose] [1to100]" group="word compass rose" enabled="true" states="">
+			<description>repeat global word compass rose command N times</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+'	argument = 1
+	argument = Val(Left$(ListVar2,InStr(ListVar2+"\","\")-1))
+
+	command_info = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	go_forward = IIf(Mid$(command_info,1,1) = "+", True, False)
+	target_start = IIf(Mid$(command_info,2,1) = "s", True, False)
+	action = Mid$(command_info,3,1)
+
+	' look at text ahead of point in direction direction:
+	ahead = word_peek(go_forward)
+	If ahead = "" Then
+		' nothing ahead or peek failed; abort
+		Beep
+		Exit Sub
+	End If
+
+	' calculate offset to targeted point:
+	If Not go_forward Then
+		ahead = StrReverse(ahead)
+		target_start = Not target_start
+	End If
+	offset = 0
+	For I = 1 To argument
+		If target_start Then
+			offset = word_start(ahead, offset)
+		Else
+			offset = word_end(ahead, offset)
+		End If
+		If offset < 0 Then
+			Exit For
+		End If
+	Next
+
+	If offset < 0 Then
+		' no target found
+		Beep
+		Exit Sub
+	End If
+
+	' compute text covered between point and target (from left to right)
+	covered = Left$(ahead, offset)
+	If Not go_forward Then
+		covered = StrReverse(covered)
+	End If
+
+	If action = "m" Then
+		keys = move(go_forward, offset)
+	ElseIf action = "d" Then
+		keys = delete(go_forward, offset)
+		Clipboard(covered)
+	Else
+		Beep
+	End If
+
+	SendDragonKeys keys
+
+	' for debugging:
+	ahead = Replace(ahead, " ", ".")
+	ahead = Replace(ahead, Chr(13), "!")
+	' MsgBox "'" + ahead + "' " + Len(ahead) + " " + Str(offset) + " '" + covered + "'"
+End Sub
+
+
+Function repeat_keys(forward_prefix, backward_prefix, go_forward, distance) As String
+	If distance < 0 Then
+		go_forward = Not go_forward
+		distance = -distance
+	End If
+
+	repeat_keys = "{" + IIf(go_forward, forward_prefix, backward_prefix) + Str(distance) + "}"
+End Function
+
+Function move(go_forward, distance) As String
+	move = repeat_keys("right", "left", go_forward, distance)
+End Function
+
+Function select_move(go_forward, distance) As String
+	select_move = repeat_keys("shift+right", "shift+left", go_forward, distance)
+End Function
+
+Function delete(go_forward, distance) As String
+	delete = repeat_keys("Del", "backspace", go_forward, distance)
+End Function
+
+
+' is character a word separator?  I.e., does it occur between words rather than in them
+Function is_separator_character(character) As Boolean
+	If InStr("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'$%", character) = 0 Then
+		is_separator_character = True
+	Else
+		is_separator_character = False
+	End If
+End Function
+
+Function word_start(selection, offset) As Integer
+	previous_is_separator = False
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If previous_is_separator And (Not current_is_separator) Then
+			word_start = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_start = -1
+End Function
+
+Function word_end(selection, offset) As Integer
+	previous_is_separator = True
+	While offset < Len(selection)
+		character = Mid(selection, offset+1, 1)
+		current_is_separator = is_separator_character(character)
+		If (Not previous_is_separator) And current_is_separator Then
+			word_end = offset
+			Exit Function
+		End If
+		offset = offset + 1
+		previous_is_separator = current_is_separator
+	Wend
+
+	word_end = -1
+End Function
+
+
+' peek functions =======================================================
+
+Function word_peek(go_forward) As String
+'	this version of peek is optimized for word; it may not work for any other application
+
+'	this function may change what line Word's cursor is on, but not where the point is located
+'	  (when the point is at the beginning of a line, the cursor may be at the beginning of that line or the far end
+'	   (beyond the newline or space) of the previous Line.)
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	trust_ending_return = False
+	If go_forward Then
+		' arbitrary extension below is OK so long as it guarantees a non-zero Word selection (the Clipboard may be empty):
+		SendDragonKeys "{shift+end}{shift+right 2}{shift+end}{shift+right 2}{ctrl+c}"
+	'SendDragonKeys "{shift+end}{shift+right 2}{ctrl+c}"
+		selection = Replace$(Clipboard(), Chr(10), "")
+		If selection = "" Then
+			selection = Chr(13)  ' all Word documents end with a new line
+		End If
+	Else
+		' below must produce at most one carriage return:
+		SendDragonKeys "{shift+home}{shift+left}{shift+home}{ctrl+c}"
+		selection = Replace$(Clipboard(), Chr(10), "")
+		If InStr(selection, Chr(13)) >= Len(selection) Then
+			trust_ending_return = True
+		End If
+	End If
+
+	If selection = "" Then
+		word_peek = ""
+		Exit Function
+	End If
+
+	If (Not trust_ending_return) And (Len(selection) > 0) Then
+		If Mid$(selection, Len(selection), 1) = Chr(13) Then
+			selection = Left$(selection, Len(selection)-1)
+		End If
+	End If
+	word_peek = selection
+
+	' undo selection, leaving point in original location
+	SendDragonKeys move(Not go_forward, 1)
+End Function
+
+
+Function peek3(go_forward) As String
+'	this should work for anything except (in rare cases) command browser
+'	  (can fail on lines with more than eight spaces or tabs at the beginning)
+'	requires a modifiable field, leaves spaces if field doesn't support {ctrl+c}
+
+'	old = Clipboard()
+	Clipboard("")  ' in case copy fails
+
+	fixup = ""
+	extra_end = 0
+	extra_front = 0
+	If go_forward Then
+		keys = "<>{left}{shift+end}{shift+left}"
+		fixup = "{backspace}{Del}"
+		extra_front = 1
+	Else
+		keys = "<>{left}{shift+home}"
+		fixup = "{backspace}{Del}"
+		extra_end = 1
+	End If
+
+	SendDragonKeys keys + "{ctrl+c}"
+	selection = Replace$(Clipboard(), Chr(10), "")
+
+	If selection = "" Then
+		peek3 = ""
+		Exit Function
+	End If
+
+	fixup = select_move(Not go_forward, Len(selection)) + fixup
+
+	selection = Left(selection, Len(selection)-extra_end)
+	peek3 = Right(selection, Len(selection)-extra_front)
+
+	' undo selection, leaving point in original location
+	SendDragonKeys fixup
+End Function
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="1to100">
+			<Value><![CDATA[1]]></Value>
+			<Value><![CDATA[10]]></Value>
+			<Value><![CDATA[100]]></Value>
+			<Value><![CDATA[11]]></Value>
+			<Value><![CDATA[12]]></Value>
+			<Value><![CDATA[13]]></Value>
+			<Value><![CDATA[14]]></Value>
+			<Value><![CDATA[15]]></Value>
+			<Value><![CDATA[16]]></Value>
+			<Value><![CDATA[17]]></Value>
+			<Value><![CDATA[18]]></Value>
+			<Value><![CDATA[19]]></Value>
+			<Value><![CDATA[2]]></Value>
+			<Value><![CDATA[20]]></Value>
+			<Value><![CDATA[21]]></Value>
+			<Value><![CDATA[22]]></Value>
+			<Value><![CDATA[23]]></Value>
+			<Value><![CDATA[24]]></Value>
+			<Value><![CDATA[25]]></Value>
+			<Value><![CDATA[26]]></Value>
+			<Value><![CDATA[27]]></Value>
+			<Value><![CDATA[28\twenty-eight]]></Value>
+			<Value><![CDATA[29]]></Value>
+			<Value><![CDATA[3]]></Value>
+			<Value><![CDATA[30]]></Value>
+			<Value><![CDATA[31]]></Value>
+			<Value><![CDATA[32]]></Value>
+			<Value><![CDATA[33]]></Value>
+			<Value><![CDATA[34]]></Value>
+			<Value><![CDATA[35]]></Value>
+			<Value><![CDATA[36]]></Value>
+			<Value><![CDATA[37]]></Value>
+			<Value><![CDATA[38]]></Value>
+			<Value><![CDATA[39]]></Value>
+			<Value><![CDATA[4]]></Value>
+			<Value><![CDATA[40]]></Value>
+			<Value><![CDATA[41]]></Value>
+			<Value><![CDATA[42]]></Value>
+			<Value><![CDATA[43]]></Value>
+			<Value><![CDATA[44]]></Value>
+			<Value><![CDATA[45]]></Value>
+			<Value><![CDATA[46]]></Value>
+			<Value><![CDATA[47]]></Value>
+			<Value><![CDATA[48]]></Value>
+			<Value><![CDATA[49]]></Value>
+			<Value><![CDATA[5]]></Value>
+			<Value><![CDATA[50]]></Value>
+			<Value><![CDATA[51]]></Value>
+			<Value><![CDATA[52]]></Value>
+			<Value><![CDATA[53\fifty-three]]></Value>
+			<Value><![CDATA[54]]></Value>
+			<Value><![CDATA[55]]></Value>
+			<Value><![CDATA[56]]></Value>
+			<Value><![CDATA[57]]></Value>
+			<Value><![CDATA[58]]></Value>
+			<Value><![CDATA[59]]></Value>
+			<Value><![CDATA[6]]></Value>
+			<Value><![CDATA[60]]></Value>
+			<Value><![CDATA[61]]></Value>
+			<Value><![CDATA[62]]></Value>
+			<Value><![CDATA[63]]></Value>
+			<Value><![CDATA[64]]></Value>
+			<Value><![CDATA[65]]></Value>
+			<Value><![CDATA[66]]></Value>
+			<Value><![CDATA[67]]></Value>
+			<Value><![CDATA[68]]></Value>
+			<Value><![CDATA[69]]></Value>
+			<Value><![CDATA[7]]></Value>
+			<Value><![CDATA[70]]></Value>
+			<Value><![CDATA[71]]></Value>
+			<Value><![CDATA[72]]></Value>
+			<Value><![CDATA[73]]></Value>
+			<Value><![CDATA[74]]></Value>
+			<Value><![CDATA[75\seventy-five]]></Value>
+			<Value><![CDATA[76]]></Value>
+			<Value><![CDATA[77]]></Value>
+			<Value><![CDATA[78]]></Value>
+			<Value><![CDATA[79]]></Value>
+			<Value><![CDATA[8]]></Value>
+			<Value><![CDATA[80]]></Value>
+			<Value><![CDATA[81]]></Value>
+			<Value><![CDATA[82]]></Value>
+			<Value><![CDATA[83]]></Value>
+			<Value><![CDATA[84]]></Value>
+			<Value><![CDATA[85]]></Value>
+			<Value><![CDATA[86]]></Value>
+			<Value><![CDATA[87]]></Value>
+			<Value><![CDATA[88]]></Value>
+			<Value><![CDATA[89]]></Value>
+			<Value><![CDATA[9]]></Value>
+			<Value><![CDATA[90]]></Value>
+			<Value><![CDATA[91]]></Value>
+			<Value><![CDATA[92]]></Value>
+			<Value><![CDATA[93]]></Value>
+			<Value><![CDATA[94]]></Value>
+			<Value><![CDATA[95\ninety-five]]></Value>
+			<Value><![CDATA[96]]></Value>
+			<Value><![CDATA[97]]></Value>
+			<Value><![CDATA[98]]></Value>
+			<Value><![CDATA[99\ninety-nine]]></Value>
+		</List>
+
+		<List name="word-compass-rose">
+			<Value><![CDATA[+ed\zap]]></Value>
+			<Value><![CDATA[+em\jump]]></Value>
+			<Value><![CDATA[+sd\PullWord]]></Value>
+			<Value><![CDATA[-sd\kill]]></Value>
+			<Value><![CDATA[-sm\skip]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>

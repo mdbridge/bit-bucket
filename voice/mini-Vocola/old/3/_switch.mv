@@ -1,0 +1,5 @@
+#  switch to Internet Explorer:
+bring up browser =
+	AppBringUp("browser", "IEXPLORE.EXE")
+	# HeardWord("switch", "to", "Internet", "Explorer")
+	;

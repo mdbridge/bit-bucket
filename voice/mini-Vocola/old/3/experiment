@@ -1,0 +1,26 @@
+#!/bin/sh
+verbose=true
+
+cat \
+       | grep -v '^[	 ][	]*<' \
+       \
+       | tokenize \
+       \
+       | sed -e :a -e '/[^;]$/N; s/\t*\n\t*/\t/; ta' \
+       | sed 's_\t;$__' \
+       \
+       \
+       | sed 's/^"\([^\t]*\)"\t/\1\t/' \
+       | sed 's/\t"\([^\t]*\)"$/\t\1/' \
+       | sed -e :a -e 's/\t"\([^\t]*\)"\t/\t\1\t/; ta' \
+       \
+       | sed -e :a -e 's/\t\([^\t]*\)\t=\t/ \1\t=\t/; ta' \
+       \
+       | sed -e :a -e 's/^\([^\t]*\)<\([^\t>]*\)>/\1[mv-\2]/; ta' \
+       \
+       | sed 's/^\([^\t]*\)\t=\t\(.*\)/\1\t\2/' \
+       | sed 's/$\([1-9]\)/" + Left$(ListVar\1,InStr(ListVar\1+"\\","\\")-1) + "/g' \
+       \
+|sed 's/$/<END/' \
+|sed 's/\t/|/g' \
+|cat

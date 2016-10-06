@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+		<Command name="far leap method" group="far navigation" enabled="true" states="">
+			<description>leap directly to entered method (case sensitive)</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim whitespace As String
+	whitespace = "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+
+	Dim Java_type As String
+	Java_type = "[A-Zbcdfilsv][][a-zA-Z._0-9]*"	' excludes new, return
+
+	' regexp leap from start of buffer:
+'	SendDragonKeys "{esc}<"
+'	SendDragonKeys "{esc}xnonincremental-re-search-forward{enter}"
+
+	SendDragonKeys "{esc}xmdl-occur-no-fold{enter}"
+
+	' Skip white space and any modifier keywords at start-of-line:
+	SendDragonKeys "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+
+	SendDragonKeys Java_type + whitespace
+
+	SendDragonKeys "([^)]*)" + "{left 7}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="show constructors" group="far navigation" enabled="true" states="">
+			<description>open an occurs buffer with one entry per non-anonymous Java constructor in the current buffer</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	keys = "{esc}xmdl-occur-no-fold{enter}"
+
+	whitespace = "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	class_name = "[A-Z][a-zA-Z0-9_]*"	' we assume all class names start with an uppercase letter and that no methods do
+
+	' Skip white space and any modifier keywords at start-of-line:
+	keys = keys + "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+
+	keys = keys + class_name + " *([^)]*)" + whitespace + "*\({{}\|throws\)"  ' this misses most anonymous constructors
+	keys = keys + "{enter}"
+
+	SendDragonKeys keys
+
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="show fields" group="far navigation" enabled="true" states="">
+			<description>open an occurs buffer with one entry per Java field/variable declaration in the current buffer</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	keys = "{esc}xmdl-occur-no-fold{enter}"
+
+	whitespace = "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	field_name = "[a-z_][a-zA-Z0-9_]*"	' we assume all fields start with a non-uppercase letter
+	Java_type = "[A-Zbcdfilsv][][a-zA-Z._0-9]*"	' excludes new, return
+
+
+	' Skip white space and any modifier keywords at start-of-line:
+	keys = keys + "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+
+	' matches all fields and some variable declarations:
+	keys = keys + Java_type + whitespace + "+" + field_name + "[][]*"
+	keys = keys + "\(" + whitespace  + "*," + whitespace + "*" + field_name + "[][]*\)*"
+	keys = keys + whitespace + "*[;=]"
+
+	keys = keys + "{enter}"
+
+	SendDragonKeys keys
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="show non-package fields" group="far navigation" enabled="true" states="">
+			<description>open an occurs buffer with one entry per public/private/protected Java field in the current buffer</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	keys = "{esc}xmdl-occur-no-fold{enter}"
+
+	whitespace = "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	field_name = "[a-z_][a-zA-Z0-9_]*"	' we assume all fields start with a non-uppercase letter
+	Java_type = "[A-Zbcdfilsv][][a-zA-Z._0-9]*"	' excludes new, return
+
+	' Skip white space and any modifier keywords at start-of-line, requiring a keyword of private/public/protected:
+	keys = keys + "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?\(private\|public\|protected\)[ {ctrl+q}{tab}]"
+	keys = keys + "\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+
+	' matches all fields and some variable declarations:
+	keys = keys + Java_type + whitespace + "+" + field_name + "[][]*"
+	keys = keys + "\(" + whitespace  + "*," + whitespace + "*" + field_name + "[][]*\)*"
+	keys = keys + whitespace + "*[;=]"
+
+	keys = keys + "{enter}"
+
+	SendDragonKeys keys
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+	</Lists>
+
+</MyCommands>

@@ -1,0 +1,31 @@
+#  dynamic completion followed by space:
+completeNSpace = {Esc}/{space};
+
+#  DownALine N StartNTab:
+DownNTab           = "{ctrl+n}{ctrl+a}{Tab}";
+DownNTab <my0to99> = "{ctrl+a}{ctrl+u}" $1 "{ctrl+n}{tab}";
+
+EndNBlock pair =
+	{Ctrl+e}{shift+space}{}{Left}{enter}{enter}{tab}{up}{tab};
+
+EndNFeed = {Ctrl+e}{ctrl+j};
+
+EndNKill       = {ctrl+e} {backspace};
+EndNKill 2..20 = {ctrl+e} {ctrl+u}$1{backspace};
+
+SemiLine = ";" {ctrl+j};
+
+SemiNFeed = ";" {ctrl+j};
+
+StartNCopy = {Ctrl+a} {esc}w;
+
+StartNKill           = {Ctrl+a} {Ctrl+k};
+StartNKill <my0to99> = {ctrl+a} {ctrl+u}$1{ctrl+k};
+
+StartNTab = {Ctrl+a}{Tab};
+
+TouchNSave = {Space}{Backspace}{Ctrl+x}{Ctrl+s};
+
+#  UpALine N StartNTab:
+UpNTab           = "{up}{ctrl+a}{Tab}";
+UpNTab <my0to99> = "{ctrl+a}{ctrl+u}" $1 "{up}{tab}";

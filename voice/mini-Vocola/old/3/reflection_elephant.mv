@@ -1,0 +1,46 @@
+#############################################################################
+#                                                                           #
+# Macros for the ElephantStore project                                      #
+#                                                                           #
+#############################################################################
+
+elephant store directory	= "COM/hp/elephantstore/";
+
+#elephant store package		= "COM.hp.elephantstore.";
+
+
+#
+# Inserting trace code:
+#
+
+make trace entry =
+     	'{home}{ctrl+o}{ctrl+o}{tab}Trace.entry(this, "");{left 3}';
+
+make trace exit =
+	'{home}{ctrl+o}{ctrl+n}{ctrl+o}{tab}Trace.exit(this, "");{left 3}';
+
+make trace info =
+	'{home}{ctrl+o}{tab}Trace.info(this, "", "{left 4}';
+
+                                                                            
+#  load ElephantStore tags file:
+load elephant tags =
+	"{esc}xvisit-tags-table{enter}"
+	"{home}{ctrl+k}~/Archive/JavaClient/TAGS{enter}";
+
+
+
+#  switch-to-buffer/find file for my given java type:
+buffer <my-java-types> =
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	"~/Archive/JavaClient/src/" $1 ".java{enter}";
+
+# find-file the given file:
+buffer <my-elephant-files> =
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1 "{enter}";
+

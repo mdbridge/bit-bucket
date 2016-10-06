@@ -1,0 +1,26 @@
+insert anti-space = "HeardWord" "(\No-Space)";
+
+pound box =
+"#############################################################################"
+	{enter}
+"#                                                                           #"
+	{enter}
+"#                                                                           #"
+	{enter}
+"#                                                                           #"
+	{enter}
+"#############################################################################"
+	{enter}{enter}
+	"{up 4}{right 2}";
+
+
+#
+# Macros for typing SendDragonKeys keystroke commands:
+#
+
+keycode <keycode-base>                                       = "{{}$1}";
+keycode <keycode-modifier> <keycode-base>                    = "{{}$1+$2}";
+keycode <keycode-modifier> <keycode-modifier> <keycode-base> = "{{}$1+$2+$3}";
+
+keycode <keycode-base>                    2..20 = "{{}$1 $2}";
+keycode <keycode-modifier> <keycode-base> 2..20 = "{{}$1+$2 $3}";

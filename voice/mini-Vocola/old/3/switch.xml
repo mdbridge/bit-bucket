@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="[my-machines] putty" group="switching applications" enabled="true" states="">
+			<description>switch to putty window to given machine</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	full_name = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	short_name = Left$(full_name,InStr(full_name+".",".")-1)
+
+	If Not SwitchTo(short_name & " putty") Then
+		Beep()
+		MsgBox short_name + " putty: no such window/unable to switch to it"
+	End If
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up [my-directories]" group="switching applications" enabled="true" states="">
+			<description>switch to Explorer window viewing my-directories</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	location = Replace$(location, "~", "\\spica\SRC udirs\mdl")
+	location = Replace$(location, "/", "\")
+
+	AppBringUp window, "explorer /root," + location
+	' Wait 2
+	' SendDragonKeys "{ctrl+r}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up [my-directories] slash [pathname-component]" group="switching applications" enabled="true" states="">
+			<description>switch to Explorer window viewing my-directories</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1) + "\" + Mid$(ListVar2,InStr(ListVar2+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1) + "/" + Left$(ListVar2,InStr(ListVar2+"\","\")-1)
+	location = Replace$(location, "~", "\\spica\SRC udirs\mdl")
+	location = Replace$(location, "/", "\")
+
+	AppBringUp window, "explorer /root," + location
+	' Wait 2
+	' SendDragonKeys "{ctrl+r}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up [my-pc-directories]" group="switching applications" enabled="true" states="">
+			<description>switch to Explorer window viewing my-pc-directories</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	location = Replace$(location, "/", "\")
+
+	AppBringUp window, "explorer /root," + location
+	' Wait 2
+	' SendDragonKeys "{ctrl+r}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up [my-pc-directories] slash [pathname-component]" group="switching applications" enabled="true" states="">
+			<description>switch to Explorer window viewing my-pc-directories</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1) + "/" + Mid$(ListVar2,InStr(ListVar2+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1) + "/" + Left$(ListVar2,InStr(ListVar2+"\","\")-1)
+	location = Replace$(location, "/", "\")
+
+	AppBringUp window, "explorer /root," + location
+	' Wait 2
+	' SendDragonKeys "{ctrl+r}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up emacs" group="switching applications" enabled="true" states="">
+			<description>switch to primary emacs window</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' HeardWord "switch", "to", "primary", "emacs"
+
+	If Not SwitchTo("primary emacs") Then
+		MsgBox "cannot switch to primary emacs window"
+	End If
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up music match" group="switching applications" enabled="true" states="">
+			<description>switch to music match</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	If SwitchTo("MUSICMATCH Jukebox") Then
+		Exit Sub
+	End If
+
+	If SwitchTo("PlayListMgr") Then
+		Exit Sub
+	End If
+
+	AppBringUp "MusicMatch", "mmjb.EXE"
+End Sub
+
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up Outlook" group="switching applications" enabled="true" states="">
+			<description>switch to Outlook</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	If SwitchTo("Outlook") Then
+		Exit Sub
+	End If
+
+	AppBringUp "Outlook", "OUTLOOK.EXE"
+End Sub
+
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up reflection" group="switching applications" enabled="true" states="">
+			<description>switch to reflection</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	If SwitchTo("WRQ Reflection X Manager - (Untitled)") Then
+		Exit Sub
+	End If
+
+	AppBringUp "Reflection", "c:\Program Files\Reflection\Rx.EXE"
+End Sub
+
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="bring up startup xterm" group="switching applications" enabled="true" states="">
+			<description>switch to startup xterm</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' HeardWord "switch", "to", "startup", "xterm"
+
+	If Not SwitchTo("startup xterm") Then
+		MsgBox "cannot switch to startup xterm window"
+	End If
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="command prompt [window-suffix]" group="switching applications" enabled="true" states="">
+			<description>switch to command prompt window with given window suffix</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' HeardWord "switch", "to", "command", "prompt", Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+
+	If Not SwitchTo("command prompt " + Left$(ListVar1,InStr(ListVar1+"\","\")-1)) Then
+		Beep()
+		MsgBox "command prompt " + Left$(ListVar1,InStr(ListVar1+"\","\")-1) + ": no such window/unable to switch to it"
+	End If
+End Sub
+
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="new command prompt [window-suffix]" group="switching applications" enabled="true" states="">
+			<description>create new command prompt window whose window suffix is given</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' if a command prompt window with the given window suffix already exists, just switch to it and beep:
+	If SwitchTo("command prompt " + Left$(ListVar1,InStr(ListVar1+"\","\")-1)) Then
+		Beep()
+		Exit Sub
+	End If
+
+'	AppBringUp "cmd"+ListVar1, "cmd /k ""title foo""",2,"c:\"
+
+	AppBringUp "cmd"+ListVar1, "cmd /k ""title command prompt "+Left$(ListVar1,InStr(ListVar1+"\","\")-1)+""""
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="new xterm [window-suffix]" group="switching applications" enabled="true" states="">
+			<description>type command to create a xterm window with given window suffix; run in appropriate parent xterm/putty</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' if an xterm window with the given window suffix already exists, just switch to it and beep:
+	If SwitchTo("xterm " + Left$(ListVar1,InStr(ListVar1+"\","\")-1)) Then
+		Beep()
+		Exit Sub
+	End If
+
+	SendDragonKeys "xterm -T ""xterm " + Left$(ListVar1,InStr(ListVar1+"\","\")-1) + """" & _
+				   " -n ""xterm " + Left$(ListVar1,InStr(ListVar1+"\","\")-1) + """ &{enter}"
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="red area" group="switching applications" enabled="true" states="">
+			<description>switch to primary emacs window</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' HeardWord "switch", "to", "primary", "emacs"
+
+	If Not SwitchTo("primary emacs") Then
+		MsgBox "cannot switch to primary emacs window"
+	End If
+End Sub
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+		<Command name="web site [web-site]" group="switching applications" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Set objIE = CreateObject("InternetExplorer.Application")
+	objIE.Visible = 1
+	objIE.Navigate Mid(ListVar1, 1, InStr(ListVar1, "\") - 1)
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="xterm [window-suffix]" group="switching applications" enabled="true" states="">
+			<description>switch to xterm window with given window suffix</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' HeardWord "switch", "to", "xterm", Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+
+	If Not SwitchTo("xterm " + Left$(ListVar1,InStr(ListVar1+"\","\")-1)) Then
+		Beep()
+		MsgBox "xterm " + Left$(ListVar1,InStr(ListVar1+"\","\")-1) + ": no such window/unable to switch to it"
+	End If
+End Sub
+
+
+
+'
+' Attempt to switch to the top-level window having the exact title title; returns true if we succeed
+' uniconifies window if it is uniconified
+'
+' version: 1
+'
+Function SwitchTo(title As String) As Boolean
+	SwitchTo = False
+
+	Dim window As Long
+	window = FindWindowByTitle(0, title)
+	If window = 0 Then
+		Exit Function
+	End If
+
+	If IsIconic(window) Then
+		If Not OpenIcon(window) Then
+			Exit Function
+		End If
+	End If
+
+	If Not SetForegroundWindow(window) Then
+		Exit Function
+	End If
+
+	SwitchTo = True
+End Function
+
+'
+' Win32 APIs:
+'
+
+Declare Function FindWindow Lib "user32" (ByVal lpClassName As String, ByVal lpWindowName As String) As Long
+
+' This is a version of FindWindow that can be passed null (0) as its first argument:
+Declare Function FindWindowByTitle Lib "user32" Alias "FindWindowA" (ByVal nullValueOnly As Long, ByVal lpWindowName As String) As Long
+
+Declare Function IsIconic Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function OpenIcon Lib "user32" (ByVal hWnd As Long) As Boolean
+
+Declare Function SetForegroundWindow Lib "user32" (ByVal hWnd As Long) As Boolean
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="my-directories">
+			<Value><![CDATA[\absolute]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/Similarity\similarity]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/Windows/Elephant Store\UNIX elephant store]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff/as/client\UNIX A. S. client]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff/as\UNIX A. S.]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff\UNIX F. F.]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/src/upper_com/hp/elephantstore\elephant source]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient\Java client]]></Value>
+			<Value><![CDATA[~/Archive\archive]]></Value>
+			<Value><![CDATA[~/Dragon/Compiler\compiler]]></Value>
+			<Value><![CDATA[~/Dragon/Macros_06\macros six]]></Value>
+			<Value><![CDATA[~/Dragon\Dragon]]></Value>
+			<Value><![CDATA[~/Elisp/Src21.4a/emacs-21.4/lisp\elisp source]]></Value>
+			<Value><![CDATA[~/Elisp\elisp]]></Value>
+			<Value><![CDATA[~/MediaLamp\media lamp]]></Value>
+			<Value><![CDATA[~/Personal/Addresses\addresses]]></Value>
+			<Value><![CDATA[~/Personal/Budget\budget]]></Value>
+			<Value><![CDATA[~/Personal/H\books]]></Value>
+			<Value><![CDATA[~/Personal/Loan\loan]]></Value>
+			<Value><![CDATA[~/Personal/Recipes\recipes]]></Value>
+			<Value><![CDATA[~/Personal\personal]]></Value>
+			<Value><![CDATA[~/Rmail\Rmail]]></Value>
+			<Value><![CDATA[~/Tmp/Export\export]]></Value>
+			<Value><![CDATA[~/Tmp\tmp]]></Value>
+			<Value><![CDATA[~\UNIX]]></Value>
+			<Value><![CDATA[~\home]]></Value>
+			<Value><![CDATA[~\samba]]></Value>
+		</List>
+
+		<List name="web-site">
+			<Value><![CDATA[www.google.com\google]]></Value>
+		</List>
+
+		<List name="my-pc-directories">
+			<Value><![CDATA[c:/\my computer]]></Value>
+			<Value><![CDATA[c:/Program Files\program files]]></Value>
+			<Value><![CDATA[c:/Program Files/Elephant Store\PC elephant store]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop\work desktop]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop/Icons/\icons]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop/Scratch\scratch]]></Value>
+			<Value><![CDATA[c:/Program Files/Java/j2re1.4.2_05/bin\Java release bin]]></Value>
+			<Value><![CDATA[c:/aev/ff/\frame factory repository]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/elephantstore\PC elephant source]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/\PC F. F.]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/as/\PC A. S.]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/as/client/\PC A. S. client]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/Desktop\home desktop]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/My Documents\home documents]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/Desktop/Scratch\home scratch]]></Value>
+		</List>
+
+		<List name="window-suffix">
+			<Value><![CDATA[Alpha]]></Value>
+			<Value><![CDATA[Bravo]]></Value>
+			<Value><![CDATA[Charlie]]></Value>
+			<Value><![CDATA[Delta]]></Value>
+			<Value><![CDATA[Echo]]></Value>
+			<Value><![CDATA[Hotel]]></Value>
+			<Value><![CDATA[India]]></Value>
+			<Value><![CDATA[Juliet]]></Value>
+			<Value><![CDATA[Lima]]></Value>
+			<Value><![CDATA[Mike]]></Value>
+			<Value><![CDATA[November]]></Value>
+			<Value><![CDATA[Oscar]]></Value>
+			<Value><![CDATA[Papa]]></Value>
+			<Value><![CDATA[Romeo]]></Value>
+			<Value><![CDATA[Sierra]]></Value>
+			<Value><![CDATA[Victor]]></Value>
+			<Value><![CDATA[Yankee]]></Value>
+			<Value><![CDATA[Zulu]]></Value>
+			<Value><![CDATA[foxtrot]]></Value>
+			<Value><![CDATA[golf]]></Value>
+			<Value><![CDATA[kilo]]></Value>
+			<Value><![CDATA[tango]]></Value>
+			<Value><![CDATA[uniform]]></Value>
+			<Value><![CDATA[whiskey]]></Value>
+			<Value><![CDATA[x-ray]]></Value>
+		</List>
+
+		<List name="my-machines">
+			<Value><![CDATA[daytona.hpl.hp.com\Daytona]]></Value>
+			<Value><![CDATA[hanno.hpl.hp.com\hanno]]></Value>
+			<Value><![CDATA[pobox-pa.hpl.hp.com\P.O. Box]]></Value>
+			<Value><![CDATA[ts-rhel4.hpl.hp.com\release four]]></Value>
+		</List>
+
+		<List name="pathname-component">
+			<Value><![CDATA[..\dot dot]]></Value>
+			<Value><![CDATA[..\parent directory]]></Value>
+			<Value><![CDATA[bin\bin]]></Value>
+			<Value><![CDATA[Bin\capital bin]]></Value>
+			<Value><![CDATA[test\test]]></Value>
+			<Value><![CDATA[usr\user]]></Value>
+			<Value><![CDATA[Paper\paper]]></Value>
+			<Value><![CDATA[Alist\A. list]]></Value>
+			<Value><![CDATA[Lists\lists]]></Value>
+			<Value><![CDATA[Setup\setup]]></Value>
+			<Value><![CDATA[Linux\Linux]]></Value>
+			<Value><![CDATA[Windows\Windows]]></Value>
+			<Value><![CDATA[native\native]]></Value>
+			<Value><![CDATA[blocks]]></Value>
+			<Value><![CDATA[chunks]]></Value>
+			<Value><![CDATA[conversion]]></Value>
+			<Value><![CDATA[extract]]></Value>
+			<Value><![CDATA[filesystem]]></Value>
+			<Value><![CDATA[framefactory\frame factory]]></Value>
+			<Value><![CDATA[protocol]]></Value>
+			<Value><![CDATA[transport]]></Value>
+			<Value><![CDATA[util]]></Value>
+			<Value><![CDATA[lower_com\lower]]></Value>
+			<Value><![CDATA[upper_com\upper]]></Value>
+			<Value><![CDATA[aev\A. E. V.]]></Value>
+			<Value><![CDATA[as\A. S.]]></Value>
+			<Value><![CDATA[client\client]]></Value>
+			<Value><![CDATA[com\com]]></Value>
+			<Value><![CDATA[dist\distribution]]></Value>
+			<Value><![CDATA[elephantstore\Elephant Store]]></Value>
+			<Value><![CDATA[es\E. S.]]></Value>
+			<Value><![CDATA[ff\F. F.]]></Value>
+			<Value><![CDATA[hp\H. P.]]></Value>
+			<Value><![CDATA[logs\logs]]></Value>
+			<Value><![CDATA[shared]]></Value>
+			<Value><![CDATA[sm\S. M.]]></Value>
+			<Value><![CDATA[src\src]]></Value>
+			<Value><![CDATA[Foo\foo]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>

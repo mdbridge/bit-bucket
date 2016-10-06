@@ -1,0 +1,19 @@
+Tabtab =	{Tab}{Tab};
+DoubleTab =	{Tab}{Tab};
+TripleTab =	{Tab}{Tab}{Tab};
+
+
+#  extreme compass rose command:
+<global-compass-extreme>  = $1;
+
+#  repeat global compass rose command N times:
+<mono-compass-rose>       =            First($1,",")  Second($1,",");
+<compass-rose> <my1to100> = Repeat($2, First($1,",")) Second($1,",");
+
+
+
+#  repeat global Windows word compass rose command N times:
+Windows <windows-word-compass-rose>            =
+                   First($1,",")  Second($1,",");
+Windows <windows-word-compass-rose> <my1to100> =
+	Repeat($2, First($1,",")) Second($1,",");

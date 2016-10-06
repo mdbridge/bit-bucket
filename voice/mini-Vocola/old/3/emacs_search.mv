@@ -1,0 +1,139 @@
+#############################################################################
+#                                                                           #
+# Gnuemacs search (and replace) commands, including my leap commands        #
+#                                                                           #
+#############################################################################
+
+##
+## Basic incremental search
+##
+
+  # start interactive search:
+search		= "{Ctrl+s}";	# going forward
+SearchBack 	= "{Ctrl+r}";	# going backwards
+
+  # start regex incremental search going forwards:
+regex search = {ctrl+u}1{ctrl+s};
+
+  # repeat previous incremental search for same string going forwards
+search again = {Ctrl+s}{Ctrl+s};
+
+
+##
+## Search and replace, with querying each replacement
+##
+
+SearchNReplace			= "{esc}%";
+regex search and replace	= "{esc}xquery-replace-regexp{enter}";
+
+#  Answers to should I do this replacement question:
+Replace All			= "!";
+
+
+##
+## My leap commands
+##
+
+#
+# Jumping to the start of the nearest target
+#
+
+   # to one of a set of prespecified targets:
+<leap-command> <leap-point> = $1 $2 {right};
+
+   # to a spelled-out target:
+<leap-command> <printable>                         = $1 $2 {right};
+<leap-command> <printable> <printable>             = $1 $2$3 {right};
+<leap-command> <printable> <printable> <printable> = $1 $2$3$4 {right};
+<leap-command> <printable> <printable> <printable> <printable> =
+	$1 $2$3$4$5 {right};
+<leap-command> <printable> <printable> <printable> <printable> <printable> =
+	$1 $2$3$4$5$6 {right};
+<leap-command> <printable> <printable> <printable> <printable> <printable>
+	       <printable> = $1 $2$3$4$5$6$7 {right};
+
+   # to an (emacs) word starting with the given spelling:
+<leap-command> word <printable>             = "{ctrl+u}1$1" "\b$2" {right};
+<leap-command> word <printable> <printable> = "{ctrl+u}1$1" "\b$2$3" {right};
+
+   # to a user supplied string (prompted for via the minibuffer)
+leap    = "{esc}xnonincremental-search-forward{enter}";
+retreat = "{esc}xnonincremental-search-backward{enter}";
+
+
+#
+# Jumping just after the end of the nearest target
+#
+
+   # to one of a set of prespecified targets:
+<leap-command> after <leap-point> =
+	$1 $2 "{right}"
+	   # this is somewhat of a hack as it leaves the
+ 	   # cursor in the wrong place on a failed leap:
+	"{right " Len($2) "}";
+
+   # after a spelled-out target:
+<leap-command> after <printable> = $1 $2 {right}{right};
+
+
+#
+# Repeating the previous leap/retreat N times, possibly in the other direction
+#
+# Bug: This always uses a non-regex leap, so it doesn't work correctly for 
+# leap word.<<<>>>
+#
+
+leap    same       = "{ctrl+c}s{ctrl+s}" {right};
+leap    same 1..20 = "{ctrl+c}s{ctrl+s " $1 "}" {right};
+
+retreat same       = "{ctrl+r 2}" {right};
+retreat same 1..20 = "{ctrl+r}{ctrl+r " $1 "}" {right};
+
+
+#
+# Leaping to the first occurrence on a given line
+#
+#   (same as jump to nearest line whose line number is equal to N mod 100,
+#    then do the leap command.)
+#
+
+<select-line> <my0to99> leap <leap-point> =
+	"{ctrl+u}$2{esc}G"
+	"{home}{ctrl+c}s" $3 "{right}";
+
+<select-line> <my0to99> leap <printable>             =
+	      "{ctrl+u}$2{esc}G" {home} "{ctrl+c}s" $3 {right};
+<select-line> <my0to99> leap <printable> <printable> =
+	      "{ctrl+u}$2{esc}G" {home} "{ctrl+c}s" $3$4 {right};
+
+<select-line> <my0to99> leap word <printable>  =
+	"{ctrl+u}$2{esc}G" {home} "{ctrl+u}1{ctrl+c}s" "\b$3" {right};
+
+<select-line> <my0to99> leap after <printable> =
+	      "{ctrl+u}$2{esc}G" {home} "{ctrl+c}s" $3 {right}{right};
+
+<select-line> <my0to99> leap after <leap-point> =
+	"{ctrl+u}$2{esc}G"
+	"{home}{ctrl+c}s" $3 "{right}"
+	   # this is somewhat of a hack as it leaves the
+ 	   # cursor in the wrong place on a failed leap:
+	"{right " Len($3) "}";
+
+
+#
+# Experiments
+#
+
+   # to a Emacs word with at least 16 alphanumeric or _ characters
+<leap-command> big word =
+	"{ctrl+u}1$1"
+	"\b[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_]"
+	  "[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_]"
+	  "[a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_][a-z0-9_]"
+	"{right}";
+
+#  line N then leap printable:
+#line <my0to99> first <printable> =
+#	"{ctrl+u}" $1 "{esc}G"
+#	"{home}{ctrl+c}s" $2 "{right}";
+

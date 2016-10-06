@@ -1,0 +1,83 @@
+#
+# functions for consuming tokens; next_token is the first unconsumed token
+#
+
+function consumeRaw() {
+    next_token = next_token + 1
+    return getRaw(-1)
+}
+
+# peak i+1 tokens ahead
+function getRaw(i) {
+    return $(next_token + i)
+}
+
+
+
+#
+# Main entry point; called once per mini-vocola statement
+#
+{
+    next_token = 1;                 # Start with first token...
+
+    command = consumeRaw()
+    print_header(command)
+
+    while (next_token <= NF) {
+        action(consumeRaw());
+    }
+
+    print_trailer()
+}
+
+function print_header(command_name) {
+    print "<Command name=\"" command_name \
+	 "\" group=\"automatically generated\" enabled=\"true\" states=\"\">";
+    print "<description>AUTOMATICALLY GENERATED MACRO; DO NOT EDIT!</description>";
+    print "<contents type=\"SCRIPT\">";
+    print "<![CDATA[Sub Main";
+
+    previous = "";                  # no unflushed output exists 
+}
+
+function print_trailer() {
+    flush();
+
+    print "End Sub\n]]>";
+    print "</contents>"
+    print "</Command>"
+}
+
+function flush() {
+    if (previous != "")
+        print previous
+
+    previous = ""
+}
+
+
+
+function SendDragonKeys(expression) {
+    if (previous != "") {
+        print previous " _"
+        previous = "                 & \"" expression "\""
+     } else {
+        previous = "    SendDragonKeys \"" expression "\""
+    }
+}
+
+
+function action(text) {
+    if (text == "") 
+       return
+
+    if (getRaw(0) != "(") {
+        SendDragonKeys(text)
+        return
+    }       
+    flush();
+
+    consumeRaw()
+    print "    " text " \"" consumeRaw() "\""
+    consumeRaw()
+}

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="KillASpace" group="cut/copy" enabled="true" states="">
+			<description>erase previous space (if any) before point on current line; does not work for command prompt windows, disturbs clipboard</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	spaces = 1
+
+	' attempt to get text on this line before point (disturbs Clipboard):
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys "{shift+home}{ctrl+c}"
+	previous = Clipboard()
+	If previous = "" Then
+		' nothing precedes point or copy failed; abort
+		Beep
+		Exit Sub
+	End If
+	keys = "{shift+right " + Len(previous) + "}" ' keys to undo selection, leaving point in original location
+
+	return = ""
+	While spaces>0 And previous<>""
+		If Right$(previous, 1) <> " " Then
+			keys = keys + "{left}"
+			return = return + "{right}"
+		Else
+			keys = keys + "{backspace}"
+			spaces = spaces - 1
+		End If
+		previous = Left(previous, Len(previous)-1)
+	Wend
+
+	SendDragonKeys keys + return
+
+	If spaces>0 Then
+		Beep
+	End If
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="KillASpace [1to20]" group="cut/copy" enabled="true" states="">
+			<description>erase previous N spaces (if any) before point on current line; does not work for command prompt windows, disturbs clipboard</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	spaces = Val(Left$(ListVar1,InStr(ListVar1+"\","\")-1))
+
+	' attempt to get text on this line before point (disturbs Clipboard):
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys "{shift+home}{ctrl+c}"
+	previous = Clipboard()
+	If previous = "" Then
+		' nothing precedes point or copy failed; abort
+		Beep
+		Exit Sub
+	End If
+	keys = "{shift+right " + Len(previous) + "}" ' keys to undo selection, leaving point in original location
+
+	return = ""
+	While spaces>0 And previous<>""
+		If Right$(previous, 1) <> " " Then
+			keys = keys + "{left}"
+			return = return + "{right}"
+		Else
+			keys = keys + "{backspace}"
+			spaces = spaces - 1
+		End If
+		previous = Left(previous, Len(previous)-1)
+	Wend
+
+	SendDragonKeys keys + return
+
+	If spaces>0 Then
+		Beep
+	End If
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="new skip" group="cut/copy" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys "{ctrl+shift+right}{ctrl+c}"
+	Dim next_word As String
+	next_word = Replace$(Clipboard(), Chr(10), "")
+	If next_word = "" Then ' no selection exists here
+		Beep
+		Exit Sub
+	End If
+
+
+	If Trim$(next_word) = "" Then
+		SendDragonKeys "{ctrl+shift+right}{ctrl+c}"
+		next_word = Replace$(Clipboard(), Chr(10), "")
+	End If
+
+	Dim cmd As String
+	cmd = ""
+	While Trim$(next_word) <> "" And Right$(next_word, 1) = " "
+		cmd = cmd + "{shift+left}"
+		next_word = Left$(next_word, Len(next_word)-1)
+	Wend
+
+'	SendDragonKeys cmd
+'	MsgBox "'" + next_word + "'"
+
+	length = Len(next_word)
+	cmd = cmd + "{shift+left " + length + "}{right " + length + "}"
+	SendDragonKeys cmd
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="new zap" group="cut/copy" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys "{ctrl+shift+right}{ctrl+c}"
+	Dim next_word As String
+	next_word = Replace$(Clipboard(), Chr(10), "")
+	If next_word = "" Then ' no selection exists here
+		Beep
+		Exit Sub
+	End If
+
+
+	If Trim$(next_word) = "" Then
+		SendDragonKeys "{ctrl+shift+right}{ctrl+c}"
+		next_word = Replace$(Clipboard(), Chr(10), "")
+	End If
+
+	Dim cmd As String
+	cmd = ""
+	While Trim$(next_word) <> "" And Right$(next_word, 1) = " "
+		cmd = cmd + "{shift+left}"
+		next_word = Left$(next_word, Len(next_word)-1)
+	Wend
+
+'	SendDragonKeys cmd
+'	MsgBox "'" + next_word + "'"
+
+	cmd = cmd + "{ctrl+x}"
+	SendDragonKeys cmd
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+		<Command name="paste that" group="cut/copy" enabled="true" states="">
+			<description>type Windows clipboard; do not use for long text, or text containing control characters, etc.</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	clip = Clipboard()
+
+	' remove carriage returns to convert to UNIX format:
+	clip = Replace$(clip, Chr$(13), "")
+
+	' alter characters so SendKeys doesn't get confused:
+	clip = Replace$(clip, "{", "{{}")
+
+	SendDragonKeys clip
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="1to20">
+			<Value><![CDATA[1]]></Value>
+			<Value><![CDATA[10]]></Value>
+			<Value><![CDATA[11]]></Value>
+			<Value><![CDATA[12]]></Value>
+			<Value><![CDATA[13]]></Value>
+			<Value><![CDATA[14]]></Value>
+			<Value><![CDATA[15]]></Value>
+			<Value><![CDATA[16]]></Value>
+			<Value><![CDATA[17]]></Value>
+			<Value><![CDATA[18]]></Value>
+			<Value><![CDATA[19]]></Value>
+			<Value><![CDATA[2]]></Value>
+			<Value><![CDATA[20]]></Value>
+			<Value><![CDATA[3]]></Value>
+			<Value><![CDATA[4]]></Value>
+			<Value><![CDATA[5]]></Value>
+			<Value><![CDATA[6]]></Value>
+			<Value><![CDATA[7]]></Value>
+			<Value><![CDATA[8]]></Value>
+			<Value><![CDATA[9]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>

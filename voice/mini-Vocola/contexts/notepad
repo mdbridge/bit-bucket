@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>notepad</module>
+		<company>Microsoft Corporation</company>
+		<description>Notepad</description>
+

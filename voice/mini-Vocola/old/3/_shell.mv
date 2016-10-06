@@ -1,0 +1,114 @@
+#  issue cd command to given directory:
+change directory <my-pc-directories> =
+	"cd " Replace$($1, "/", "\") "{enter}";
+
+#  issue cd command to given directory:
+change directory <my-pc-directories> slash <pathname-component> =
+	"cd " Replace$($1, "/", "\") "{enter}cd " $2 "{enter}";
+
+
+#  issue cd command to given pathname component:
+change directory <pathname-component> = 'cd "$1"{enter}';
+
+#  issue cd command to given pathname components:
+change directory <pathname-component> slash <pathname-component> =
+	'cd "$1"{enter}'
+	'cd "$2"{enter}';
+
+#  move-up N directories:
+go up       =            "cd ..{enter}";
+go up 1..10 = Repeat($1, "cd ..{enter}");
+
+
+
+
+
+
+
+
+
+
+
+#  stop currently running process:
+interrupt process = "{ctrl+c}";
+
+#  type full name of given machine:
+machine <my-machines> = $1;
+
+#  type a single letter shell command option; e.g., -v:
+option <letter> = "{shift+space}-$1 ";
+
+#  type a single capital letter shell command option; e.g., -V:
+option capital <letter> = "{shift+space}-{shift+$1} ";
+
+
+#  ping given machine:
+ping <my-machines> = "ping $1{enter}";
+
+#  repeat nth previous shell command:
+repeat command = "{up}{Enter}";
+repeat 2..10   = "{up " $1 "}{Enter}";
+
+
+#  issue dir command:
+show directory = "dir{enter}";
+
+#  stop currently running process, then repeat previous command:
+restart process =
+	"{ctrl+c}"
+	Wait(2000)
+	"{ctrl+c}{up}{enter}";
+
+#  stop currently running process:
+stop process = "{ctrl+c}";
+
+#  stop currently running batch job:
+stop batch job =
+	"{ctrl+c}"
+	Wait(1000)
+	"y{enter}";
+
+
+#  abbreviation for ..:
+#parent directory = "..";
+
+
+
+
+
+
+#  switch to window on far left :
+blue area =
+	SetMousePosition(0, 40, 500)
+	# HeardWord("mouse", "click")
+	Wait(1000)
+	ButtonClick(1, 1);
+
+#  switch to window on far left then run make:
+blue make =
+	SetMousePosition(0, 40, 500)
+	# HeardWord("mouse", "click")
+	Wait(1000)
+	ButtonClick(1, 1)
+	Wait(1000)
+	"{ctrl+c}q{ctrl+c}"
+	"make{enter}";
+
+#  switch to window on far left then run last command:
+blue repeat =
+	SetMousePosition(0, 40, 500)
+	# HeardWord("mouse", "click")
+	Wait(1000)
+	ButtonClick(1, 1)
+	Wait(1000)
+	"{up}{enter}";
+
+#  switch to window under mouse grid 4 4:
+switch to left window =
+	MouseGrid(1, 4)
+	MouseGrid(1, 4)
+	MouseGrid(0)
+	HeardWord("mouse", "click")
+	# ButtonClick(1, 1)
+	;
+

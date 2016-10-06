@@ -1,0 +1,6 @@
+#dialogue <my-directories> =
+#	Replace$(
+#	  Replace$($1, "/", "\"),
+#          "~", "\\spica\SRC udirs\mdl")
+#	"{enter}{backspace}";
+

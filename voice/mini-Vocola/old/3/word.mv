@@ -1,0 +1,12 @@
+#
+#  jump to absolute page number in current Word document:
+#
+go to page <my0to99> = "{ctrl+g}" $1 "{enter}{esc}";
+
+go to page <my0to99> hundred <my0to99> =
+	"{ctrl+g}" $1 Right$("00$2",2) "{enter}{esc}";
+
+
+really subscript = {alt+o}f{alt+b}{enter};
+
+force subscript = {alt+o}f{alt+b}{enter} {left}{Del};

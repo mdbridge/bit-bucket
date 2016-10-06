@@ -1,0 +1,79 @@
+#
+# Directory listing commands
+#
+
+show directory 		= "ls{enter}";
+show long directory	= "ls -l{enter}";
+show full directory 	= "ls -A{enter}";
+
+
+
+
+
+
+
+#
+# chmod commands
+#
+
+CH mod executable	= "chmod a+x ";
+CH mod writable		= "chmod -R a+w ";
+CH mod read-only	= "chmod -R a-w ";
+CH mod me only		= "chmod og= "; 
+
+
+#
+# Pager macros
+#
+
+#  run shell command's output through more:
+bar more = " | more{Enter}";
+#  run shell command's output through less:
+bar less = " | less{Enter}";
+
+#  skip to next file in a pager:
+pager next = ":n{Enter}";
+#  skip to previous file in a pager:
+pager previous = ":p{Enter}";
+
+#  skip to next file in more/less:
+next file = ":n";
+
+
+
+
+Shell Command		= "{Esc}!";
+
+
+#  use cvs to update the current directory:
+cvs update = "cvs update -d";
+
+
+#  abbreviation for case insensitive grep:
+I grep = "grep -i ";
+
+#  start up bc with appropriate scale:
+UNIX calculator = "bc{enter}scale = 3{enter 2}";
+
+
+
+
+#  abbreviation for -HUP:
+option hangup = " -HUP ";
+
+
+#  show top processes, then prepare to kill some of them:
+kill top processes = "top -n{enter}kill -HUP ";
+
+
+#  make ssh connection to given machine:
+S. S. H. <my-machines> = "ssh $1{enter}";
+
+
+
+#  change to directory my-directories:
+change directory <my-directories> =
+	"cd " Replace$($1, " ", "\ ") "{enter}";
+
+change directory <my-directories> slash <pathname-component> =
+	"cd " Replace$($1, " ", "\ ") "/"  $2 "{enter}";

@@ -1,0 +1,7 @@
+	<Commands type="window">
+		<module>natspeak</module>
+		<company>ScanSoft</company>
+		<description>Dragon NaturallySpeaking for Windows</description>
+		<caption>DragonPad</caption>
+		<class></class>
+

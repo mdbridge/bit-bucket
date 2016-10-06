@@ -1,0 +1,52 @@
+#  from top of security settings dialog box, enable ActiveX:
+enable ActiveX =
+	"{down}"
+	# automatic prompting for ActiveX controls 2
+	"{down 2}{space}{down}"
+	# binary and script behaviors 3
+	"{down 4}"
+	# download signed ActiveX controls 3
+	"{down 3}{space}{down}"
+	# download unsigned ActiveX controls 3
+	"{down}{space}{down 3}"
+	# initialize and script ActiveX controls not marked as safe 3
+	"{down}{space}{down 3}"
+	# run ActiveX controls and plug-ins 4
+	"{down 4}{space}{down 1}"
+	# script ActiveX controls marked safe for scripting 3
+	"{down 3}{space}{down 1}";
+
+
+#  go to URL stored in the clipboard:
+import URL =
+#	HeardWord "go", "to", "address"
+#	Wait 1
+	"{ctrl+o}"
+#	HeardWord "press", "control", "Victor"
+	"{ctrl+v}"
+#	HeardWord "go", "there"
+	"{Enter}";
+
+#  go to security settings for Internet zone:
+Internet security settings =
+	"{alt+t}O{ctrl+tab}{tab}C";
+
+#  go to top of page then refresh:
+refresh top = "{ctrl+home}{ctrl+r}";
+
+
+Web = "{alt+a}{down 2}{right}";
+
+Web <my-web-sites> = {ctrl+o} $1 {enter};
+
+#  a better version of go back:
+really go back = SendSystemKeys("{alt+left}");
+
+#  click one of multiple previous links:
+really previous =
+	HeardWord("click", "Previous")
+	HeardWord("choose", "1");
+
+really lower previous =
+	HeardWord("click", "previous")
+	HeardWord("choose", "1");

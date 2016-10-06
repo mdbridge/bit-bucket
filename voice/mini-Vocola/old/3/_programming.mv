@@ -1,0 +1,43 @@
+lookup java =
+	AppBringUp("lookup", "IEXPLORE.EXE")
+	Wait(3000)   # needed to ensure application is accepting keystrokes
+	{ctrl+o}
+	    "http://java.sun.com/j2se/1.4.2/docs/api/overview-summary.html"
+	{enter};
+
+lookup java tools =
+	AppBringUp("lookup", "IEXPLORE.EXE")
+	Wait(3000)   # needed to ensure application is accepting keystrokes
+	{ctrl+o}
+	    "http://java.sun.com/j2se/1.4.2/docs/tooldocs/tools.html"
+	{enter};
+
+lookup <java-package> =
+	AppBringUp("lookup", "IEXPLORE.EXE")
+	Wait(3000)   # needed to ensure application is accepting keystrokes
+	{ctrl+o}
+	    "http://java.sun.com/j2se/1.4.2/docs/api/" 
+	        Replace$($1,".","/") 
+		"/package-summary.html"
+	{enter};
+
+lookup <java-type> =
+	AppBringUp("lookup", "IEXPLORE.EXE")
+	Wait(3000)   # needed to ensure application is accepting keystrokes
+	{ctrl+o}
+	    "http://java.sun.com/j2se/1.4.2/docs/api/" 
+	        Replace$($1,".","/") 
+		".html"
+	{enter};
+
+
+
+
+#
+# I experimented with using the following code to bring up a URL:
+#
+
+#	Set objIE = CreateObject("InternetExplorer.Application")
+#	objIE.Visible = 1
+#	objIE.Navigate URL
+#	alas, this fails to bring the new window to the foreground;

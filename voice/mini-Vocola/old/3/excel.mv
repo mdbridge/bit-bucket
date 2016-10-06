@@ -1,0 +1,20 @@
+#  close an auto filter lest:
+close filter = SendSystemKeys("{alt+up}");
+
+#  select current data region of current column minus top cell:
+grab data = SendSystemKeys("{ctrl+up}{down}{shift+ctrl+down}");
+
+#  hopefully move up to top of column:
+leap up up = SendSystemKeys("{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}{PgUp}");
+
+#  open an auto filter list and choose custom filter:
+open custom = SendSystemKeys("{ctrl+up}{alt+down}{home}{down}{down}{enter}");
+
+#  open an auto filter lest:
+open filter = SendSystemKeys("{ctrl+up}{alt+down}{home}");
+
+#  paste twice, moving down in between:
+paste two = SendSystemKeys("{ctrl+v}{down}{ctrl+v}{down}");
+
+
+# Dragon: hide that column

@@ -1,0 +1,4 @@
+	<Commands type="application">
+		<module>win32pad</module>
+		<company>Gennady Feldman</company>
+		<description>Win32Pad - my notepad replacement</description>

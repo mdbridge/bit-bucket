@@ -1,0 +1,37 @@
+#
+# Commands to place a matched pair of characters around the cursor:
+#
+
+paren pair		= "(){left}" HeardWord(\No-Space);
+brace pair		= "{}{left}" HeardWord(\No-Space);
+bracket pair		= "[]{left}" HeardWord(\No-Space);
+angle pair		= "<>{left}" HeardWord(\No-Space);
+
+  # note extra space inserted before pair (good for latex math mode):
+dollar pair		= " $${left}" HeardWord(\No-Space);
+
+single pair		= "''{left}";
+quote pair		= '""{Left}';
+
+
+#
+# Similar commands for multi-character matching delimiters:
+#
+
+  # C-style in-line comment:
+comment pair		= "/**/{left 2}" HeardWord(\No-Space);
+
+HTML pair	= '<a href=""></a>{Left 6}';
+
+
+#
+#  delete pair of characters around the cursor:
+#
+delete pair		= "{Right}{backspace}{backspace}";
+
+
+# This next one may only make sense in Emacs: <<<>>>
+#  like brace pair, but multiline C style:
+block pair =
+	"{shift+space}{}{Left}{enter}{enter}{tab}{up}{tab}"
+	HeardWord(\No-Space);

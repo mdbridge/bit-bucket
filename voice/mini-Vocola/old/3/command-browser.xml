@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+
+	<Commands type="application">
+		<module>nsbrowse</module>
+		<company>ScanSoft</company>
+		<description>Dragon NaturallySpeaking Command Browser</description>
+
+		<Command name="really edit" group="commandBrowser" enabled="true" states="">
+			<description>edit script of command selected in manage view</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	SendDragonKeys "{alt+m}n{alt+r}{tab}" + "{alt+n}s" + "{alt+s}e"
+	Wait 3
+	SendDragonKeys "{alt+r}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+	</Lists>
+
+</MyCommands>

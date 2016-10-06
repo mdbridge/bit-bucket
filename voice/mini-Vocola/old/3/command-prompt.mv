@@ -1,0 +1,22 @@
+#
+# Commands for Windows command shell
+#
+
+
+
+
+
+#  copy from a command prompt:
+copy that = "{alt+space}ey";
+
+#  copy from a command prompt:
+command prompt copy = "{alt+space}ey";
+
+#  paste that for command prompt Windows:
+command prompt paste = "{alt+space}ep";
+
+#  command prompt copy then paste:
+command prompt yank = "{alt+space}ey{alt+space}ep";
+
+#  paste that for command prompt Windows:
+paste that = "{alt+space}ep";

@@ -1,0 +1,12 @@
+thanks = "Thanks!  ";
+
+my signature = "- Mark{Enter}";
+
+
+#
+#  type e-mail addresses of work persons:
+# 
+email for work <work-email> = $1; 
+email for work <work-email> comma <work-email> = "$1, $2";
+email for work <work-email> comma <work-email> comma <work-email> =
+    "$1, $2, $3";

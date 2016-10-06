@@ -1,0 +1,24 @@
+#try list <my_count> = "trying $1";
+
+please find = "{ctrl+f}" HeardWord(\No-Caps);
+
+touch = HeardWord(mouse, click);
+
+
+  # below from Windows core:
+#  type a line feed:
+line feed = {ctrl+j};
+
+
+
+#  minimize current window:
+really minimize = SendSystemKeys("{alt+space}n");
+
+#  poll down the view menu:
+really view = SendSystemKeys("{alt+v}");
+
+#  fix Internet Explorer windows that have been reduced to only a
+# fragment of their title bar:
+restore window fragment = "{alt+space}x{alt+space}R";
+
+

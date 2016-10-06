@@ -1,0 +1,76 @@
+#!/bin/csh -f 
+
+set TARGET=to_DNS.xml
+
+cat > ${TARGET} <<HEADER
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+HEADER
+
+
+#
+# Process each command file:
+#
+foreach file ($*)
+   echo "  compiling ${file}..."
+
+   #cat contexts/`echo $file | sed -e 's|[_.].*||' -e 's|commands/||' -e 's|^$|_vocola|'` >> ${TARGET}
+   set name = `echo "$file" | sed -e 's|[_.][^/]*$||' -e 's|.*commands/||' -e 's|^$|_vocola|'`
+    if (-e "contexts/$name" ) then
+	cat "contexts/$name" >> ${TARGET}
+    else
+	cat >> ${TARGET} <<CONTEXT
+	<Commands type="application">
+		<module>$name</module>
+		<company>Unknown</company>
+		<description>Unknown: $name</description>
+CONTEXT
+    endif
+   echo "" >> ${TARGET}
+
+   ruby -w compile.rb "$file" >> ${TARGET}
+
+   cat >> ${TARGET} <<FILE_TRAILER
+	</Commands>
+
+FILE_TRAILER
+end
+
+echo 
+
+
+#
+# Process each list file:
+#
+
+cat >> ${TARGET} << LISTS_HEADER
+	<Lists>
+
+LISTS_HEADER
+
+set quote='"'
+
+foreach file (lists/*.list)
+    #echo "  loading ${file}..."
+    set name = `echo ${file:t:r} | sed 's/_/-/g'`
+
+    echo "		<List name=${quote}mv-${name}${quote}>" >> ${TARGET}
+
+    grep -v '^[ 	]*$' "$file" \
+        | quote_list \
+        | sed 's|\(^.*$\)|\t\t\t<Value><\![CDATA[\1]]></Value>|' \
+        >> ${TARGET}
+
+    echo "		</List>" >> ${TARGET}
+    echo >> ${TARGET}
+end
+
+cat >> ${TARGET} << TRAILER
+	</Lists>
+
+</MyCommands>
+TRAILER

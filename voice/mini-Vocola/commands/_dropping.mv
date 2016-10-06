@@ -1,0 +1,6 @@
+SendKeys variant test = "SendKeys variant test (SendKeys):"{enter}
+                        Repeat(5, Repeat(10,
+                                             SendKeys(". ")
+                                             SendKeys(", ")
+                                         ) !{enter}) {space}{enter};
+

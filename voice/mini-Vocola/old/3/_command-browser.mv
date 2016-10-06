@@ -1,0 +1,24 @@
+#
+# For some reason, only global commands are recognized in the macro
+# editing window.
+#
+
+
+
+
+
+list editor = "{alt+m}{tab}{tab}{down}";
+
+# enter expression for ListVarN's written part only, with optional
+# spoken part:
+magic variable 1..10 =
+	'Left$(ListVar$1,InStr(ListVar$1+"\","\")-1)';
+
+
+
+choose out		= "{tab}{down 2}{enter}{shift+tab}out.xml{enter}";
+
+import out		= {alt+n}i Wait(1000)
+	"{tab}{down 2}{enter}{shift+tab}out.xml{enter}";
+
+export XML		= "{alt+n}e{tab}{down}{down}{enter}{shift+tab}";

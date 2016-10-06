@@ -1,0 +1,18 @@
+# these were global:
+
+EndNSpace		= "{End}{shift+space}";
+EndNStop		= "{End}.  ";
+
+# these were emacs only:
+
+EndNBrace		= "{end}{shift+space}{";
+EndNComma		= "{end}, ";
+EndNParen		= "{end})";
+EndNSemi		= "{end};";
+
+EndNEnter		= "{end}{Enter}";
+SemiNew			= ";{Enter}";
+
+
+
+EndNColon		= "{End}:";

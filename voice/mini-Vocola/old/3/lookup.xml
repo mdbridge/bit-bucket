@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+		<Command name="view split URL" group="lookup" enabled="true" states="">
+			<description>attempt to view the nearest URL in the lookup browser when it is split into two lines</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' copy split URL:
+	SendDragonKeys "{ctrl+u}1{ctrl+c}s\(http\|https\|file\):{right}{ctrl+space}"
+	SendDragonKeys "{down}{home}"
+	SendDragonKeys "{ctrl+u}1{ctrl+c}s[""<> ]\|${right}"
+	SendDragonKeys "{ctrl+u}1{ctrl+r}\(http\|https\|file\):{right}{Esc}w"
+
+	' create web page redirecting to that link:
+	SendDragonKeys "{ctrl+x}b*l1*{Enter}{esc}<"
+	SendDragonKeys "{ctrl+y}{Enter}<a href=""{ctrl+y}"">go there</a>{Enter}"
+	SendDragonKeys "<meta http-equiv=""REFRESH"" content= ""0;url={ctrl+y}"">{enter}
+	SendDragonKeys "{ctrl+space}{esc}>{ctrl+w}"
+	SendDragonKeys "{esc}xmdl-export-buffer-to-l1{Enter}{ctrl+x}k{Enter}"
+
+	' lookup that web page:
+	AppBringUp "lookup", "IEXPLORE.EXE"
+	Wait 3  ' needed to ensure application is accepting keystrokes
+	SendDragonKeys "o{ctrl+o}\\spica\SRC udirs\mdl\Tmp\l1.html{enter}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="view URL" group="lookup" enabled="true" states="">
+			<description>attempt to view the nearest URL in the lookup browser</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	' copy URL:
+	SendDragonKeys "{ctrl+u}1{ctrl+c}s\(http\|https\|file\):{right}{ctrl+space}"
+	SendDragonKeys "{ctrl+u}1{ctrl+c}s[""<> ]\|${right}{Esc}w"
+
+	' create web page redirecting to that link:
+	SendDragonKeys "{ctrl+x}b*l1*{Enter}{esc}<"
+	SendDragonKeys "{ctrl+y}{Enter}<a href=""{ctrl+y}"">go there</a>{Enter}"
+	SendDragonKeys "<meta http-equiv=""REFRESH"" content= ""0;url={ctrl+y}"">{enter}
+	SendDragonKeys "{ctrl+space}{esc}>{ctrl+w}"
+	SendDragonKeys "{esc}xmdl-export-buffer-to-l1{Enter}{ctrl+x}k{Enter}"
+
+	' lookup that web page:
+	AppBringUp "lookup", "IEXPLORE.EXE"
+	Wait 3  ' needed to ensure application is accepting keystrokes
+	SendDragonKeys "o{ctrl+o}\\spica\SRC udirs\mdl\Tmp\l1.html{enter}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+	</Lists>
+
+</MyCommands>

@@ -1,0 +1,18 @@
+for Microsoft Word:
+
+Create and goto Word bookmarks. Very useful for moving around text!
+
+set bookmark 1..9 = SendSystemKeys("{Alt+i}")  Wait(100) k Wait(100) "natlink_$1"  {Alt+a} ;
+ go to bookmark 1..9 = SendSystemKeys("{Alt+i}")  Wait(100) k Wait(100) "natlink_$1"  {Alt+g}{esc} ;
+
+
+restart numbering = {Alt+o}n{Alt+n}{Alt+r}{enter} ;
+ continue numbering = {Alt+o}n{Alt+n}{Alt+c}{enter} ;
+
+#the following command capitalises the first word of the current sentence.
+ Capitalise first word = HeardWord("go","to" ,"beginning","of","sentence")
+                        HeardWord("select","word")
+                        HeardWord("\Cap","that") 
+                        HeardWord("Go","Back") ;
+
+

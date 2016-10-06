@@ -1,0 +1,41 @@
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+#  put current buffer at end of list of buffers:
+bury buffer		= "{esc}xbury-buffer{enter}";
+
+#  edit a new file in a new buffer:
+find file		= "{ctrl+x}{ctrl+f}"; 
+
+Kill Buffer		= "{Ctrl+x}k{Enter}";
+
+OtherBuffer		= "{Ctrl+x}b{Enter}";
+
+OtherWindow		= "{Ctrl+x}o";
+
+  # bring up a buffer menu for buffer selection:
+buffer menu		= "{esc}xbuffer-menu{enter}";
+
+test = '= =#"=' == "r"= "er"p=;
+test =  "= #'";
+foo = '"red" "" "blue' ' " ';
+test
+line
+wrap
+=
+"result"
+;
+
+Fred  was here = "here was  Fred" "or here" ;
+foo=bar=baz;
+"foo=bar"=zeep;
+"foo=bar"= zeep;
+"foo=bar" =zeep;
+"foo= bar" =zeep;
+"foo" foo=bar=baz;
+foo   bar =	"baz	geep		foo"	  "e	a		r";
+foo   bar =	"baz	geep		foo"	  'e	a		r';
+"=" red "=" ooo r="=ttt"=ttt ;
+

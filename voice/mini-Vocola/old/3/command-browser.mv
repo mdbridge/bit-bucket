@@ -1,0 +1,38 @@
+
+really manage =
+	"{alt+m}n{alt+r}{tab}";
+
+
+#  switch to managing the first group whose name starts with letter:
+current group <letter> =
+	"{alt+m}n{alt+r}(" $1 "{tab}"
+	"{down}{right}{up}{right}";
+
+#  switch to managing the next group:
+next current group =
+	"{alt+m}n{alt+r}{down}{tab}"
+	"{down}{right}{up}{right}";
+
+
+#  switch to managing every group:
+current group all =
+	"{alt+m}n{alt+r}(" {down}{up} "{tab}"
+	Repeat(17, "{space}{down}");
+
+#  edit script of command selected in manage view:
+really edit =
+	"{alt+m}n{alt+r}{tab}" "{alt+n}s" "{alt+s}e"
+	Wait(3000)
+	"{alt+r}";
+
+
+
+
+
+
+
+
+really edit list =
+	"{alt+m}n{alt+r}{tab}" "{alt+n}s" "{alt+s}e"
+	Wait(3000)
+	"{alt+m}{tab}{tab}{down}" "{alt+e}";

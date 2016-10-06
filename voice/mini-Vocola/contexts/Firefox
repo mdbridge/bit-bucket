@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>firefox</module>
+		<company>Mozilla Corporation</company>
+		<description>Firefox</description>
+

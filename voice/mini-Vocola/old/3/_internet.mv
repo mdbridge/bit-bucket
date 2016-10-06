@@ -1,0 +1,2 @@
+#  a better version of go back:
+really go back = SendSystemKeys("{alt+left}");

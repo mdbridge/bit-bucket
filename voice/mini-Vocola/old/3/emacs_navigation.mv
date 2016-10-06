@@ -1,0 +1,178 @@
+#JumpToCode = {Ctrl+u}{Ctrl+c}c;
+
+#JumpToHeader = {Ctrl+u}{Ctrl+c}h;
+
+#TopOfFunction = {Esc}xjmac-cc-topof-function{Enter};
+
+
+#  scroll buffer so that cursor is in the middle of the screen:
+CenterCursor = "{ctrl+l}";
+
+#  save a marker to point so we can return to it later:
+drop crumb = "{ctrl+x}r z";
+
+#  scroll buffer so that cursor is at the bottom of the screen:
+DropCursor = "{ctrl+u}-1{ctrl+l}";
+
+#  set mark then jump to previously dropped crumb:
+find crumb = "{ctrl+space}{ctrl+x}jz";
+
+#  scroll buffer so that cursor is at the top of the screen:
+lift cursor = "{ctrl+u}0{ctrl+l}";
+
+#  scroll forward other window:
+other page down = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll back other window:
+other page up = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll forward other window:
+other scroll = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll back other window:
+other scroll back = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll up current buffer N lines:
+Scroll <my0to99> = "{ctrl+u}" $1 "{ctrl+v}";
+
+#  scroll up other window:
+Scroll other = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll down other window:
+Scroll other back = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll back current emacs buffer N lines:
+ScrollBack <my0to99> = "{ctrl+u}" $1 "{esc}v";
+
+#  go to start of word that needs to be wrapped:
+wrap point = "{ctrl+u}78{esc}xmove-to-column{enter}{ctrl+f}{esc}b";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  jump to nearest line whose line number is equal to N mod 100:
+<select-line> <my0to99> =
+	"{ctrl+u}" $2 "{esc}G";
+
+#  jump to start of comment of nearest line whose line number is equal to N mod 100:
+<select-line> <my0to99> comment =
+	"{ctrl+u}" $2 "{esc}G"
+	"{home}{ctrl+s}* {enter}";
+
+#  jump to end of nearest line whose line number is equal to N mod 100:
+<select-line> <my0to99> end =
+	"{ctrl+u}" $2 "{esc}G"
+	"{end}";
+
+
+<select-line> <my0to99> jump       =
+	"{ctrl+u}" $2 "{esc}G"
+	"{home}{ctrl+u}" 1 "{esc}f";
+
+<select-line> <my0to99> jump 1..20 =
+	"{ctrl+u}" $2 "{esc}G"
+	"{home}{ctrl+u}" $3 "{esc}f";
+
+#  jump to nearest line whose line number is equal to N mod 100 then StartNTab:
+<select-line> <my0to99> tab =
+	"{ctrl+u}" $2 "{esc}G"
+	"{home}{tab}";
+
+#  jump to nearest line equal to given line mod 100:
+JumpToLine =
+	{ctrl+u}1{Esc}xsetnu-mode{Enter}{Esc}xmdl-goto-line-mod100{Enter};
+
+#  jump to nearest line whose line number is equal to N mod 100:
+JumpToLine <my0to99> =
+	"{ctrl+u}" $1 "{esc}G";
+
+#  jump to end of nearest line whose line number is equal to N mod 100:
+JumpToLineEnd <my0to99> =
+	"{ctrl+u}" $1 "{esc}G{ctrl+e}";
+
+
+#  jump to absolute line number in current Emacs buffer:
+GoToLine <my0to99> hundred <my0to99> =
+	"{esc}xgoto-line{enter}" $1 Right$("00$2", 2) "{enter}";
+
+
+
+
+#  toggle setnu mode in emacs:
+#ShowLineNumbers = {Esc}xsetnu-mode{Enter};
+
+
+#  jump to nearest line whose line number is equal to N mod 100 then insert blank line then tab:
+<select-line> <my0to99> feed =
+	"{ctrl+u}" $2 "{esc}G"
+	"{ctrl+o}{tab}";
+
+#  jump to nearest line whose line number is equal to N mod 100 then insert blank line:
+<select-line> <my0to99> open =
+	"{ctrl+u}" $2 "{esc}G"
+	"{ctrl+o}";
+
+
+#JumpToCode = {Ctrl+u}{Ctrl+c}c;
+
+#JumpToHeader = {Ctrl+u}{Ctrl+c}h;
+
+#TopOfFunction = {Esc}xjmac-cc-topof-function{Enter};
+
+
+
+
+#  scroll buffer so that cursor is at the top of the screen:
+lift cursor = "{ctrl+u}0{ctrl+l}";
+
+#  scroll buffer so that cursor is at the bottom of the screen:
+DropCursor = "{ctrl+u}-1{ctrl+l}";
+
+#  scroll buffer so that cursor is in the middle of the screen:
+CenterCursor = "{ctrl+l}";
+
+
+#  save a marker to point so we can return to it later:
+drop crumb = "{ctrl+x}r z";
+
+#  set mark then jump to previously dropped crumb:
+find crumb = "{ctrl+space}{ctrl+x}jz";
+
+
+#  scroll forward other window:
+other page down = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll back other window:
+other page up = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll forward other window:
+other scroll = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll back other window:
+other scroll back = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll up current buffer N lines:
+Scroll <my0to99> = {ctrl+u}$1{ctrl+v};
+
+#  scroll up other window:
+Scroll other = "{ctrl+x}o{PgDn}{ctrl+x}o";
+
+#  scroll down other window:
+Scroll other back = "{ctrl+x}o{PgUp}{ctrl+x}o";
+
+#  scroll back current emacs buffer N lines:
+ScrollBack <my0to99> = {ctrl+u}$1{esc}v;
+
+#  go to start of word that needs to be wrapped:
+wrap point = "{ctrl+u}78{esc}xmove-to-column{enter}{ctrl+f}{esc}b";

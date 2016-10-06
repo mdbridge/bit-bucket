@@ -1,0 +1,9 @@
+#  extreme emacs compass rose command:
+<emacs-compass-extreme> = $1;
+
+#  repeat emacs compass rose command N times:
+<emacs-compass-rose>            = First($1,",")  Second($1,",");
+<emacs-compass-rose> <my1to100> =
+	Replace$(      Repeat($2, First($1,",")) Second($1,","),
+                       "{ctrl+w}{ctrl+space}", ""
+		);

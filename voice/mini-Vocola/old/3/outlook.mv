@@ -1,0 +1,16 @@
+#  prepare a new message to send:
+compose message =
+    "{alt+f}wm"
+	"{tab}{tab}mark.lillibridge@hp.com{shift+tab 3}";
+
+#  prepare a new message to send:
+compose message for work <work-email> =
+    "{alt+f}wm"
+	"{tab}{tab}mark.lillibridge@hp.com{shift+tab 3}"
+	$1 "{tab 2}";
+
+#  prepare a new message to send:
+compose message for work <work-email> comma <work-email> =
+    "{alt+f}wm"
+	"{tab}{tab}mark.lillibridge@hp.com{shift+tab 3}"
+	$1 "{tab}"  $2 "{tab 2}";

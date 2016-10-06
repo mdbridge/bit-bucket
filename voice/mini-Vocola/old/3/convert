@@ -1,0 +1,42 @@
+#!/bin/csh -f 
+
+cat $1 \
+    | sed 's///g' \
+    | sed '/<Lists>/,$d' \
+    | sed '/Command name/ s_\[_<_g' \
+    | sed '/Command name/ s_\]_>_g' \
+    | sed 's_0to99_my0to99_g' \
+    | sed 's_.*Command name="\([^"]*\)".*_\1 =_' \
+    \
+    | sed 's_.*<description>\([^<]*\)</description>.*_#  \1:_' \
+    | sed '/^#  :$/d' \
+    | sed '/<contents type/d' \
+    \
+    | sed 's_SendDragonKeys  *__' \
+    | sed 's_SendKeys  *__' \
+    | sed 's_HeardWord "\\No-Space"_HeardWord(\\No-Space)_' \
+    \
+    | sed 's_<\!\[CDATA\[_\t_' \
+    | sed 's_\]\]>_;_' \
+    | sed '/Sub Main/d' \
+    | sed '/End Sub/d' \
+    \
+    | sed 's_Left$(ListVar\([0-9]\),InStr(ListVar\1+"\\","\\")-1)_$\1_g' \
+    | sed 's_ListVar\([0-9]\)_$\1_g' \
+    | sed 's_ \?+ \?$\([0-9]\)_ $\1_g' \
+    | sed 's_$\([0-9]\) \?+ \?_$\1 _g' \
+    | sed "s_^\([ \t]"\*"\)'_\1#_" \
+    \
+    | sed '\_</contents>_d' \
+    | sed '\_</Command>_d' \
+    > ${1:r}.converted
+
+ed ${1:r}.converted <<"CMDS"
+g/^;$/.-1,.j
+g/^#.*:$/m.-2
+w
+q
+"CMDS"
+
+#cat ${1:r}.converted
+

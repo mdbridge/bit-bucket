@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>emacs</module>
+		<company>Free Software Foundation</company>
+		<description>GNU Emacs: The extensible self-documenting text editor</description>
+

@@ -1,0 +1,63 @@
+#!/bin/csh -f 
+
+cat > out.xml <<HEADER
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+HEADER
+
+
+#
+# Process each command file:
+#
+foreach file ($*)
+   echo "  compiling ${file}..."
+
+   cat Context/`echo $file | sed -e 's|[_.].*||' -e 's|^$|_vocola|'` \
+	>> out.xml
+   echo "" >> out.xml
+
+   ruby -w compile.rb $file >> out.xml
+
+   cat >> out.xml <<FILE_TRAILER
+	</Commands>
+
+FILE_TRAILER
+end
+
+echo 
+
+
+#
+# Process each list file:
+#
+
+cat >> out.xml << LISTS_HEADER
+	<Lists>
+
+LISTS_HEADER
+
+set quote='"'
+
+foreach file (Lists/*.list)
+#    echo "  loading ${file}..."
+
+    echo "		<List name=${quote}mv-${file:t:r}${quote}>" >> out.xml
+
+    grep -v '^[ 	]*$' $file \
+        | quote_list \
+        | sed 's|\(^.*$\)|\t\t\t<Value><\![CDATA[\1]]></Value>|' \
+        >> out.xml
+
+    echo "		</List>" >> out.xml
+    echo >> out.xml
+end
+
+cat >> out.xml << TRAILER
+	</Lists>
+
+</MyCommands>
+TRAILER

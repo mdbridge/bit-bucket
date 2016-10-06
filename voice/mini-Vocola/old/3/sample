@@ -1,0 +1,3 @@
+go to page [mv-my0to99]	{ctrl+g}	" + Replace$(Replace$(Left$(ListVar1,InStr(ListVar1+"\","\")-1),"&B","\"),"&A","&") + "	{enter}{esc}
+really subscript	{alt+o}f{alt+b}{enter}
+force subscript	{alt+o}f{alt+b}{enter}	{left}{Del}

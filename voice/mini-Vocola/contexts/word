@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>WINWORD</module>
+		<company>Microsoft Corporation</company>
+		<description>Microsoft Office Word</description>
+

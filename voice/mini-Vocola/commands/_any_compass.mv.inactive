@@ -1,0 +1,63 @@
+Test(keys) :=
+	INCLUDE("extensions/with-count.vb") 
+	INCLUDE("extensions/peek.vb") 
+	PROC(test, $keys);
+
+#test my peek = Test({shift+home}{shift+left}{shift+home});
+test my peek = Test({shift+end}{shift+right}{shift+end});
+
+WithCount(direction, target, repetitions, command) :=
+	INCLUDE("extensions/peek.vb") 
+	INCLUDE("extensions/with-count.vb") 
+	PROC(with_count, $direction, $target, $repetitions, $command);
+
+SOW() := Eval( "Chr(1)" );
+EOW() := Eval( "Chr(2)" );
+
+
+
+my peek =
+	INCLUDE("extensions/peek.vb") 
+	INCLUDE("extensions/with-count.vb") 
+	PROC(with_count, "left", ",", 1, "{shift+left #}");
+
+
+
+my leap          <printable> = WithCount(right, $1, 1, "{right #}");
+my leap after    <printable> = WithCount(right, $1, 1, "{right #}{right}");
+my leap word     <printable> = WithCount(right, SOW() $1, 1, "{right #}");
+
+my retreat       <printable> = WithCount(left, $1, 1, "{left #}");
+my retreat after <printable> = WithCount(left, $1, 1, "{left %}");
+my retreat word  <printable> = WithCount(left, SOW() $1, 1, "{left #}");
+
+
+my erase until      <printable> = WithCount(right, $1, 1, "{Del #}");
+my erase until word <printable> = WithCount(right, SOW() $1, 1, "{Del #}");
+
+my back until       <printable> = WithCount(left, $1, 1, "{backspace #}");
+my back until after <printable> = WithCount(left, $1, 1, "{backspace %}");
+
+# 
+#  These commands fail to remove a space adjacent to the point:
+#  mini-Vocola cannot correctly compile the second of these:<<<>>>
+remove space       = WithCount(left, " ", 1, "{left %}{backspace}{right %}");
+remove space 1..20 = Repeat($1, WithCount(left, " ", 1, "{left %}{backspace}{right %}"));
+
+remove next space = WithCount(right, " ", 1, "{right #}{Del}{left #}");
+
+
+
+
+my jump   = WithCount(right, EOW(), 1, "{right #}");
+my skip   = WithCount(left, SOW(), 1, "{left #}");
+
+my zortch = WithCount(right, EOW(), 1, "{Del #}");
+my kill   = WithCount(left, SOW(), 1, "{backspace #}");
+
+
+my jump 2..20   = WithCount(right, EOW(), $1, "{right #}");
+my skip 2..20   = WithCount(left, SOW(), $1, "{left #}");
+
+my zortch 2..20 = WithCount(right, EOW(), $1, "{Del #}");
+my kill 2..20   = WithCount(left, SOW(), $1, "{backspace #}");

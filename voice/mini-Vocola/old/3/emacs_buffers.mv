@@ -1,0 +1,144 @@
+#############################################################################
+#                                                                           #
+# Macros for creating and managing Gnuemacs buffers and windows             #
+#                                                                           #
+#############################################################################
+
+##
+## Visiting files
+##
+##   Note: switches to an existing buffer if file already visited
+##
+
+find file		= "{ctrl+x}{ctrl+f}"; 
+  # kill current buffer then find user-specified file:
+find alternate file	= "{ctrl+x}{ctrl+v}";
+
+  # find a file in specified directories:
+find <my-directories> =
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1/ ;
+
+  # find a file in specified directories:
+find <my-directories> slash <pathname-component> =
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1/$2/ ;
+
+  # find-file the given file:
+buffer <my-files> =
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1 "{enter}";
+
+  # find-file the given file then go to its end:
+buffer <my-files> end=
+	"{ctrl+x}{ctrl+f}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1 "{enter}" {esc}>;
+
+
+##
+## Switching between existing buffers
+##
+
+switch-to-buffer	= "{ctrl+x}{b}";
+
+<my-buffers> buffer	= "{ctrl+x}{b}" $1 {enter};
+
+#
+# Switching to a buffer by how recently it was switched to:
+#
+
+#OtherBuffer		= "{Ctrl+x}b{Enter}";
+Other Buffer		= "{Ctrl+x}b{Enter}";
+
+  # go to Nth most recently accessed buffer:
+<buffer-ord> buffer = "{esc}xbuffer-menu{enter}"
+	"{esc}g$1{enter}"
+	"f{ctrl+x}b{enter}{esc}xbury-buffer{enter}";
+
+#
+# Switching by menu choice:
+#
+
+  # bring up a buffer menu for buffer selection:
+buffer menu		= "{esc}xbuffer-menu{enter}";
+
+  # after buffer menu, go to buffer displayed on line N:
+buffer <my0to99> = "{esc}g$1{enter}"
+	"{enter}" "{ctrl+x}b{enter}" "{esc}xbury-buffer{enter}";
+
+
+##
+## Writing out buffers
+##
+
+  # save the contents of current buffer:
+save file		= "{ctrl+x}{ctrl+s}";
+  # save all modified file-visiting buffers:
+save all files		= "{ctrl+u}{esc}xsave-some-buffers{enter}";
+
+  # write out current buffer to a new file:
+write file		= "{ctrl+x}{ctrl+w}";
+
+
+##
+## Removing buffers
+##
+
+kill buffer		= "{Ctrl+x}k{Enter}";
+
+  # put current buffer at end of list of buffers:
+bury buffer		= "{esc}xbury-buffer{enter}";
+
+
+##
+## Altering various buffer properties
+##
+
+  # toggle write protection of current buffer:
+write protect		= "{ctrl+x}{ctrl+q}";
+
+  # toggle auto-fill-mode for current buffer:
+auto fill mode 		= "{esc}xauto-fill-mode{enter}";
+
+
+##
+## Miscellaneous buffer management operations
+##
+
+please revert buffer	= "{esc}xrevert-buffer{enter}" "yes{enter}";
+
+
+##
+## Managing multiple windows
+##
+
+  # split current window vertically into two:
+SplitWindow		= "{Ctrl+x}2";
+
+#OtherWindow		= "{Ctrl+x}o";
+other window		= "{Ctrl+x}o";
+
+SingleWindow		= "{Ctrl+x}1";
+  # make other window the only window:
+other SingleWindow		= "{ctrl+x}o{Ctrl+x}1";
+
+
+
+
+
+#
+# Wish list:
+# 
+# rename file buffer is associated with
+# make file buffer is associated with executable
+# rotate very recent buffers operation instead of fourth buffer?
+#
+

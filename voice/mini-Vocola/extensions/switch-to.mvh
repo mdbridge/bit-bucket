@@ -1,0 +1,11 @@
+SwitchTo(title) := SwitchTo2($title, 
+		             $title ": no such window/unable to switch to it");
+
+SwitchTo2(title, error) :=
+	INCLUDE("extensions/switch-to.vb") 
+	PROC(SwitchToOrError, $title, $error);
+
+
+SwitchToAndExit(title) :=
+	INCLUDE("extensions/switch-to.vb") 
+	PROC(SwitchToAndExit, $title);

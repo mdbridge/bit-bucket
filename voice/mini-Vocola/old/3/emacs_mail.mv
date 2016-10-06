@@ -1,0 +1,241 @@
+#
+#  switch to rmail buffer only:
+#
+R. mail buffer		= "{ctrl+x}{b}RMAIL{Enter}{ctrl+x}1";
+
+#
+# Retrieve any new messages for the current folder:
+#
+get message		= "gs";
+get messages		= "gs";
+
+#
+#  save current folder to disk, asking to expunge if deleted messages exist:
+#
+save message		= "s";
+save messages		= "s";
+
+expunge messages	= "x";
+
+
+#
+# Navigating among the email messages of the current folder:
+#
+
+first message			= "<";
+last message			= ">";
+
+next message			= "n";
+next message 2..10		= "{n $1}";
+
+previous message		= "p";
+previous message 2..10		= "{p $1}";
+
+#  prompt for a number then jump to that message number:
+go to message		= "{Esc}xmarks-rmail-show-message{Enter}";
+
+#  search for the next message that has a prompted-for string:
+search for message	= "{esc}s";
+#  repeat search for next message with same search string:
+search message		= "{esc}s{enter}";
+
+
+#
+# Deleting messages:
+#
+
+#  delete current message and following N-1 messages:
+delete       message	= "d";
+delete 2..10 messages	= "{d $1}";
+
+delete spam messages	= "{esc}{ctrl+t}\*\*SPAM\*\*{enter}{d 40}";
+
+
+#
+# Composing messages:
+#
+
+#  below adds an extra blank line at the end of the message:
+compose message		= "m{esc}>{enter}{esc}<{end}";
+forward message		= "f";
+
+reply to sender		= "{ctrl+u}1r{enter}";
+reply to all		= "r{enter}";
+reply to message	= "r{enter}";		# this replies to all
+
+#  prepare a message for given work person:
+compose message for work <work-email> =
+	"m"
+	"{esc}>{enter}{esc}<{end}"
+	$1
+	"{down}{end}";
+
+#  send currently being composed message, removing composition window:
+send message		= "{ctrl+c}{ctrl+c}{ctrl+x}o{ctrl+x}1";
+
+#  insert message that is being replied to:
+yank message		= "{Ctrl+c}{Ctrl+y}";
+
+yank message body =	# like yank message, but doesn't include headers
+	"{ctrl+c}{ctrl+y}"
+	"{ctrl+x}{ctrl+x}{ctrl+space}{ctrl+u}1{ctrl+s}^>  ${enter}"
+	"{home}{down}{ctrl+w}"
+	"{ctrl+u}5{ctrl+l}";
+
+
+#  Insert a cut here line, with cursor in the right place to insert 
+#  "for file foo":
+cut here line =
+	"{home}"
+	"====================  cut here  ===================="
+	"{ctrl+o}{ctrl+r} {enter}";
+
+#  delete from first part boundary at or after cursor onwards:
+destroy remaining parts =
+	"{ctrl+u}1{ctrl+s}^[> ]*\(-----\|=====\){enter}"
+	"{home}{esc}>{ctrl+w}"; 
+
+
+#
+# Filing messages:
+#
+
+# send current email message to a manually specified folder:
+file manually		= "o";
+
+# send current email message to its default folder:
+file that		= "o{enter}";
+     
+  # prepare to save current message to a Rmail folder located in
+  # my-rmail-directories :
+file in <my-rmail-directories> folder =
+	"o"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1 HeardWord(\No-Caps);
+
+
+
+
+#
+# Miscellaneous operations:
+#
+
+#  deal with accidental editing of message:
+fix up message		= "{ctrl+c}{ctrl+]}";
+
+#  move to top of message body then lift it to top of screen:
+message body =
+	"{esc}<"
+	"{ctrl+u}1{ctrl+s}^${enter}{down}"
+	"{ctrl+u}0{ctrl+l}";
+
+export message =
+#      "{ctrl+x}h{Esc}w{ctrl+x}{ctrl+f}{ctrl+a}{ctrl+k}"
+#      "~/Tmp/l1{Enter}{Home}{ctrl+y}{Esc}y"
+#      "{ctrl+space}{Esc}>{ctrl+w}"
+#      "{ctrl+x}{ctrl+s}{ctrl+x}k{Enter}"
+       "{esc}xmdl-export-buffer-to-l1{Enter}";
+
+
+
+#
+# Changing the current folder:
+#
+
+  # open a Rmail folder for viewing:
+open folder		= "i" HeardWord(\No-Caps);
+
+  # open a Rmail folder located in my-rmail-directories for viewing:
+open a <my-rmail-directories> folder =
+	"i"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1 HeardWord(\No-Caps);
+
+
+
+#  open buffer showing summary of messages to/from recipients:
+summarize by recipient		= "{esc}{ctrl+r}";
+
+#  open buffer showing summary of messages with subjects containing regexp:
+summarize by subject		= "{esc}{ctrl+t}";
+
+#  open buffer showing summary of messages:
+summarize messages =
+	"h"
+	    # work around bug with wb-line-number.el:
+	    "{esc}xrevert-buffer{enter}"
+	".{ctrl+x}o{esc}<";
+
+
+
+#  go to message number mod 100 from Rmail or summary buffers:
+message <my0to99> = 
+	"h"
+	    # work around bug with wb-line-number.el:
+	    "{esc}xrevert-buffer{enter}"
+	"{ctrl+u}$1{esc}G"
+	".{ctrl+x}o{esc}<";
+
+
+
+#  open a Rmail folder:
+open <named-rmail-folder> =
+	"i"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	"~/Rmail/$1{enter}";
+
+
+#  export current message to a Rmail folder:
+file <named-rmail-folder> =
+	"o"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	"~/Rmail/$1{enter}";
+
+
+#  prepare a message for owner of given folder:
+compose message for <aliases> =
+	"m" "{esc}>{enter}{esc}<{end}"
+	$1 "{down}{end}";
+
+
+# generate aliases and named-rmail-folder from personal-email? <<<>>>
+
+
+
+please thank sender =
+	"{ctrl+u}1r"
+	{enter}Thanks!{enter}{enter}
+	"- Mark{Enter}"
+	{ctrl+c}{ctrl+c};
+
+
+#  munpack current buffer to ~/Tmp/Export then view that directory:
+mime unpack buffer =
+	   # munpack current buffer to ~/Tmp/Export:
+	"{esc}xmdl-export-buffer-to-l1{Enter}"
+	"{esc}!~/Bin/unpack_l1{enter}"
+	AppBringUp("Export", 
+                   "explorer /select,\\spica\SRC udirs\mdl\Tmp\Export\l1")
+	Wait(2000)
+	"{ctrl+r}{ctrl+g}";
+
+view HTML =
+	   # munpack current buffer to ~/Tmp/Export:
+	"{esc}xmdl-export-buffer-to-l1{Enter}"
+	"{esc}!~/Bin/unpack_l1{enter}"
+	   # lookup text part two, which is usually the html part:
+	AppBringUp("export", "IEXPLORE.EXE")
+	Wait(3000)  # needed to ensure application is accepting keystrokes
+	"i{ctrl+o}\\spica\SRC udirs\mdl\Tmp\Export\part2.html{enter}";
+
+#  clear list of new messages from faces:
+clear faces =
+      HeardWord("switch", "to", "faces")
+      HeardWord("press", "delete")
+      HeardWord("switch", "to", "primary", "emacs")
+      # HeardWord "bring", "up", "emacs"
+      ;

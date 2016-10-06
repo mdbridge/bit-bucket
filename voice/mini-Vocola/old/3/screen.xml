@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="[g-leap-command] [printable]" group="on screen navigation" enabled="true" states="">
+			<description>leap to first occurrence of named text in named direction</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	leap_command = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	direction = Left$(leap_command, 1)
+	end_point = Mid$(leap_command, 2)
+
+	keys = "{ctrl+f}"
+	If direction = "d" Then
+		keys = "{right}" + keys
+	End If
+'SendDragonKeys keys
+'Keys = ""
+	For index = 1 To UtilityProvider.ContextValueCount-1
+		parameter = UtilityProvider.ContextValue(index)
+
+		' get written form, treating list entries "\" and "backslash" as a backslash:
+		printable = Left$(parameter,InStr(2, parameter +"\","\")-1)
+		If printable = "backslash" Then
+			printable = "\"
+		End If
+		keys = keys + printable
+	Next
+
+	' {alt+n}{space} here cancels a pop-up dialog box other than the find dialog box
+	SendDragonKeys keys + "{alt+" + direction + "}{alt+f}{alt+n}{space}{esc}"
+	' need to give Word time to close find dialog box
+	SendDragonKeys end_point
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="test macro" group="on screen navigation" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	clip = Clipboard()
+	MsgBox "<" + clip + ">" + Len(clip)
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Commands type="application">
+		<module>WINWORD</module>
+		<company>Microsoft Corporation</company>
+		<description>Microsoft Word</description>
+
+		<Command name="[g-leap-command] [printable]" group="on screen navigation" enabled="true" states="">
+			<description>leap to first occurrence of named text in named direction</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	leap_command = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	direction = Left$(leap_command, 1)
+	end_point = Mid$(leap_command, 2)
+
+	keys = "{ctrl+f}"
+	If direction = "d" Then
+		keys = "{right}" + keys
+	End If
+
+	For index = 1 To UtilityProvider.ContextValueCount-1
+		parameter = UtilityProvider.ContextValue(index)
+
+		' get written form, treating list entries "\" and "backslash" as a backslash:
+		printable = Left$(parameter,InStr(2, parameter +"\","\")-1)
+		If printable = "backslash" Then
+			printable = "\"
+		End If
+		keys = keys + printable
+	Next
+
+	' {alt+shift+:}{esc} here cancels a pop-up dialog box other than the find dialog box
+	SendDragonKeys keys + "{alt+m}{alt+shift+:}" + direction + "{enter}{alt+f}{alt+shift+:}{esc}{esc}"
+	' need to give Word time to close find dialog box
+	SendDragonKeys end_point
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[g-leap-command] [printable] [printable]" group="on screen navigation" enabled="true" states="">
+			<description>leap to first occurrence of named text in named direction</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	leap_command = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	direction = Left$(leap_command, 1)
+	end_point = Mid$(leap_command, 2)
+
+	keys = "{ctrl+f}"
+	If direction = "d" Then
+		keys = "{right}" + keys
+	End If
+
+	For index = 1 To UtilityProvider.ContextValueCount-1
+		parameter = UtilityProvider.ContextValue(index)
+
+		' get written form, treating list entries "\" and "backslash" as a backslash:
+		printable = Left$(parameter,InStr(2, parameter +"\","\")-1)
+		If printable = "backslash" Then
+			printable = "\"
+		End If
+		keys = keys + printable
+	Next
+
+	' {alt+shift+:}{esc} here cancels a pop-up dialog box other than the find dialog box
+	SendDragonKeys keys + "{alt+m}{alt+shift+:}" + direction + "{enter}{alt+f}{alt+shift+:}{esc}{esc}"
+	' need to give Word time to close find dialog box
+	SendDragonKeys end_point
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="[g-leap-command] [printable] [printable] [printable]" group="on screen navigation" enabled="true" states="">
+			<description>leap to first occurrence of named text in named direction</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	leap_command = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	direction = Left$(leap_command, 1)
+	end_point = Mid$(leap_command, 2)
+
+	keys = "{ctrl+f}"
+	If direction = "d" Then
+		keys = "{right}" + keys
+	End If
+
+	For index = 1 To UtilityProvider.ContextValueCount-1
+		parameter = UtilityProvider.ContextValue(index)
+
+		' get written form, treating list entries "\" and "backslash" as a backslash:
+		printable = Left$(parameter,InStr(2, parameter +"\","\")-1)
+		If printable = "backslash" Then
+			printable = "\"
+		End If
+		keys = keys + printable
+	Next
+
+	' {alt+shift+:}{esc} here cancels a pop-up dialog box other than the find dialog box
+	SendDragonKeys keys + "{alt+m}{alt+shift+:}" + direction + "{enter}{alt+f}{alt+shift+:}{esc}{esc}"
+	' need to give Word time to close find dialog box
+	SendDragonKeys end_point
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+		<Command name="[leap-command] type [my-java-types]" group="on screen navigation" enabled="true" states="">
+			<description>leap to first occurrence of my-java-types module package name</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim path As String
+	path = Left$(ListVar2,InStr(ListVar2+"\","\")-1)
+	path = Mid$(path, InStrRev(path, "/")+1)
+
+	SendDragonKeys Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	SendDragonKeys path
+	SendDragonKeys "{right}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="printable">
+			<Value><![CDATA[!]]></Value>
+			<Value><![CDATA[!\bang]]></Value>
+			<Value><![CDATA["]]></Value>
+			<Value><![CDATA["\open  quote]]></Value>
+			<Value><![CDATA["\quote]]></Value>
+			<Value><![CDATA[#]]></Value>
+			<Value><![CDATA[$]]></Value>
+			<Value><![CDATA[%]]></Value>
+			<Value><![CDATA[%\percent]]></Value>
+			<Value><![CDATA[&]]></Value>
+			<Value><![CDATA[']]></Value>
+			<Value><![CDATA['\apostrophe]]></Value>
+			<Value><![CDATA['\single quote]]></Value>
+			<Value><![CDATA[(]]></Value>
+			<Value><![CDATA[(\paren]]></Value>
+			<Value><![CDATA[)]]></Value>
+			<Value><![CDATA[)\close paren]]></Value>
+			<Value><![CDATA[*]]></Value>
+			<Value><![CDATA[*\asterisk]]></Value>
+			<Value><![CDATA[*\star]]></Value>
+			<Value><![CDATA[+]]></Value>
+			<Value><![CDATA[+\plus]]></Value>
+			<Value><![CDATA[,]]></Value>
+			<Value><![CDATA[-]]></Value>
+			<Value><![CDATA[-\minus]]></Value>
+			<Value><![CDATA[.]]></Value>
+			<Value><![CDATA[.\dot]]></Value>
+			<Value><![CDATA[/]]></Value>
+			<Value><![CDATA[0]]></Value>
+			<Value><![CDATA[1]]></Value>
+			<Value><![CDATA[2]]></Value>
+			<Value><![CDATA[3]]></Value>
+			<Value><![CDATA[4]]></Value>
+			<Value><![CDATA[5]]></Value>
+			<Value><![CDATA[6]]></Value>
+			<Value><![CDATA[7]]></Value>
+			<Value><![CDATA[8]]></Value>
+			<Value><![CDATA[9]]></Value>
+			<Value><![CDATA[:]]></Value>
+			<Value><![CDATA[;]]></Value>
+			<Value><![CDATA[<]]></Value>
+			<Value><![CDATA[<\less than]]></Value>
+			<Value><![CDATA[=]]></Value>
+			<Value><![CDATA[=\equal]]></Value>
+			<Value><![CDATA[=\equals]]></Value>
+			<Value><![CDATA[>]]></Value>
+			<Value><![CDATA[>\greater than]]></Value>
+			<Value><![CDATA[?]]></Value>
+			<Value><![CDATA[@]]></Value>
+			<Value><![CDATA[[]]></Value>
+			<Value><![CDATA[[\bracket]]></Value>
+			<Value><![CDATA[]]]></Value>
+			<Value><![CDATA[]\close bracket]]></Value>
+			<Value><![CDATA[^]]></Value>
+			<Value><![CDATA[_]]></Value>
+			<Value><![CDATA[`]]></Value>
+			<Value><![CDATA[a\Alpha]]></Value>
+			<Value><![CDATA[b\Bravo]]></Value>
+			<Value><![CDATA[backslash]]></Value>
+			<Value><![CDATA[c\Charlie]]></Value>
+			<Value><![CDATA[d\Delta]]></Value>
+			<Value><![CDATA[e\echo]]></Value>
+			<Value><![CDATA[f\foxtrot]]></Value>
+			<Value><![CDATA[g\golf]]></Value>
+			<Value><![CDATA[h\Hotel]]></Value>
+			<Value><![CDATA[i\India]]></Value>
+			<Value><![CDATA[j\Juliett]]></Value>
+			<Value><![CDATA[k\kilo]]></Value>
+			<Value><![CDATA[l\Lima]]></Value>
+			<Value><![CDATA[m\Mike]]></Value>
+			<Value><![CDATA[n\November]]></Value>
+			<Value><![CDATA[o\Oscar]]></Value>
+			<Value><![CDATA[p\Papa]]></Value>
+			<Value><![CDATA[q\Quebec]]></Value>
+			<Value><![CDATA[r\Romeo]]></Value>
+			<Value><![CDATA[s\Sierra]]></Value>
+			<Value><![CDATA[t\tango]]></Value>
+			<Value><![CDATA[u\uniform]]></Value>
+			<Value><![CDATA[v\Victor]]></Value>
+			<Value><![CDATA[w\whiskey]]></Value>
+			<Value><![CDATA[x\xray]]></Value>
+			<Value><![CDATA[y\Yankee]]></Value>
+			<Value><![CDATA[z\Zulu]]></Value>
+			<Value><![CDATA[{space}\space]]></Value>
+			<Value><![CDATA[{space}\space bar]]></Value>
+			<Value><![CDATA[{{}\brace]]></Value>
+			<Value><![CDATA[{{}\{]]></Value>
+			<Value><![CDATA[|]]></Value>
+			<Value><![CDATA[|\bar]]></Value>
+			<Value><![CDATA[}]]></Value>
+			<Value><![CDATA[}\close brace]]></Value>
+			<Value><![CDATA[~]]></Value>
+		</List>
+
+		<List name="g-leap-command">
+			<Value><![CDATA[d{left}\leap]]></Value>
+			<Value><![CDATA[u{left}\retreat]]></Value>
+			<Value><![CDATA[d{right}\leap after]]></Value>
+		</List>
+
+		<List name="leap-command">
+			<Value><![CDATA[{ctrl+c}s\leap]]></Value>
+			<Value><![CDATA[{ctrl+r}\retreat]]></Value>
+		</List>
+
+		<List name="my-java-types">
+			<Value><![CDATA[COM/hp/elephantstore/protocol/MessageType\Message Type]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseError\Response Error]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestEsStats\Request E. S. Stats]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseEsStats\Response E. S. Stats]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/Message\Message]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/SimpleClient\Simple Client]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestUniqueVersionsSize\Request Unique Versions Size]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseQuery\Response Query]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestReserveHDAGMultiple\Request Reserve age tag Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ShortMessage\Short Message]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseReserveHDAGMultiple\Response Reserve age tag Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestQuery\Request Query]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestQueryMultiple\Request Query Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseQueryMultiple\Response Query Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseDeleteVersion\Response Delete Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestDeleteVersion\Request Delete Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestStoreMultiple\Request Store Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestVStoreMultiple\Request Victor Store Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseStoreMultiple\Response Store Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseStore\Response Store]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestVersionInfo\Request Version Info]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestStore\Request Store]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseEnumerateVersions\Response Enumerate Versions]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseVStoreMultiple\Response Victor Store Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestReserveMultiple\Request Reserve Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseVersionsSize\Response Versions Size]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestEnumerateVersions\Request Enumerate Versions]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseReserveMultiple\Response Reserve Multiple]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseRetrieve\Response Retrieve]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseVersionInfo\Response Version Info]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestRetrieve\Request Retrieve]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestDifferentialVersionsSize\Request Differential Versions Size]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/RequestFinalizeVersion\Request Finalize Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/protocol/ResponseFinalizeVersion\Response Finalize Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/Assert\Assert]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/NotImplementedException\Not Implemented Exception]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/AssertionFailureException\Assertion Failure Exception]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/WorkerThread\Worker Thread]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/InterruptibleOperation\Interruptible Operation]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/AbortableOperation\Abortable Operation]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/util/Closable\Closable]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/Digest\Digest]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/LoggingWriter\Logging Writer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/Block\Block]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/Version\Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/BlockWriter\Block Writer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/CallerWriter\Caller Writer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/SizingWriter\Sizing Writer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/BlockStoreFailure\Block Store Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/DFSPrefetcher\D. F. S. Prefetcher]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/MuxBlockReader\Mux Block Reader]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/BlockType\Block Type]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/CommunicationFailure\Communication Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/StoreFullFailure\Store Full Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/BlockReader\Block Reader]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/CallerReader\Caller Reader]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/SeqPrefetcher\sequential Prefetcher]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/blocks/InterruptionFailure\Interruption Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/HexString\Hex String]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/Marshalable\Marshalable]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/BadlyFormatted\Badly Formatted]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableString\Marshalable String]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableMap\Marshalable Map]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableKind\Marshalable Kind]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableCollection\Marshalable Collection]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableShort\Marshalable Short]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/MarshalableByteBuffer\Marshalable Byte Buffer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/conversion/TooLongException\Too Long Exception]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/LoggingVisitor\Logging Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/HDAGContents\age tag Contents]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/Descriptor\Descriptor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/FileCache\File Cache]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/HDAGFold\age tag Fold]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/Visitor\Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/FileContents\File Contents]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/DefaultVisitor\Default Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/DiskContents\Disk Contents]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/CollectingVisitor\Collecting Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/HDAGWriterVisitor\age tag Writer Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/CommandLineClient\Command Line Client]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/PercentageProgress\Percentage Progress]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/DiskWriterVisitor\Disk Writer Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/Stats\Stats]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/TwoStageFileCache\Two Stage File Cache]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/Save\Save]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/Manifest\Manifest]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/MonitoredVisitor\Monitored Visitor]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/DiskFilesystem\Disk Filesystem]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/VirtualFilesystem\Virtual Filesystem]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/filesystem/HDAGFilesystem\age tag Filesystem]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/Divider\Divider]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/Chunker\Chunker]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/TTTDVectorDivider\triple-TD Vector Divider]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/IteratorChunker\Iterator Chunker]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/FromIterator\From Iterator]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/IndirectLayer\Indirect Layer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/FixedLengthDivider\Fixed Length Divider]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/ByteBufferChunker\Byte Buffer Chunker]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/AppendChunkIterator\Append Chunk Iterator]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/ChunkIterator\Chunk Iterator]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/RabinFingerprint\Rabin Fingerprint]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/MapChunkIterator\Map Chunk Iterator]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/TTTDDivider\triple-TD Divider]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/chunks/TTTDByteBufferDivider\triple-TD Byte Buffer Divider]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/RawCaller\Raw Caller]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/Caller\Caller]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/ServerChannelFactory\Server Channel Factory]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/ChannelCaller\Channel Caller]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/Blaster\Blaster]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/RetryingCaller\Retrying Caller]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/MobCaller\Mob Caller]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/MobRelay\Mob Relay]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/MobEndpoint\Mob Endpoint]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/Connection\Connection]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/FlowControl\Flow Control]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/transport/MobCallerEndpoint\Mob Caller Endpoint]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/RequestStagingAreaVersion\Request Staging Area Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/FileTransferRelay\File Transfer Relay]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/TestRelayServer\Test Relay Server]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/StagingArea\Staging Area]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/RequestReportProgress\Request Report Progress]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsFileTransferClient\E. S. File Transfer Client]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsFileTransferServer\E. S. File Transfer Server]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/NullFileTransferClientListener\Null File Transfer Client Listener]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsUploadProgress\E. S. Upload Progress]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/VFS\VFS]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsFileTransfer\E. S. File Transfer]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/TransferRefusedFailure\Transfer Refused Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/ExtendedResponseError\Extended Response Error]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsFileTransferClientFactory\E. S. File Transfer Client Factory]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/ResponseStagingAreaVersion\Response Staging Area Version]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/InProgressFailure\In Progress Failure]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/EsMessage\E. S. Message]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/RequestVFSCopy\Request VFS Copy]]></Value>
+			<Value><![CDATA[COM/hp/elephantstore/framefactory/VFSVersionID\VFS Version ID]]></Value>
+			<Value><![CDATA[com/hp/ff/as/AssetManagerControllerImpl\Asset Manager Controller Impl]]></Value>
+			<Value><![CDATA[com/hp/ff/as/AssetStore\Asset Store]]></Value>
+			<Value><![CDATA[com/hp/ff/as/ContentTransferManager\Content Transfer Manager]]></Value>
+			<Value><![CDATA[com/hp/ff/as/Download\Download]]></Value>
+			<Value><![CDATA[com/hp/ff/as/FileTransferServer\File Transfer Server]]></Value>
+			<Value><![CDATA[com/hp/ff/as/FileTransferServerListener\File Transfer Server Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/FrameStore\Frame Store]]></Value>
+			<Value><![CDATA[com/hp/ff/as/PrefixFilter\Prefix Filter]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SFAS\SFAS]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SFASComponentInterface\SFAS Component Interface]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SFASMBean\SFASM Bean]]></Value>
+			<Value><![CDATA[com/hp/ff/as/util/AsynchOperation\Asynch Operation]]></Value>
+			<Value><![CDATA[com/hp/ff/as/util/AsynchOperationListener\Asynch Operation Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/util/ScheduledOperation\Scheduled Operation]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SFAS_StubMBean\SFAS_ Stub M Bean]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SourceContentTransferManager\Source Content Transfer Manager]]></Value>
+			<Value><![CDATA[com/hp/ff/as/SourceContentTransferManagerListener\Source Content Transfer Manager Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/StartTransferResult\Start Transfer Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/Upload\Upload]]></Value>
+			<Value><![CDATA[com/hp/ff/as/VCVersionInfo\VC Version Info]]></Value>
+			<Value><![CDATA[com/hp/ff/as/VersionCache\Version Cache]]></Value>
+			<Value><![CDATA[com/hp/ff/as/VersionOperationManager\Version Operation Manager]]></Value>
+			<Value><![CDATA[com/hp/ff/as/VersionStateMachine\Version State Machine]]></Value>
+			<Value><![CDATA[com/hp/ff/as/VersionTransfer\Version Transfer]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/ClientVersionTransfer\Client Version Transfer]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/DownloadTestResult\Download Test Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/FSJobStatisticsEvent\FS Job Statistics Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JobRemovedEvent\Job Removed Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestASBase\Junit Test AS Base]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestAssetStore\Junit Test Asset Store]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestDownload\Junit Test Download]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestRendering\Junit Test Rendering]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestStartup\Junit Test Startup]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestStartupFromClean\Junit Test Startup From Clean]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestUpload\Junit Test Upload]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/JunitTestVersionOperations\Junit Test Version Operations]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/PrepareDatabase\Prepare Database]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/StopDownloadOnEvent\Stop Download On Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/StopUploadOnEvent\Stop Upload On Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/StorageNotificationEvent\Storage Notification Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestAll\Test All]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestClient\Test Client]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestDirectoryCopy\Test Directory Copy]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestJC\Test JC]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestJCEvent\Test JC Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/TestPN\Test PN]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/UploadFailedInsufficientSpaceEvent\Upload Failed Insufficient Space Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/UploadTestResult\Upload Test Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/VersionDeletedEvent\Version Deleted Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/VersionRestoredEvent\Version Restored Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/VersionUpdateProgressEvent\Version Update Progress Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/test/VersionUpdateStateEvent\Version Update State Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/ASBinder\AS Binder]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/ASBinderListener\AS Binder Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/AssetStoreException\Asset Store Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/AssetStoreInterface\Asset Store Interface]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/pn/ASPNProxy\ASPN Proxy]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/pn/AssetStoreContentVersionDistribution\Asset Store Content Version Distribution]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/pn/AssetStoreProcessingNodeOutput\Asset Store Processing Node Output]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/pn/ContentDistributionSetInfo\Content Distribution Set Info]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/pn/PutRenderedOutputResponse\Put Rendered Output Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/AssetStoreJobControl\Asset Store Job Control]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/AssetStoreListener\Asset Store Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/AssetStoreVersionDeletionPolicy\Asset Store Version Deletion Policy]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/AssetStoreVersionManagement\Asset Store Version Management]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/DeleteCompletionEvent\Delete Completion Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/InsufficientSpaceException\Insufficient Space Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/remote/jc/RestoreCompletionEvent\Restore Completion Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/AssetManagerProxy\Asset Manager Proxy]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/AssetManagerProxyListener\Asset Manager Proxy Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/AssetManagerProxyMessage\Asset Manager Proxy Message]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/GetSourceRequest\Get Source Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/GetSourceResponse\Get Source Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/PutRenderedOutputRequest\Put Rendered Output Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/PutRenderedOutputResponse\Put Rendered Output Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/ValidateSceneRequest\Validate Scene Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/proxy/ValidateSceneResponse\Validate Scene Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/info/FrameStatus\Frame Status]]></Value>
+			<Value><![CDATA[com/hp/ff/as/info/VersionManifest\Version Manifest]]></Value>
+			<Value><![CDATA[com/hp/ff/as/es/ESConnectorImpl\ES Connector Impl]]></Value>
+			<Value><![CDATA[com/hp/ff/as/db/AsDbException\As Db Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/db/AsDbListener\As Db Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/db/AssetStoreDatabaseManager\Asset Store Database Manager]]></Value>
+			<Value><![CDATA[com/hp/ff/as/db/AssetStoreDatabaseManagerListener\Asset Store Database Manager Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayClientDisconnected\Relay Client Disconnected]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayClientSend\Relay Client Send]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayMessage\Relay Message]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayServerReply\Relay Server Reply]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayServerSend\Relay Server Send]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/RelayService\Relay Service]]></Value>
+			<Value><![CDATA[com/hp/ff/as/clientrelay/TransferRelay\Transfer Relay]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/ApplicationLogDescriptor\Application Log Descriptor]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/AssetManagerClientMessage\Asset Manager Client Message]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DirectoryManifest\Directory Manifest]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DirectoryManifestResult\Directory Manifest Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DownloadTransfer\Download Transfer]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DownloadTransferListener\Download Transfer Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DownloadTransferRequest\Download Transfer Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DownloadTransferResult\Download Transfer Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/DownloadTransferStartedEvent\Download Transfer Started Event]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FFFileTransferClientFactory\FF File Transfer Client Factory]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FileTransferClient\File Transfer Client]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FileTransferClientDirectoryScanResult\File Transfer Client Directory Scan Result]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FileTransferClientFactory\File Transfer Client Factory]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FileTransferClientListener\File Transfer Client Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FileTransferClientManager\File Transfer Client Manager]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/FrameDescriptor\Frame Descriptor]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/NoTransferInProgressException\No Transfer In Progress Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/OutputContentDescriptor\Output Content Descriptor]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/RestoreTransferRequest\Restore Transfer Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/SourceContentTransfer\Source Content Transfer]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/TransferException\Transfer Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/SourceContentTransferListener\Source Content Transfer Listener]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/SourceContentTransferRequest\Source Content Transfer Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/TransferInProgressException\Transfer In Progress Exception]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/UploadState\Upload State]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/UploadTransfer\Upload Transfer]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/UploadTransferRequest\Upload Transfer Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/ContentDescriptor\Content Descriptor]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/DownloadContentRequest\Download Content Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/DownloadContentResponse\Download Content Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/DownloadControl\Download Control]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/DownloadData\Download Data]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/TransferMessage\Transfer Message]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadContentRequest\Upload Content Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadContentResponse\Upload Content Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadControl\Upload Control]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadData\Upload Data]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadSynchronizeRequest\Upload Synchronize Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/UploadSynchronizeResponse\Upload Synchronize Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/CompleteVersionRequest\Complete Version Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/CompleteVersionResponse\Complete Version Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/UploadVersionControl\Upload Version Control]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/UploadVersionRequest\Upload Version Request]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/UploadVersionResponse\Upload Version Response]]></Value>
+			<Value><![CDATA[com/hp/ff/as/client/messages/version/VersionTransferMessage\Version Transfer Message]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>

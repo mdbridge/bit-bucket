@@ -1,0 +1,5 @@
+#  use auto DJ to play random music:
+play random music =
+	"{alt+e}r{ctrl+d}8{tab}{tab}{enter}g{enter}"
+	"{ctrl+p}{alt+space}n";
+

@@ -1,0 +1,4 @@
+	<Commands type="application">
+		<module>explorer</module>
+		<company>Microsoft Corporation</company>
+		<description>Windows Explorer</description>

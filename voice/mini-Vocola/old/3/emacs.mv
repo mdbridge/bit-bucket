@@ -1,0 +1,249 @@
+#  was PrefArg:
+prefix		 = "{Ctrl+u}";
+
+#  use emacs prefix N for next command:
+prefix <my0to99> = "{ctrl+u}$1";
+
+#  press Esc x:
+meta-x		= "{Esc}x" HeardWord(\No-Caps);
+
+#  undo an emacs operation:
+undo		= "{ctrl+x}{u}";
+undo that	= "{ctrl+x}{u}";
+
+
+
+
+
+
+
+
+
+
+
+#
+# Getting help:
+#
+
+  # also displays menu of help options:
+help key		= "{ctrl+h}?";
+
+#  press help key followed by letter:
+help key <letter>	= "{ctrl+h}$1";
+
+#  call up emacs's apropos function:
+apropos			= "{ctrl+h}a";
+
+
+
+exit emacs		= "{ctrl+x}{ctrl+c}";
+
+
+#
+# Keyboard macros:
+#
+
+# defining a new keyboard macro
+start macro		= "{ctrl+x}(";
+end macro		= "{ctrl+x})";
+
+#  Run last defined keyboard macro:
+run macro		= "{ctrl+x}e";
+
+define as macro <letter> =
+	"{Esc}xname-last-kbd-macro{Enter}"
+	mdl-macro-$1{enter};
+
+run macro <letter> = {esc}xmdl-macro-$1{enter};
+
+
+Name Macro		= "{Esc}xname-last-kbd-macro{Enter}";
+Insert Macro		= "{Esc}xinsert-kbd-macro{Enter}";
+
+# run last defined macro once per line in current region, starting from
+# the beginning of each line:
+run macro on region = "{esc}xapply-macro-to-region-lines{enter}";
+
+
+
+
+
+
+justify			= "{Esc}{q}";
+			
+
+
+#
+# Dealing with elisp:
+#
+
+lisp interaction mode	= "{esc}xlisp-interaction-mode{Enter}";
+
+#  read then evaluate an elisp expression:
+eval expression		= "{esc}xeval-expression{Enter}";
+
+#  load test.el file:
+eval test =
+	{esc}xeval-expression{Enter}
+	{ctrl+a}{ctrl+k}
+	'(load-file "/home/mdl/elisp/test.el"){enter}';
+
+run mdl =
+	"{Esc}xmdl{enter}";
+
+
+
+#
+#  dynamic completion:
+#
+complete		= "{Esc}/"
+			  "{ctrl+x}r z";	# remember point
+  # add a space after point where last completed text ended:
+AddASpace		= "{ctrl+x}jz {ctrl+e}";
+
+
+#  insert 2 new lines then press tab:
+double feed		= "{Enter 2}{tab}";
+
+
+#  insert an actual tab:
+hard tab	= "{ctrl+q}{tab}";
+hard tab 2..10	= "{ctrl+u}$1{ctrl+q}{tab}";
+
+
+#  run ispell on the current buffer:
+ispell buffer		= "{esc}xispell-buffer{enter}";
+
+#  print current buffer:
+print buffer =
+	"{esc}xmdl-export-buffer-to-l1{Enter}"
+	"{esc}!enscript ~/Tmp/l1{enter}";
+
+
+
+#
+# Changing case:
+#
+
+#  lowercase next N words:
+lower-a-word		= "{Esc}l";
+lower-a-word 2..20	= "{Ctrl+u}$1{Esc}{l}";
+
+
+#  all capitalize next Word:
+UpperAWord		= "{Esc}U";
+
+#  capitalize next N words:
+CapAWord		= "{Esc}C";
+CapAWord 2..20	= "{Ctrl+u}$1{Esc}{C}";
+
+BackNCap 1..20	=
+	"{Ctrl+u}$1{esc}xjmac-capitalize-a-previous-word{Enter}";
+
+
+
+#
+# Tags commands:
+#
+
+#  attempt to complete text around cursor using tags:
+complete tag		= "{esc}xcomplete-tag{enter}";
+
+#  goto occurrence of a tag:
+find tag		= "{esc}.";
+
+#  display tag in another window:
+find tag other		= "{ctrl+x}4.";
+
+load tags = "{esc}xvisit-tags-table{enter}";
+
+#  do a regexp search and replace on all files in tags tables:
+SearchNReplace via tags		= "{esc}xtags-query-replace{enter}";
+
+
+
+#  insert the contents of a file at the current point:
+insert file		= "{ctrl+x}{i}";
+
+#  insert the contents of a file in a specified directory at the current point:
+insert <my-directories> =
+	"{ctrl+x}{i}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1/ ;
+
+#  insert the contents of a file in a specified directory at the current point:
+insert <my-directories> slash <pathname-component> =
+	"{ctrl+x}{i}"
+	    # delete before point to start-of-line leaving kill ring alone:
+	    "{ctrl+space}{home}{ctrl+u}1{ctrl+x}rs*"
+	$1/$2/ ;
+
+
+
+#  insert N new lines :
+New-line <my0to99>		= "{ctrl+u}$1{Enter}";
+
+#  push the current line down, revealing a blank line:
+open line		= "{ctrl+a}{ctrl+o}";
+#  insert N new lines before this one, leaving cursor on first new line:
+open line <my0to99>   = "{ctrl+a}{ctrl+u}" $1 "{ctrl+o}";
+
+#  push the current line down, revealing a blank line then tab:
+open line feed		 = "{ctrl+a}{ctrl+o}{tab}";
+
+#  open line N followed by a tab:
+open line feed <my0to99> = "{ctrl+a}{ctrl+u}$1{ctrl+o}{tab}";
+
+#  invoke utterance mode's revert-that function:
+#revert that		= "{esc}xutterance-revert-that{enter}";
+
+#  copy region to named register:
+Copy to Register <atod>		= "{ctrl+x}x$1";
+
+drop rest	= "{Ctrl+o}";
+drop rest 2..20	= "{Ctrl+u}$1{Ctrl+o}";
+
+#  write current buffer to ~/Tmp/l1:
+export buffer =
+#      "{ctrl+x}h{Esc}w{ctrl+x}{ctrl+f}{ctrl+a}{ctrl+k}"
+#      "~/Tmp/l1{Enter}{Home}{ctrl+y}{Esc}y"
+#      "{ctrl+space}{Esc}>{ctrl+w}"
+#      "{ctrl+x}{ctrl+s}{ctrl+x}k{Enter}"
+       "{esc}xmdl-export-buffer-to-l1{Enter}";
+
+
+Insert Register <atod> = "{ctrl+x}ri" $1;
+
+#  insert N new lines than press tab:
+line feed <my0to99> = "{ctrl+u}" $1 "{Enter}{tab}";
+
+
+EndNLeft       = {end}           {left};
+EndNLeft 2..20 = {end} {ctrl+u}$1{left};
+
+#  move to end of N word from cursor:
+LeftNRight       =           {esc}b {esc}f;
+LeftNRight 2..20 = {ctrl+u}$1{esc}b {esc}f;
+
+#  move to start of N word from cursor:
+RightNLeft             =           {esc}f {esc}b;
+RightNLeft 2..20       = {ctrl+u}$1{esc}f {esc}b;
+
+RightNLeft 1..20 1..20 = {ctrl+u}$1{esc}f {ctrl+u}$2{left};
+
+
+
+#  delete previous N characters:
+#kill-a-char         =  {backspace};
+#kill-a-char 2..20 = "{backspace $1}";
+
+#left-a-word 1..20 1..20 =
+#	{ctrl+u}$1{esc}b {ctrl+u}$2{left};
+
+#right-a-word 1..20 1..20 =
+#	{ctrl+u}$1{esc}f {ctrl+u}$2{ctrl+f};
+
+
+
+toggle truncate = {esc}x toggle-truncate-lines {enter};

@@ -1,0 +1,45 @@
+<leap> <printable> =
+	  # fake selecting our target at point:
+	  #   (fails at end of buffer, letting point move if find fails)
+	{shift+right}
+	  # bring up find dialog box:
+	{ctrl+f}
+	  # remove any previously entered target:
+	{backspace}
+	  # set direction to find:
+	{alt+$1}
+	  # set target to find:
+	{alt+n} $2
+	  # do the find (may produce an error dialog box):
+	{enter}
+	  # dismiss error dialog box if any without doing another find:
+	{alt+$1}{space}
+	  # dismiss find dialog box:
+	{esc}
+	  # exit selection, leaving point at start of target or original
+	  # point if target not found:
+	{left}
+	;
+
+<leap> <printable> <printable> =
+	  # fake selecting our target at point:
+	  #   (fails at end of buffer, letting point move if find fails)
+	{shift+right}
+	  # bring up find dialog box:
+	{ctrl+f}
+	  # remove any previously entered target:
+	{backspace}
+	  # set direction to find:
+	{alt+$1}
+	  # set target to find:
+ 	{alt+n} $2$3
+	  # do the find (may produce an error dialog box):
+	{enter}
+	  # dismiss error dialog box if any without doing another find:
+	{alt+$1}{space}
+	  # dismiss find dialog box:
+	{esc}
+	  # exit selection, leaving point at start of target or original
+	  # point if target not found:
+	{left}
+	;

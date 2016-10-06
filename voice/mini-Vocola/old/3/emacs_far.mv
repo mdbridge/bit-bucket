@@ -1,0 +1,99 @@
+far leap = "{esc}xmdl-occur{enter}";
+
+#  after far leap, go to occurrence displayed on line N:
+far leap <my0to99> =
+	"{ctrl+x}b*Occur*{enter}"
+	"{esc}g" $1 "{enter}"
+	"{enter}{ctrl+x}1{ctrl+x}b{enter}{esc}xbury-buffer{enter}";
+
+GoToLine = {Esc}xgoto-line{Enter};
+
+#  jump to absolute line number in current Emacs buffer:
+GoToLine <my0to99> = "{esc}xgoto-line{enter}" $1 "{enter}";
+
+
+
+#  open an occur buffer with one entry per Java method whose name starts
+#  with letter(s) in the current buffer:  
+method <letter> =
+	"{esc}xmdl-occur-no-fold{enter}"
+	    # Skip white space and any modifier keywords at start-of-line:
+	  "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+	    # Java type excluding "new", "return":
+	  "[A-Zbcdfilsv][][a-zA-Z._0-9]*"
+	    # whitespace:
+	  "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	    "+" 	# one or more...
+	    # method name:
+	  $1 "[a-zA-Z0-9_]*"
+	  " *([^)]*)"
+	{enter};
+
+#  open an occur buffer with one entry per Java method whose name starts
+#  with letter(s) in the current buffer:  
+method <letter> <letter> =
+	"{esc}xmdl-occur-no-fold{enter}"
+	    # Skip white space and any modifier keywords at start-of-line:
+	  "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+	    # Java type excluding "new", "return":
+	  "[A-Zbcdfilsv][][a-zA-Z._0-9]*"
+	    # whitespace:
+	  "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	    "+" 	# one or more...
+	    # method name:
+	  $1 $2 "[a-zA-Z0-9_]*"
+	  " *([^)]*)"
+	{enter};
+
+#  open an occur buffer with one entry per Java method whose name starts
+#  with letter(s) in the current buffer:  
+method <letter> <letter> <letter> =
+	"{esc}xmdl-occur-no-fold{enter}"
+	    # Skip white space and any modifier keywords at start-of-line:
+	  "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+	    # Java type excluding "new", "return":
+	  "[A-Zbcdfilsv][][a-zA-Z._0-9]*"
+	    # whitespace:
+	  "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	    "+" 	# one or more...
+	    # method name:
+	  $1 $2 $3 "[a-zA-Z0-9_]*"
+	  " *([^)]*)"
+	{enter};
+
+# open an occur buffer with one entry per Java method whose name is
+# method-name in the current buffer:
+method <method-name> =
+	"{esc}xmdl-occur-no-fold{enter}"
+	    # Skip white space and any modifier keywords at start-of-line:
+	  "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+	    # Java type excluding "new", "return":
+	  "[A-Zbcdfilsv][][a-zA-Z._0-9]*"
+	    # whitespace:
+	  "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	    "+" 	# one or more...
+	    # method name:
+	  $1
+	  " *([^)]*)"
+	{enter};
+
+
+#  open an occurs buffer with one entry per Java method in the current buffer:
+show methods =
+	"{esc}xmdl-occur-no-fold{enter}"
+	    # Skip white space and any modifier keywords at start-of-line:
+	  "^\([a-z {ctrl+q}{tab}]*[ {ctrl+q}{tab}]\)?"
+	    # Java type excluding "new", "return":
+	  "[A-Zbcdfilsv][][a-zA-Z._0-9]*"
+	    # whitespace:
+	  "[ {ctrl+q}{tab}{ctrl+q}{ctrl+j}]"
+	    "+" 	# one or more...
+	    # method name:
+	      # we assume all methods start with a non-uppercase letter
+	  "[a-z_][a-zA-Z0-9_]*"	
+	  " *([^)]*)"
+	{enter};
+
+
+
+

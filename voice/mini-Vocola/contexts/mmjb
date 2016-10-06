@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>mmjb</module>
+		<company>MUSICMATCH, Inc.</company>
+		<description>Musicmatch Jukebox</description>
+

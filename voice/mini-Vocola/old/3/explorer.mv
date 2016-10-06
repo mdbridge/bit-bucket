@@ -1,0 +1,39 @@
+#  display folder in list mode:
+as list = "{alt+v}l";
+
+#  move Explorer focus down via currently selected directory:
+change directory = "{enter}" "{right}{left}{down}{up}";
+
+
+#  run open with on currently selected file:
+open that with = "{alt+f}h";
+
+#  show properties of a selected file:
+show properties = "{alt+f}r";
+
+#  move-up N directories:
+go up       =            "{alt+v}ou";
+go up 1..10 = Repeat($1, "{alt+v}ou");
+
+
+
+  # allow reload command to work like with Internet Explorer:
+reload = {ctrl+r};
+
+
+
+
+#  move Explorer focus down via pathname component:
+change directory <pathname-component> =
+	$1
+	"{enter}"
+	"{right}{left}{down}{up}";
+
+#  move Explorer focus down via pathname components:
+change directory <pathname-component> slash <pathname-component> =
+	$1
+	"{enter}"
+	$2
+	"{enter}"
+	"{right}{left}{down}{up}";
+

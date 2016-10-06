@@ -1,0 +1,178 @@
+if statement		= "{tab}{shift+space}if {(}{)}{left}";
+
+#  make a copy of the current line:
+duplicate line = 
+	"{home}" "{ctrl+k}{ctrl+y}{enter}"
+	"{ctrl+y}{home}"
+#	"{tab}"
+	;
+
+
+# make temporary copy of a line for alteration leaving original commented out:
+alter line =
+	"{home}{ctrl+q}/{ctrl+q}/"
+	"{ctrl+k}{ctrl+y}{enter}"
+	"{ctrl+y}{home}{tab}";
+
+catch statement	= "{left 2}{ctrl+s}}{enter}{shift+space}catch {(} e{)} {{}"
+	"{enter}}{tab}{up}{ctrl+e}{left 5}";
+
+climb brace		= "{ctrl+s}}{enter}{ctrl+e}";
+
+climb while		= "{ctrl+s}}{enter}{ctrl+s}({enter}";
+
+do-while statement = 
+	"{tab}do {{}{enter}"
+	"{enter}} while (); {tab}{up}{tab}";
+
+else block =
+	"{tab}{shift+space}else {{}{enter}"
+	"{enter}}{tab}{up}{tab}";
+
+else if statement		= "{tab}{shift+space}else if (){left}";
+
+else statement		= "{tab}{shift+space}else{enter}{tab}";
+
+end comment		= "*/{down}{ctrl+a}";
+
+end description		= "**/{down}{ctrl+a}";
+
+finally statement =
+	"{left 2}{ctrl+s}}{enter}{shift+space} finally {{}"
+	"{enter 2}}{tab}{up}{tab}";
+
+indent lines	 = "{home}{ctrl+space}{down 20}{esc}{ctrl+\}{ctrl+x}{ctrl+x}";
+
+#  indent next N lines:
+indent lines 2..20 = Repeat($1, {home}{tab}{down});
+
+Indent Region		= "{Esc}{Ctrl+\}";
+
+#  insert debugging printf:
+insert break		= "{home}{ctrl+o}System.out.println();"
+	" // mdl-break{ctrl+r}){enter}";
+
+#  insert debugging printf using print instead of println:
+insert non-line break		= '{home}{ctrl+o}System.out.print("");'
+	' // mdl-break{ctrl+r}"){enter}';
+
+#  insert debugging printf where line needs to be turned into a block:
+insert single break		= "{end}{enter}} // mdl-break{up}"
+	"{home}{ctrl+o}{System.out.println();"
+	" // mdl-break{ctrl+r}){enter}";
+
+jump brace		= "{ctrl+s}}{enter}{ctrl+e}{enter}{tab}";
+
+
+jump comment =
+	"{ctrl+s}*/{enter}{down}{home}{tab}";
+
+kludge mark = "<<<>>>";
+
+loop on index =
+	"{tab}{esc}xmdl-loop-on-index{enter}"
+	# user dictates maximum index+1  (+0 if use "press equal" first)
+	# optionally, the user then says "set start" then dictates the 
+	# loop's starting value
+	;
+
+loop on index <indexvariable> =
+	"{tab}for (int " $1 "=0; " $1 "<"
+	"; " $1 "++)"
+	"{ctrl+r};{enter}"
+	# user dictates maximum index+1  (+0 if use "press equal" first)
+	# optionally, the user then says "set start" then dictates the
+	# loop's starting value
+	;
+
+loop on iterator =
+	"Iterator iterator = .iterator();{tab}{enter}"
+	"while {(}iterator.hasNext{(}{)}{)} {{}{tab}{enter}}{tab}{enter}"
+	"{up 3}{ctrl+s}.{enter}{left}";
+
+more comment =
+	"{enter}{tab}* ";
+
+more comment 2 =
+	"{enter}{tab}* "
+	"{enter}{tab}* ";
+
+more description =
+	"{enter}{tab}** ";
+
+more description 2 =
+	"{enter}{tab}** "
+	"{enter}{tab}** ";
+
+#  remove debugging printf:
+remove break =
+	"{ctrl+s}// mdl-break{enter}"
+	"{home}{ctrl+u}1{ctrl+k}";
+
+#  used to replace the starting value of an index Loop:
+set start =
+	"{ctrl+r}=0;{enter}{right 2}{backspace}";
+
+#  turn on font lock mode:
+show Java fonts =
+	"{esc}xfont-lock-mode{enter}";
+
+start comment =
+	"{home}{ctrl+o}/*{tab}{Enter}* {enter}*/{up}{end}";
+
+#  start a description comment ("/**"):
+start description =
+	"{home}{ctrl+o}/**{tab}{Enter}** {enter}**/{up}{end}";
+
+switch statement =
+	"{tab}{shift+space}switch {(}{)}{left}";
+
+synchronized statement =
+	"{tab}synchronized {(}{)}{left}";
+
+#  abbreviation for System.out.println:
+system print line =
+	"{ctrl+a}{tab}System.out.println();{left 2}";
+
+to string = "toString";
+
+try statement =
+	"{tab}try {{}{enter}{enter}}{tab}{up}{tab}";
+
+while statement =
+	# the leading elastic space is for repeat while
+	"{tab}{shift+space}while {(}{)}{left}";
+
+#  break current comment line at wrap point:
+wrap comment =
+	"{ctrl+u}78{esc}xmove-to-column{enter}{ctrl+f}{esc}b"
+	"{Enter}* {ctrl+e}{shift+space}";
+
+#  break current description line at wrap point:
+wrap description =
+	"{ctrl+u}78{esc}xmove-to-column{enter}{ctrl+f}{esc}b"
+	"{Enter}** {ctrl+e}{shift+space}"
+#	HeardWord "wrap", "point"
+#	HeardWord "continue", "description"
+	;
+
+wrap with braces 1..20 =
+	"{tab}{shift+space}{{}{down}{ctrl+a}"
+	"{ctrl+space}{ctrl+u}" $1 "{down}{esc}{ctrl+\}"
+	"{ctrl+o}}{tab}";
+
+#  prompt for values to create a C style for loop:
+#StartALoop		= "{ctrl+c}f";
+
+
+
+start pound comment =
+	"{home}{ctrl+o}#{Enter}# {enter}#{up}{end}";
+
+start double pound comment =
+	"{home}{ctrl+o}##{Enter}## {enter}##{up}{end}";
+
+
+
+#  prompt for values to create a C style for loop:
+#StartALoop = {ctrl+c}f;

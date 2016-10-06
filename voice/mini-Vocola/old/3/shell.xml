@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="dialogue [my-directories]" group="shell" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	location = Replace$(location, "~", "\\spica\SRC udirs\mdl")
+	location = Replace$(location, "/", "\")
+
+	SendDragonKeys location + "{enter}{backspace}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="dialogue [my-directories] slash [pathname-component]" group="shell" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1) + "/" + Left$(ListVar2,InStr(ListVar2+"\","\")-1)
+	location = Replace$(location, "~", "\\spica\SRC udirs\mdl")
+	location = Replace$(location, "/", "\")
+
+	SendDragonKeys location + "{enter}{backspace}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="dialogue [my-pc-directories]" group="shell" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	location = Replace$(location, "/", "\")
+
+	SendDragonKeys location + "{enter}{backspace}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="dialogue [my-pc-directories] slash [pathname-component]" group="shell" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	Dim window As String
+	window = Mid$(ListVar1,InStr(ListVar1+"\","\")+1)
+
+	Dim location As String
+	location = Left$(ListVar1,InStr(ListVar1+"\","\")-1)
+	location = Replace$(location, "/", "\")
+
+	SendDragonKeys location + "\" + Left$(ListVar2,InStr(ListVar2+"\","\")-1) + "{enter}{backspace}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Commands type="application">
+		<module>Rx</module>
+		<company>WRQ, Inc.</company>
+		<description>Reflection X for Windows 95 and Windows NT</description>
+
+		<Command name="blue save" group="shell" enabled="true" states="">
+			<description>save file then switch to window on far left then run make</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	SendDragonKeys "{ctrl+x}{ctrl+s}"
+	SetMousePosition 0, 40, 500
+'	HeardWord "mouse", "click"
+	Wait 1
+	ButtonClick 1, 1
+	Wait 1
+	SendDragonKeys "{ctrl+c}q{ctrl+c}"
+	SendDragonKeys "make{enter}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+		<Command name="blue save repeat" group="shell" enabled="true" states="">
+			<description>save file then switch to window on far left then repeat last command</description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	SendDragonKeys "{ctrl+x}{ctrl+s}"
+	SetMousePosition 0, 40, 500
+'	HeardWord "mouse", "click"
+	Wait 1
+	ButtonClick 1, 1
+	Wait 1
+	SendDragonKeys "{ctrl+c}q{ctrl+c}"
+	SendDragonKeys "{up}{enter}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="my-directories">
+			<Value><![CDATA[\absolute]]></Value>
+			<Value><![CDATA[~\home]]></Value>
+			<Value><![CDATA[~\UNIX]]></Value>
+			<Value><![CDATA[~\samba]]></Value>
+			<Value><![CDATA[~/Archive\archive]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/Similarity\similarity]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient\Java client]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/Windows/Elephant Store\UNIX elephant store]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/src/upper_com/hp/elephantstore\elephant source]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff\UNIX F. F.]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff/as\UNIX A. S.]]></Value>
+			<Value><![CDATA[~/Archive/JavaClient/folded_src/com/hp/ff/as/client\UNIX A. S. client]]></Value>
+			<Value><![CDATA[~/Dragon\Dragon]]></Value>
+			<Value><![CDATA[~/Dragon/Compiler\compiler]]></Value>
+			<Value><![CDATA[~/Dragon/Macros_06\macros six]]></Value>
+			<Value><![CDATA[~/Elisp\elisp]]></Value>
+			<Value><![CDATA[~/Elisp/Src21.4a/emacs-21.4/lisp\elisp source]]></Value>
+			<Value><![CDATA[~/MediaLamp\media lamp]]></Value>
+			<Value><![CDATA[~/Personal\personal]]></Value>
+			<Value><![CDATA[~/Personal/Addresses\addresses]]></Value>
+			<Value><![CDATA[~/Personal/Budget\budget]]></Value>
+			<Value><![CDATA[~/Personal/Loan\loan]]></Value>
+			<Value><![CDATA[~/Personal/Recipes\recipes]]></Value>
+			<Value><![CDATA[~/Personal/H\books]]></Value>
+			<Value><![CDATA[~/Rmail\Rmail]]></Value>
+			<Value><![CDATA[~/Tmp\tmp]]></Value>
+			<Value><![CDATA[~/Tmp/Export\export]]></Value>
+		</List>
+
+		<List name="my-pc-directories">
+			<Value><![CDATA[c:/\my computer]]></Value>
+			<Value><![CDATA[c:/Program Files\program files]]></Value>
+			<Value><![CDATA[c:/Program Files/Elephant Store\PC elephant store]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop\work desktop]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop/Icons/\icons]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/lillibridgeM/Desktop/Scratch\scratch]]></Value>
+			<Value><![CDATA[c:/Program Files/Java/j2re1.4.2_05/bin\Java release bin]]></Value>
+			<Value><![CDATA[c:/aev/ff/\frame factory repository]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/elephantstore\PC elephant source]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/\PC F. F.]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/as/\PC A. S.]]></Value>
+			<Value><![CDATA[c:/aev/ff/src/com/hp/ff/as/client/\PC A. S. client]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/Desktop\home desktop]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/My Documents\home documents]]></Value>
+			<Value><![CDATA[c:/Documents and Settings/Mark/Desktop/Scratch\home scratch]]></Value>
+		</List>
+
+		<List name="pathname-component">
+			<Value><![CDATA[..\dot dot]]></Value>
+			<Value><![CDATA[..\parent directory]]></Value>
+			<Value><![CDATA[bin\bin]]></Value>
+			<Value><![CDATA[Bin\capital bin]]></Value>
+			<Value><![CDATA[test\test]]></Value>
+			<Value><![CDATA[usr\user]]></Value>
+			<Value><![CDATA[Paper\paper]]></Value>
+			<Value><![CDATA[Alist\A. list]]></Value>
+			<Value><![CDATA[Lists\lists]]></Value>
+			<Value><![CDATA[Setup\setup]]></Value>
+			<Value><![CDATA[Linux\Linux]]></Value>
+			<Value><![CDATA[Windows\Windows]]></Value>
+			<Value><![CDATA[native\native]]></Value>
+			<Value><![CDATA[blocks]]></Value>
+			<Value><![CDATA[chunks]]></Value>
+			<Value><![CDATA[conversion]]></Value>
+			<Value><![CDATA[extract]]></Value>
+			<Value><![CDATA[filesystem]]></Value>
+			<Value><![CDATA[framefactory\frame factory]]></Value>
+			<Value><![CDATA[protocol]]></Value>
+			<Value><![CDATA[transport]]></Value>
+			<Value><![CDATA[util]]></Value>
+			<Value><![CDATA[lower_com\lower]]></Value>
+			<Value><![CDATA[upper_com\upper]]></Value>
+			<Value><![CDATA[aev\A. E. V.]]></Value>
+			<Value><![CDATA[as\A. S.]]></Value>
+			<Value><![CDATA[client\client]]></Value>
+			<Value><![CDATA[com\com]]></Value>
+			<Value><![CDATA[dist\distribution]]></Value>
+			<Value><![CDATA[elephantstore\Elephant Store]]></Value>
+			<Value><![CDATA[es\E. S.]]></Value>
+			<Value><![CDATA[ff\F. F.]]></Value>
+			<Value><![CDATA[hp\H. P.]]></Value>
+			<Value><![CDATA[logs\logs]]></Value>
+			<Value><![CDATA[shared]]></Value>
+			<Value><![CDATA[sm\S. M.]]></Value>
+			<Value><![CDATA[src\src]]></Value>
+			<Value><![CDATA[Foo\foo]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>

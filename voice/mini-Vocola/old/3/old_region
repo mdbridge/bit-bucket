@@ -1,0 +1,79 @@
+#
+# Destroy macros
+#
+
+#  kill from point to start of current line:
+destroy start = {ctrl+space}{home}{ctrl+w};
+
+
+#  kill lines from first line number to just before last line number (line numbers mod 100):
+destroy <my0to99> comma <my0to99> =
+	"{ctrl+u}" $1 "{esc}{G}{ctrl+space}"
+	"{ctrl+u}" $2 "{esc}{G}{ctrl+w}";
+
+#  kill the current line:
+destroy line =
+	{Home}{ctrl+u}1{Ctrl+k};
+
+#  kill next N  lines starting from current line:
+destroy line <my0to99> =
+	"{home}{ctrl+u}" $1 "{ctrl+k}";
+
+#  kill lines from first line number to just before last line number (line numbers mod 100):
+destroy line <my0to99> comma <my0to99> =
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{ctrl+w}";
+
+#  kill the entire next line:
+destroy next =
+	"{ctrl+x}r y{down}{home}{ctrl+u}1{ctrl+k}{ctrl+x}jy";
+
+#  kill the next N lines (but not the current line):
+destroy next <my0to99> =
+	"{ctrl+x}r y{down}{home}{ctrl+u}" $1 "{ctrl+k}{ctrl+x}jy";
+
+#  kill the entire previous line:
+destroy previous =
+	"{ctrl+x}r y{up}{home}{ctrl+u}1{ctrl+k}{ctrl+x}jy";
+
+#  kill the previous N lines (but not the current line):
+destroy previous <my0to99> =
+	"{ctrl+x}r y{home}{ctrl+space}{up $1}{ctrl+w}{ctrl+x}jy";
+
+
+
+#  kill lines from first line number to just before last line number (line numbers mod 100):
+cut out <my0to99> comma <my0to99> =
+	"{ctrl+x}r y"
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{ctrl+w}"
+	"{ctrl+x}jy";
+
+
+
+
+#  copy the rest of the current line:
+copy rest =
+	{Ctrl+space}{ctrl+e}{ctrl+x}{ctrl+x}{esc}w;
+
+#  copy current line:
+CopyLine =
+	"{home}{ctrl+space}{down}{esc}w";
+
+#  copy next N lines starting from this one:
+CopyLine <my0to99> =
+	"{home}{ctrl+space}{ctrl+u}" $1 "{down}{esc}w";
+
+#  copy lines from first line number to just before last line number (line numbers mod 100):
+CopyLine <my0to99> comma <my0to99> =
+	"{ctrl+x}r y"
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{esc}w"
+	"{ctrl+x}jy";
+
+#  copy lines from other window from first line number to just before last line number (line numbers mod 100):
+other CopyLine <my0to99> comma <my0to99> =
+	"{ctrl+x}o"
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{esc}w"
+	"{ctrl+x}o";

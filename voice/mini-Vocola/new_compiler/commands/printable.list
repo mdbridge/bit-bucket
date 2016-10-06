@@ -1,0 +1,93 @@
+!
+!\bang
+"
+"\open quote
+"\quote
+#
+$
+%
+%\percent
+&
+'
+'\apostrophe
+'\single quote
+(
+(\paren
+)
+)\close paren
+*
+*\asterisk
+*\star
++
++\plus
+,
+-
+-\minus
+.
+.\dot
+/
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+:
+;
+<
+<\less than
+=
+=\equal
+=\equals
+>
+>\greater than
+?
+@
+[
+[\bracket
+]
+]\close bracket
+^
+_
+`
+a\Alpha
+b\Bravo
+c\Charlie
+d\Delta
+e\echo
+f\foxtrot
+g\golf
+h\Hotel
+i\India
+j\Juliett
+k\kilo
+l\Lima
+m\Mike
+n\November
+o\Oscar
+p\Papa
+q\Quebec
+r\Romeo
+s\Sierra
+t\tango
+u\uniform
+v\Victor
+w\whiskey
+x\xray
+y\Yankee
+z\Zulu
+{space}\space
+{space}\space bar
+{{}\brace
+{{}\{
+|\vertical bar
+|\bar
+|
+}
+}\close brace
+~
+\\backslash

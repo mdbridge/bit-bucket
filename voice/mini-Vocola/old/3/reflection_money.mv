@@ -1,0 +1,16 @@
+rent for <month> =
+	"  [rent for $1 was $1390; water was ]{left}";
+
+
+next entry 1..20 slash <my0to99> =
+	"{end}{enter}  {ctrl+space}"
+        Right$("00$1",2) "/" Right$("00$2",2) "{ctrl+x}xd" " ";
+
+next entry = "{end}{enter}  {ctrl+x}rid" "{end} ";
+
+
+<money-entry> = $1 "{ctrl+r}^{enter}{ctrl+d}";
+
+paycheck for 1..20 slash <my1to100> through 1..20 slash <my1to100> =
+	"   [paycheck of ^ for $1/$2-$3/$4, direct deposited]" 
+	"{ctrl+r}^{enter}{ctrl+d}";

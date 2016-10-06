@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>cmd</module>
+		<company>Microsoft Corporation</company>
+		<description>Windows Command Processor</description>
+

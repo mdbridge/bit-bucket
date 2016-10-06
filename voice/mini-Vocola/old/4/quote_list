@@ -1,0 +1,14 @@
+#!/bin/sed -f 
+
+s_^[^\]*$_&\\&_
+
+:ampersand
+s_\&\([^\]*\)\\_\n\1\\_
+tampersand
+s_\n_\&A_g
+
+:backslash
+s_\\\([^\]*\)\\_\&B\1\\_
+tbackslash
+
+s_^\([^\]*\)\\\1$_\1_

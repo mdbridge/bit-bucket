@@ -1,0 +1,153 @@
+#
+# Basic emacs cut and paste operations:
+#
+
+MarkIt = {Ctrl+Space}; 		#  set mark at the point
+
+# copy text between mark and point to kill ring:
+CopyMark = {Esc}w;
+
+# cut text between mark and point to kill ring:
+ZapIt = {Ctrl+w};
+
+# insert text most recently killed or yanked:
+yank = {ctrl+y};		        # leaves point at end of text
+yank in place = {ctrl+u}{ctrl+y};	# as yank, but leaves point at start
+
+
+
+#  start-of-line then yank:
+StartNYank = {home}{ctrl+y};
+
+yank again = {Esc}y;
+
+Yank Clipboard = {esc}xclipboard-yank{Enter};
+
+#  insert contents of cut buffer before current line then move to first tab position of first line of cut material:
+YankNTab = {home}{ctrl+u}{ctrl+y}{tab};
+
+
+#  exchange mark and cursor:
+Exchange Mark = {Ctrl+x}{Ctrl+x};
+
+
+
+#
+# Destroy macros
+#
+
+#  kill the rest of the current line; joins the next line if at end of line
+destroy = {ctrl+k};
+
+#  kill next N  lines :
+destroy <my0to99> =
+	"{ctrl+u}" $1 "{ctrl+k}";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  delete characters (going backwards) until and including next occurrence of printable:
+back until <printable> =
+	"{ctrl+space}{ctrl+r}"
+	$1
+	"{right}{ctrl+w}";
+
+#  attempt to copy the nearest e-mail address:
+copy address =
+	"{ctrl+u}1{ctrl+c}s[-a-z0-9._?=]*@{right}{ctrl+space}"
+	"{ctrl+u}1{ctrl+c}s[^-a-z0-9._?=@]\|\(\.[^-a-z0-9._?=@]\){right}{Esc}w";
+
+#  copy text between next pair of angle brackets:
+copy angle pair =
+	"{ctrl+c}s<{right}"
+	"{right}{ctrl+space}"
+	"{ctrl+c}s>{right}"
+	"{esc}w";
+
+#  copy text between next pair of quotes:
+copy quote pair =
+	'{ctrl+c}s"{right}'
+	"{right}{ctrl+space}"
+	'{ctrl+c}s"{right}'
+	"{esc}w";
+
+#  copy from current cursor to previously dropped crumb:
+copy to crumb =
+	"{ctrl+space}{ctrl+x}jz{esc}w{Ctrl+x}{Ctrl+x}";
+
+#  attempt to copy the nearest URL:
+copy URL =
+	# copy URL:
+	"{ctrl+u}1{ctrl+c}s\(http\|https\|file\):{right}{ctrl+space}"
+	'{ctrl+u}1{ctrl+c}s["<> ]\|${right}{Esc}w';
+
+#  erase characters (going forward) until next occurrence of leap-point:
+erase until <leap-point> =
+	"{ctrl+space}{ctrl+c}s"
+	$1
+	"{right}{ctrl+w}";
+
+#  erase characters (going forward) until next occurrence of printable:
+erase until <printable> =
+	"{ctrl+space}{ctrl+c}s"
+	$1
+	"{right}{ctrl+w}";
+
+#  kill last N spaces before cursor:
+KillASpace       = "{Ctrl+u}1{esc}{Ctrl+K}";
+KillASpace 1..20 = "{Ctrl+u}$1{esc}{Ctrl+K}";
+
+#  set mark at the point:
+MarkIt = {Ctrl+Space};
+
+#  delete characters if any before next (not current) word (going right):
+PullWord       =
+	"X{ctrl+space}{esc}b{esc}f" {esc}f "{esc}b{ctrl+w}{backspace}";
+
+#  PullWord N:
+PullWord 1..10 = 
+	"X{ctrl+space}{esc}b{esc}f"
+	Repeat($1, "{esc}f")
+	"{esc}b{ctrl+w}{backspace}";
+
+
+Select Whole Buffer = {Ctrl+x}h;
+
+ZapASpace = "{ctrl+space}{ctrl+s} {enter}{backspace}{ctrl+x}{ctrl+x}";
+
+#killAword 1..20 1..20 =
+#	{ctrl+u}$1{esc}{backspace}
+#	{ctrl+u}$2{backspace};
+
+#ZapAWord 1..20 1..20 =
+#	{ctrl+u}$1{esc}d {ctrl+u}$2{ctrl+d};
+
+
+#  kill next N  lines :
+KillLine           =               {Ctrl+k};
+KillLine <my0to99> = "{ctrl+u}" $1 {ctrl+k};
+
+# kill lines from first line number to just before last line number
+# (line numbers mod 100):
+KillLine <my0to99> <my0to99> =
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{ctrl+w}";
+
+MarkALine <my0to99> = {home} {ctrl+space} {ctrl+u}$1{down};

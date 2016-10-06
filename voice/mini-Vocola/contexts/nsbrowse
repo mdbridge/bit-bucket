@@ -1,0 +1,5 @@
+	<Commands type="application">
+		<module>nsbrowse</module>
+		<company>ScanSoft</company>
+		<description>Dragon NaturallySpeaking Command Browser</description>
+

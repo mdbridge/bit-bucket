@@ -1,0 +1,108 @@
+<region-command> start =
+	"{ctrl+x}r y"
+	    {ctrl+space} {home} {ctrl+x}{ctrl+x}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> rest =
+	"{ctrl+x}r y"
+	    {ctrl+space} {end}
+	    $1
+	"{ctrl+x}jy";
+
+
+<region-command> line =
+	"{ctrl+x}r y"
+	    {home} {ctrl+space} {ctrl+n}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> line <my0to99> =
+	"{ctrl+x}r y"
+	    {home} {ctrl+space} {ctrl+u}$2{ctrl+n}
+	    $1
+	"{ctrl+x}jy";
+
+
+<region-command> next =
+	"{ctrl+x}r y"
+	    {home} {down} {ctrl+space} {ctrl+n}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> next <my0to99> =
+	"{ctrl+x}r y"
+	    {home} {down} {ctrl+space} {ctrl+u}$2{ctrl+n}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> previous =
+	"{ctrl+x}r y"
+	    {home} {ctrl+space} {ctrl+p}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> previous <my0to99> =
+	"{ctrl+x}r y"
+	    {home} {ctrl+space} {ctrl+u}$2{ctrl+p}
+	    $1
+	"{ctrl+x}jy";
+
+
+
+<region-command> <my0to99> comma <my0to99> =
+	"{ctrl+x}r y"
+	    {ctrl+u}$2{esc}G {ctrl+space} {ctrl+u}$3{esc}G
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> single <my0to99> =
+	"{ctrl+x}r y"
+	    {ctrl+u}$2{esc}G {ctrl+space} {ctrl+n}
+	    $1
+	"{ctrl+x}jy";
+
+<region-command> entire buffer =
+	"{ctrl+x}r y"
+	    {esc}< {ctrl+space} {esc}>
+	    $1
+	"{ctrl+x}jy";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  copy lines from other window from first line number to just before last line number (line numbers mod 100):
+Copy other <my0to99> comma <my0to99> =
+	"{ctrl+x}o"
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}"
+	"{Ctrl+u}" $2 "{Esc}{G}{esc}w"
+	"{ctrl+x}o";
+
+Copy other single <my0to99> =
+	"{ctrl+x}o"
+	"{Ctrl+u}" $1 "{Esc}{G}{ctrl+space}" {ctrl+n} {esc}w
+	"{ctrl+x}o";
+
+
+
+<region-command> <my0to99> lines from <my0to99> =
+	"{ctrl+x}r y"
+	  "{ctrl+u}$3{esc}G" {ctrl+space}
+	  {ctrl+u}$2{ctrl+n}
+	  $1
+	"{ctrl+x}jy";
