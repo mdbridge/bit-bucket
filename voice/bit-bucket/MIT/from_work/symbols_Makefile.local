@@ -1,0 +1,40 @@
+auction:
+	ruby extract_C_symbols.rb \
+	     ~/tube/Eiger/auction_simulator/*.cpp \
+	     ~/tube/Eiger/auction_simulator/*.h \
+	     > symbols.txt
+
+
+metadata:
+	ruby extract_C_symbols.rb \
+	     ~/tube/Eiger/metadata/*.cpp \
+	     ~/tube/Eiger/metadata/*.h \
+	     > symbols.txt
+
+
+
+
+
+#/usr/lib/gcc/*/*/include`.chomp.split[0]
+
+
+
+C:
+	ebrowse -p `find /usr/include -name '*.h'` 
+	#
+	find /usr/include -name '*.h' -print \
+	    | xargs ruby -E binary extract_C_symbols.rb > symbols.txt
+
+
+
+test:
+	find /usr/include -name '*.h' -print \
+	    | xargs ruby -E binary new_extract_C_symbols.rb 
+
+
+
+
+standard-library:
+	ruby -E binary new_extract_C_symbols.rb \
+	    ${CLIB} ${UNIX} ${PTHREADS} \
+	    > symbols.txt

@@ -1,0 +1,81 @@
+RUBY    = ruby
+
+all: addresses.rol work_email.txt work-phones.txt
+
+
+### 
+### Generating/maintaining Rolodexes:
+### 
+
+ROLODEX = code/rolodex.rb
+
+## 
+## addresses.rol is the merge of Outlook.rol and work_extra.rol;
+## this allows manually adding information to what Outlook produces.
+## 
+
+addresses.rol: code/merge.rb Outlook.rol work_extra.rol
+	${RUBY} code/merge.rb Outlook.rol work_extra.rol > addresses.rol
+
+clean::
+	rm -f addresses.rol
+
+
+## 
+## Extracting information from work's exported Outlook information
+## 
+
+Outlook.rol: ${ROLODEX} code/import_Outlook.rb code/lookupEmailLDAP.pl outlook.csv
+	${RUBY} code/import_Outlook.rb > Outlook.rol
+
+clean::
+	rm -f Outlook.rol
+
+
+## 
+## Allowing human editing of extra work information (work_extra.rol):
+## 
+
+show: 
+	ruby code/cleanup.rb work_extra.rol > work_extra.rol.clean
+	diff work_extra.rol work_extra.rol.clean
+
+step: 
+	${RUBY} code/backup.rb work_extra.rol
+	ruby code/cleanup.rb work_extra.rol > work_extra.rol.clean
+	-diff work_extra.rol work_extra.rol.clean
+	cp work_extra.rol work_extra.rol.old
+	mv  work_extra.rol.clean work_extra.rol
+
+clean::
+	rm -f work_extra.rol.old work_extra.rol.clean
+
+
+
+### 
+### Using Rolodexes:
+### 
+
+## 
+## Extracting list of work emails:
+## 
+
+work_email.txt: ${ROLODEX} code/get_work_email.rb addresses.rol work_lists.txt
+	${RUBY} code/get_work_email.rb > $@
+	cat work_lists.txt            >> $@
+
+clean::
+	rm -f work_email.txt
+
+
+## 
+## Generating phone lists:
+## 
+
+PHONE_LIST = code/phone_list.rb     ${ROLODEX}
+
+work-phones.txt: addresses.rol     ${PHONE_LIST}
+	$(RUBY) code/phone_list.rb < addresses.rol > $@
+
+clean::
+	rm -f work-phones.txt

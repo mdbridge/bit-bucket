@@ -1,0 +1,31 @@
+#root =                             /home/mdl/voice/my_commands/commands
+root =  /nfs/lgagil.labs.hpecorp.net/mnt/k16b/pmd1.d4/home/mdl/voice/my_commands/commands
+root = ssh://mdl@foil.strangled.net//home/mdl/voice/my_commands/commands
+
+servercmd = /home/mdl/bin/unison-2.48
+
+mountpoint = _any.vcl
+
+logfile      = /home/mdl/.unison/log_file
+#showarchive = true
+
+
+ignore       = Name *~
+ignore       = Name \#*
+ignore       = Regex .*\.svn
+
+ignore       = Name natspeak_input.vcl
+
+ignore       = Name numbers.vch
+
+ignore       = Name command_files.vch
+ignore       = Name include_files.vch
+ignore       = Name vocabulary_files.vch
+
+ignore       = Name UNIX.vch
+ignore       = Name PC.vch
+ignore       = Name COM.vch
+
+
+auto         = true
+batch        = true

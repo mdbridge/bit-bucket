@@ -1,0 +1,17 @@
+#root =                             /home/mdl/voice/my_vocabulary/vocabulary
+root =  /nfs/lgagil.labs.hpecorp.net/mnt/k16b/pmd1.d4/home/mdl/voice/my_vocabulary/vocabulary
+root = ssh://mdl@foil.strangled.net//home/mdl/voice/my_vocabulary/vocabulary
+
+servercmd = /home/mdl/bin/unison-2.48
+
+mountpoint = people.txt
+
+#showarchive = true
+logfile      = /home/mdl/.unison/log_file
+
+ignore       = Name *~
+ignore       = Name \#*
+ignore       = Regex .*\.svn
+
+auto         = true
+batch        = true

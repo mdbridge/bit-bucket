@@ -1,0 +1,101 @@
+## 
+## Generating some Vocola lists automatically:
+## 
+
+# 
+# <java_type> list:
+# 
+
+source:: ~/past/HP/deduplication/client/symbols.txt
+	cat $< | \
+	    ruby generators/convert_DNS_list.rb java_type > commands/java_types.vch
+
+~/past/HP/deduplication/client/symbols.txt:  # client source is assumed immutable here...
+	(cd ~/past/HP/deduplication/client; make symbols) > /dev/null
+
+clean::
+	rm -f commands/java_types.vch
+
+
+# 
+# <work_email> list:
+# 
+
+source:: 
+	(cd ~/mail/contacts; make work_email.txt)
+	cat ~/mail/contacts/work_email.txt | \
+	    ruby generators/convert_DNS_list.rb work_email \
+	    > commands/work_emails.vch
+
+clean::
+	rm -f commands/work_emails.vch
+
+
+# 
+# <unit>, <interface> lists:
+# 
+
+source:: 
+	ruby generators/units.rb
+
+clean::
+	rm -f commands/units.vch commands/interface.vch
+
+
+# 
+# <work_site> list:
+# 
+
+source:: work.htm
+	(cd generators; ruby websites.rb work > ../commands/work_sites.vch)
+
+work.htm: ~/backups/bookmarks/Firefox-work.htm  ~/http/extract_folder.rb
+	ruby ~/http/extract_folder.rb \
+	    ~/backups/bookmarks/Firefox-work.htm Work  >  $@
+
+clean::
+	rm -f work.htm
+	rm -f commands/work_sites.vch
+
+
+# 
+# <work_bookmark_folder> list:
+# 
+
+source:: ~/backups/bookmarks/Firefox-work.htm generators/generate_accelerators.rb
+	(cd generators; ruby generate_accelerators.rb work)
+
+clean::
+	rm -f commands/work_bookmark_folders.vch
+	rm -f ~/Tmp/work-accelerators.html
+
+
+# 
+# Prepare information for generating filesystem lists (e.g., <UNIX>):
+# 
+
+filesystem::
+	ruby generators/scan_Unix.rb > commands/filesystem/work_Unix_scan.txt
+
+clean::
+	rm -f commands/filesystem/work_Unix_scan.txt
+
+
+
+## 
+## Generating a training corpus for DNS:
+## 
+
+local-corpus::
+	ssh mdl@foil.strangled.net "cd ~/voice/my_commands; make corpus"
+	scp 'mdl@foil.strangled.net:~/voice/my_commands/corpus/*.txt' corpus/
+	#
+	for p in evaluation fragmentation_FAST13 reliability_HotMetrics10 \
+	    sparse_indexing_FAST09 extreme_binning_MASCOTS09 ;do \
+	    cat ~/tube/papers/$$p/*.tex > corpus/$$p.txt; \
+	done
+	#
+	cat ~/past/HP/limiter/paper/*.tex > corpus/limiter.txt
+	#
+	ruby ~/mail/analysis/extract_email.rb 240 \
+	    ~/Rmail/RMAIL ~/Rmail/hold ~/Rmail/reading > corpus/top_work.txt
