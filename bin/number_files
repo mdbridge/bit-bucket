@@ -1,0 +1,29 @@
+#!/bin/csh -f
+# source this file from [tc]sh to set _# variables...
+
+if ($?_o) then
+else
+    set _o=""
+endif
+
+
+@ i = 1
+foreach f ("`ls $_o`")
+    set _$i = "$f"
+    @ i += 1
+end
+
+
+pwd
+
+#echo > ~/Tmp/listing
+#@ i = 1
+#foreach f ("`ls $_o -F`")
+#    echo "${i}: $f" >> ~/Tmp/listing
+#    @ i += 1
+#end
+#cat ~/Tmp/listing | column
+ls $_o -F --color=always | ruby -W0 ~/bin/color_column.rb
+
+unset i
+unset f

@@ -1,0 +1,20 @@
+#!/bin/csh -f
+# source this file from [tc]sh to set _# variables...
+#
+# $1 should be username@host for ssh, $2 should be remote directory
+# $2 cannot contain spaces directly; passes quotes as needed
+# e.g., source ... ... '"foo bar"'
+
+@ i = 1
+foreach f ("`ssh $1 'ls -A $2'`")
+    set _$i = "$f"
+    @ i += 1
+end
+
+echo $2
+
+  # lose color because ssh "terminal" doesn't support colors...
+ssh $1 "ls -A -F --color=always $2" | ruby -W0 ~/bin/color_column.rb
+
+unset i
+unset f
