@@ -1,0 +1,10 @@
+### 
+### 
+### 
+
+an error = [bad];
+panic = 2 here;
+
+<unknown> = error;
+
+include nonexistent_1.vcl;

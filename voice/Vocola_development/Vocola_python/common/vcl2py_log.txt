@@ -1,0 +1,706 @@
+INI file is 'common/Vocola.INI'
+extensions file is 'extensions.csv'
+default maximum commands per utterance = 1
+
+==============================
+<list> := (blue | red);
+function(_argument) := 'actions';
+$set 'value' to 'result'
+Converting no_commands.vcl
+  Warning: no commands in file.
+
+==============================
+call(_argument) := 'action';
+call_2(_argument) := 'action';
+Converting common_errors_4.vcl
+  Error at line 14:  Wanted an action, '(', ')', or ',' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 18:  Wanted an action, '(', ')', or ',' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 22:  Wanted an action, '(', ')', or ',' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 25:  Wanted an action, ')', or ',' but found ';'
+a command = call(argument call_2(argument);
+                                          ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 30:  Wanted ']' but found '='
+some words are [optional = action;
+                         ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 34:  Wanted a term or '=' but found ']'
+some words are optional] = action;
+                       ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 44:  Context statements may not contain '='s
+please type <list> = C: $1;
+                   ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 48:  Context statements may not contain '='s
+please type <list> = call(C: $1);
+                   ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 53:  Context statements may not contain '='s
+<symbol> := (  under = _ | colon = : );
+          ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 57:  Context statements may not contain '='s
+<symbol> := (  under = _ | colon = : | star = *);
+          ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 67:  Wanted an action, '(', or ';' but found '|'
+a command = one|two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 71:  Wanted an action, '(', ')', or ',' but found '|'
+a command = call(one|two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 76:  Wanted an action, '(', or ';' but found ','
+a command = one,two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+a command = 'one'
+  Error at line 81:  Unknown directive 'two'
+a command = one;two;
+                ^
+resynchronize = 'here'
+  Error at line 85:  Wanted an action, '(', ')', or ',' but found ';'
+a command = call(one;two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+  Error at line 85:  Wanted a term, a word, ';', '=', or ':=' but found ')'
+a command = call(one;two);
+                        ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 90:  Wanted an action, '(', or ';' but found '='
+a command = one=two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 94:  Wanted an action, '(', ')', or ',' but found '='
+a command = call(one=two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+a command = 'one:two'
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+a command = call('one:two')
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 108:  Wanted an action, '(', ')', or ',' but found ';'
+a command = one(two;
+                   ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 112:  Call to unknown function 'one'
+a command = call(one(two);
+                 ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 117:  Wanted an action, '(', or ';' but found ')'
+a command = one)two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 121:  Wanted an action, '(', or ';' but found ')'
+a command = call(one)two);
+                        ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 126:  Wanted an action, '(', or ';' but found '['
+a command = one[two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 130:  Wanted an action, '(', ')', or ',' but found '['
+a command = call(one[two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 135:  Wanted an action, '(', or ';' but found ']'
+a command = one]two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 139:  Wanted an action, '(', ')', or ',' but found ']'
+a command = call(one]two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 144:  Wanted an action, '(', or ';' but found ':='
+a command = one:=two;
+               ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 148:  Wanted an action, '(', ')', or ',' but found ':='
+a command = call(one:=two);
+                    ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  28 errors -- file not converted.
+
+==============================
+Converting common_errors_2.vcl
+  Error at line 10:  Unterminated quotation: "these have a return
+common command = keystrokes "these have a return
+                            ^
+resynchronize = 'here'
+  Error at line 15:  Unterminated quotation: "these have a return
+common command = keystrokes "these have a return
+                            ^
+resynchronize = 'here'
+  Error at line 21:  Unterminated quotation: 't work = actions;
+this can't work = actions;
+        ^
+  Error at line 25:  Unterminated quotation: "these have a return ;
+I forgot a closing quote = keystrokes "these have a return ;
+                                      ^
+resynchronize = 'here'
+  Error at line 30:  Unterminated quotation: " ;
+I forgot a opening quote = keystrokes these have a return" ;
+                                                         ^
+resynchronize = 'here'
+  Error at line 41:  Wanted an action, '(', ')', or '|' but found '='
+            green = 3
+                  ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+    Did you forget a '|' at the end of your (last) alternative?
+
+resynchronize = 'here'
+  Error at line 48:  Wanted an action, '(', '|', or ';' but found '='
+           green = 3
+                 ^
+    Did you forget a ';' at the end of your (last) statement?
+    Did you forget a '|' at the end of your (last) alternative?
+
+resynchronize = 'here'
+  Error at line 59:  Empty alternative (set)
+          | blue  = 1 # extra bar on this line...
+          ^
+resynchronize = 'here'
+  Error at line 70:  Empty alternative (set)
+          );
+          ^
+  Error at line 74:  Empty alternative (set)
+          | blue  = 1 # extra bar on this line...
+          ^
+resynchronize = 'here'
+  Error at line 85:  Empty alternative (set)
+          ;
+          ^
+resynchronize = 'here'
+  Error at line 94:  Empty alternative (set)
+<menu> := ();
+           ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 98:  Empty alternative (set)
+<menu> := ;
+          ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 112:  Wanted an action, '(', ')', or '|' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+    Did you forget a '|' at the end of your (last) alternative?
+
+resynchronize = 'here'
+  Error at line 119:  Wanted an action, '(', '|', or ';' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ';' at the end of your (last) statement?
+    Did you forget a '|' at the end of your (last) alternative?
+
+resynchronize = 'here'
+  Error at line 127:  Wanted an action, '(', ')', or '|' but found ';'
+another = keystrokes and more keystrokes;
+                                        ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+    Did you forget a '|' at the end of your (last) alternative?
+
+resynchronize = 'here'
+<lis3> := (blue = '1' | red another = 'keystrokes' 'and' 'more' 'keystrokes');
+resynchronize = 'here'
+  Error at line 144:  Wanted a term, a context statement, or end of file but found '|'
+          | red   = 2 
+          ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 150:  Wanted a term, a context statement, or end of file but found '|'
+          | red   = 2 
+          ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 163:  Wanted a term, a word, ';', '=', or ':=' but found end of file
+
+^
+  19 errors -- file not converted.
+
+==============================
+<other> := ((dummy));
+Converting type_checking.vcl
+  Error at line 12:  Context statements may not contain '='s
+    not ok =  |
+           ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+  Error at line 19:  Illegal variable '<wrong': variables must start with '<' and end with '>'
+<wrong      := (menu);
+^
+  Error at line 20:  Illegal variable name: <closer!>
+<closer!>   := (menu);
+^
+  Error at line 21:  Built-in list <_anything> is not redefinable
+<_anything> := (menu);
+^
+  Error at line 26:  Illegal user function name: wrong!
+wrong!(argument)     := actions;
+^
+  Error at line 27:  Illegal user function name: wrong.call
+wrong.call(argument) := actions;
+^
+once() := 'is' 'okay';
+  Error at line 29:  Redefinition of once()
+once()               := twice is not;
+^
+  Error at line 35:  Illegal formal name: 'bad!'
+function(bad!) := actions;
+         ^
+  Error at line 40:  Unknown directive 'unknown'
+unknown directive;     panic = to here;
+^
+  Error at line 41:  Include directive requires one word: include filename;
+include;               panic = to here;
+       ^
+  Error at line 42:  Include directive requires one word: include filename;
+include two words;     panic = to here;
+            ^
+  Error at line 43:  $set directive requires 2 words: $set parameter value;
+$set;                  panic = to here;
+    ^
+  Error at line 44:  $set directive requires 2 words: $set parameter value;
+$set one;              panic = to here;
+        ^
+  Error at line 49:  At least one term must not be optional or <_anything>
+[ optional ] = error;
+^
+  Error at line 50:  At least one term must not be optional or <_anything>
+<_anything>  = error;
+^
+  Error at line 55:  Illegal variable name: <closer!>
+try <closer!> for lunch = today;
+    ^
+  Error at line 60:  Empty alternative (set)
+<list> := ( | empty );
+            ^
+  Error at line 61:  Empty alternative (set)
+<list> := ( empty | );
+                    ^
+  Error at line 62:  Empty alternative (set)
+<list> :=  | empty ;
+           ^
+  Error at line 63:  Empty alternative (set)
+<list> :=  empty | ;
+                   ^
+  Error at line 68:  Reference '$2' out of range
+1..9  = **$1**$2**;
+              ^
+  Error at line 69:  Reference to unknown formal '$y'
+F(x) := **$x**$y**;
+              ^
+  Error at line 74:  Illegal function call name: 'bad!'
+do it         = bad!(argument);
+                ^
+  Error at line 75:  Call to unknown extension 'unknown.unknown'
+bad extension = unknown.unknown(argument);
+                ^
+  Error at line 76:  Call to unknown function 'unknown'
+bad function  = unknown(argument);
+                ^
+  Error at line 77:  Too few arguments passed to 'SendDragonKeys' (minimum of 1 required)
+too few       = SendDragonKeys();
+                ^
+  Error at line 78:  Too many arguments passed to 'ButtonClick' (maximum of 2 allowed)
+too many      = ButtonClick(1,2,3,4);
+                ^
+  Error at line 83:  Alternative cannot contain an optional word
+<list> := ( one two [optional]  bad ); panic = to here;
+                     ^
+  Error at line 84:  Alternative cannot contain a variable
+<list> := ( one two <other>     bad ); panic = to here;
+                    ^
+  Error at line 85:  Alternative cannot contain a variable
+<list> := ( one two <_anything> bad ); panic = to here;
+                    ^
+  Error at line 86:  An inline list cannot be combined with anything else to make up an alternative
+<list> := ( one two (one|two)   bad ); panic = to here;
+                    ^
+  Error at line 87:  A range cannot be combined with anything else to make up an alternative
+<list> := ( one two 1..99       bad ); panic = to here;
+                    ^
+  Error at line 89:  A range alternative may not have associated actions
+<list> := ( 1..99     = actions );     panic = to here;
+            ^
+  Error at line 90:  A range alternative may not have associated actions
+<list> := ( 1..99 )   = actions;       panic = to here;
+            ^
+  Error at line 91:  A range alternative may not have associated actions
+<list> := (( 1..99 )) = actions;       panic = to here;
+             ^
+  Error at line 93:  A range alternative must be the only alternative in an alternative set
+<list> :=  1..99     | other;          panic = to here;
+           ^
+  Error at line 94:  A range alternative must be the only alternative in an alternative set
+<list> :=  (1..99)   | other;          panic = to here;
+            ^
+  Error at line 95:  A range alternative must be the only alternative in an alternative set
+<list> :=  (1..99    | other);         panic = to here;
+            ^
+  Error at line 96:  A range alternative must be the only alternative in an alternative set
+<list> :=  ((1..99)) | other;          panic = to here;
+             ^
+  Error at line 98:  Nested in-line lists with associated actions may not themselves contain actions
+<list> := ( ( 1 = 2) = 3);             panic = to here;
+            ^
+  Error at line 99:  Nested in-line lists with associated actions may not themselves contain actions
+<list> := (( 1 = 2 )) = 3;             panic = to here;
+           ^
+  Error at line 100:  An inline list cannot be combined with anything else to make up an alternative
+<list> := ( one ( 1 = 2) = 3);         panic = to here;
+                ^
+  Error at line 104:  A range alternative may not have associated actions
+<list> := ( 1..99 = $1 );              panic = to here;
+            ^
+  Error at line 105:  Alternative cannot contain a variable
+<list> := ( <other> );                 panic = to here;
+            ^
+  Error at line 106:  At least one term must not be optional or <_anything>
+<list> := ( <_anything> );             panic = to here;
+            ^
+panic = 'to' 'here'
+  45 errors -- file not converted.
+
+==============================
+Converting common_errors_1.vcl
+  Error at line 11:  Wanted an action, '(', or ';' but found '='
+another = keystrokes and more keystrokes;
+        ^
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 15:  Wanted an action, '(', ')', or ',' but found '|'
+another (red | blue) = keystrokes and more keystrokes;
+             ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 19:  Wanted an action, '(', or ';' but found '['
+another [optional] = keystrokes and more keystrokes;
+        ^
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 24:  Wanted an action, '(', or ';' but found '='
+another = keystrokes and more keystrokes;  
+        ^
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 28:  Wanted an action, '(', ')', or ',' but found '|'
+another (red | blue) = keystrokes and more keystrokes;
+             ^
+    Did you forget a ')' or have an extra'('?
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+  Error at line 32:  Wanted an action, '(', or ';' but found '['
+another [optional] = keystrokes and more keystrokes;
+        ^
+    Did you forget a ';' at the end of your (last) statement?
+
+resynchronize = 'here'
+<list> := (red | blue another = 'keystrokes' 'and' 'more' 'keystrokes');
+resynchronize = 'here'
+  Error at line 42:  An inline list cannot be combined with anything else to make up an alternative
+another (red | blue) = keystrokes and more keystrokes;
+        ^
+  Error at line 46:  Alternative cannot contain an optional word
+another [optional] = keystrokes and more keystrokes;
+         ^
+  Error at line 50:  An inline list cannot be combined with anything else to make up an alternative
+<list> := (red | blue) #;
+          ^
+  Error at line 54:  An inline list cannot be combined with anything else to make up an alternative
+<list> := (red | blue) #;
+          ^
+  Error at line 58:  An inline list cannot be combined with anything else to make up an alternative
+<list> := (red | blue) #;
+          ^
+resynchronize = 'here'
+include Fred.vch another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+include Fred.vch another (red | blue) = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+include Fred.vch another [optional] = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+resynchronize = 'here'
+$set variable value another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+$set variable value another (red | blue) = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+$set variable value another [optional] = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+resynchronize = 'here'
+  Error at line 95:  Context statements may not contain '='s
+common command = keystrokes #;
+               ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+  Error at line 99:  Context statements may not contain '='s
+foo4(argument) := keystrokes #;
+                ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+  Error at line 103:  Context statements may not contain '='s
+<list> := red | blue #;
+        ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+  Error at line 107:  Context statements may not contain '='s
+<list> := (red | blue) #;
+        ^
+    Did you forget a ';' at the end of this statement?
+    Did you forget to quote a word ending with ':'?
+
+include "fred.vch" this is a context:
+resynchronize = 'here'
+$set variable value this is a context:
+resynchronize = 'here'
+  Error at line 124:  Wanted an action, '(', or ';' but found end of file
+
+^
+    Did you forget a ';' at the end of your (last) statement?
+
+  16 errors -- file not converted.
+
+==============================
+<unknown> times = 'actions'
+(blue | <unknown> times = 'actions') red = 'actions'
+Converting forward_reference.vcl
+  Error at line 5:  Reference to undefined variable '<unknown>'
+<unknown> times = actions;
+^
+  Error at line 6:  Reference to undefined variable '<unknown>'
+(blue | <unknown> times = actions) red = actions;
+        ^
+  2 errors -- file not converted.
+
+==============================
+<list> := (dummy);
+Converting common_errors_3.vcl
+  Error at line 12:  Wanted an action or ';' but found '('
+<list> = (Fred | mark);
+         ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 16:  Wanted an action, '(', or ';' but found '|'
+<list> = Fred | mark;
+              ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 21:  Wanted an action or ';' but found '('
+<list> = (Fred = 1 | mark);
+         ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 25:  Wanted an action, '(', or ';' but found '='
+<list> = Fred = 1 | mark;
+              ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 30:  Wanted ':=' but found '='
+bar0() = action;
+       ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+bar1 (argument) = 'action'
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 39:  Wanted ':=' but found '='
+bar2(argument, argument) = action;
+                         ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 49:  Unknown directive '$include'
+$include "Fred.vch";
+^
+resynchronize = 'here'
+  Error at line 53:  Unknown directive 'set'
+set variable value;
+^
+resynchronize = 'here'
+  Error at line 63:  Wanted a term or '=' but found ';'
+include environment_ $COMPUTERNAME .vch;
+                                       ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 67:  $set directive requires 2 words: $set parameter value;
+$set variable;
+             ^
+resynchronize = 'here'
+  Error at line 71:  Wanted a term, a word, ';', or '=' but found ','
+$set numbers one, two, three, four;
+                ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 102:  Wanted ']' but found an unquoted word
+only [one word] may be optional = sadly;
+          ^
+resynchronize = 'here'
+  Error at line 105:  Wanted a word but found '('
+no [(red | blue)] = menus;
+    ^
+resynchronize = 'here'
+  Error at line 108:  Range terms may not be optional
+can [1..99] ranges be = optional;  # Perl compiler has bug and misses this
+     ^
+resynchronize = 'here'
+  Error at line 111:  Variable terms may not be optional
+can [<list>] lists be = optional;  # Perl compiler has bug and misses this
+     ^
+resynchronize = 'here'
+  Error at line 114:  Variable terms may not be optional
+can [<_anything>] dictation be = optional;  # Perl compiler has bug and misses this
+     ^
+resynchronize = 'here'
+  Error at line 117:  Wanted a word but found '['
+nested [[optional]] = forbidden;
+        ^
+resynchronize = 'here'
+  Error at line 126:  Illegal variable 'foo': variables must start with '<' and end with '>'
+foo := action;
+^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 131:  Wanted an action or ';' but found '('
+A command = "function"(argument);
+                      ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 136:  Illegal formal name: 'illegal$'
+function(illegal$) := action;
+         ^
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 141:  Wanted an action, '(', or ';' but found '['
+a command = call[argument];
+                ^
+    Did you forget a ';' at the end of your (last) statement?
+
+another = 'keystrokes' 'and' 'more' 'keystrokes'
+resynchronize = 'here'
+  Error at line 146:  Unterminated quotation: 's bookshop:
+Fred's bookshop:
+    ^
+resynchronize = 'here'
+  Error at line 153:  Wanted a term, a word, ';', or '=' but found end of file
+
+^
+  23 errors -- file not converted.

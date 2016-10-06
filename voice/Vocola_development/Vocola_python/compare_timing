@@ -1,0 +1,27 @@
+#!/bin/csh -f
+
+setenv COMPUTERNAME mdl
+
+rm -f target_old/* target_new/*
+
+set source = my_source
+mkdir delta/$source
+
+foreach i ($source/*.vcl)
+    echo "===== $i ====="
+
+    rm -f $source/vcl2py_log.txt
+    time perl ~/voice/Vocola_development/main/src/vcl2py.pl -extensions extensions.csv "$i" target_old >& "delta/${i}_old"
+    touch $source/vcl2py_log.txt
+    cat $source/vcl2py_log.txt > "delta/${i}_log_old"
+
+    rm -f $source/vcl2py_log.txt
+    time python full.py -extensions extensions.csv "$i" target_new >& "delta/${i}_new"
+    time python full.pyo -extensions extensions.csv "$i" target_new >& "delta/${i}_new"
+    touch $source/vcl2py_log.txt
+    cat $source/vcl2py_log.txt > "delta/${i}_log_new"
+
+    diff "delta/${i}_old" "delta/${i}_new"
+    diff "delta/${i}_log_old" "delta/${i}_log_new"
+end
+
