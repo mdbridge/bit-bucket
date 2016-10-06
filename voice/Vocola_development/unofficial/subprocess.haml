@@ -1,0 +1,89 @@
+- content_for :title do
+  The Subprocess extension: running subprocesses
+
+
+.downloads
+  %a{href: "subprocess.zip"} Download Subprocess extension
+
+
+:markdown
+  This extension allows you to create and run subprocesses.  You can
+  either wait for your subprocess to finish or let it continue running
+  in the background.
+
+
+%h2 Starting subprocesses asynchronously
+:markdown
+  `Subprocess.Async` spawns an instance of the executable at the given
+  path in the background without waiting.  Here's how I use it to
+  start my X server:
+  
+      launch X = Subprocess.Async(c:\cygwin\bin\XWin.exe, XWin.exe,
+                                  -ac, -multiwindow, -clipboard);
+  
+  The fine print for this procedure:
+  
+  + takes the name of an executable followed by one or more arguments
+  + the executable must be a .exe file
+  + does not wait for the created subprocess to finish or the current
+    window to change
+  + arguments is a list of arguments; first argument must be the name
+    of the executable (not a path)
+  + if the executable writes to standard out, a black console window will be 
+    created 
+
+
+%h2 Starting subprocesses synchronously
+:markdown
+  `Subprocess.Sync` is similar but waits for the created subprocess to
+  finish before returning.  Normally `Subprocess.Sync` raises a
+  runtime error if a nonzero exit code is returned by the subprocess.
+  
+  If you wish to handle any errors yourself, add "-" to the end of the
+  executable path.  In this case, `Subprocess.Sync` simply sets the
+  variable `exit_code` to the subprocess's exit code then returns.
+  This lets you check the subprocess's exit status by calling
+  `Variable.Get(exit_code)`.
+  
+
+%h2 Alternative simpler syntax
+:markdown
+  If your arguments do not contain spaces, you may find a convenience
+  procedure, `Subprocess.Run`, easier to use.  Here's the X server
+  command again using `Subprocess.Run`:
+
+      launch X = 
+          Subprocess.Run(c:\cygwin\bin\XWin.exe, "-ac -multiwindow -clipboard");
+
+  `Subprocess.Run` automatically determines the name of your
+  executable and splits its second argument into the executable's
+  arguments by splitting at spaces.  `Run` can also run subprocesses
+  synchronously: just append "!" to the end of the executable path
+  ("-!" if you want to handle errors yourself).
+
+
+%h2 Shell commands
+:markdown
+  An experimental procedure, `Subprocess.System`, is available.  It
+  attempts to run its single argument as a shell command.  It now
+  (4/17/2016) throws a runtime error if the command returns a non-zero
+  exit code.  Here's a test command using it:
+  
+      wait for me = Subprocess.System("timeout 5 && timeout 5");
+
+  
+%h2 How Subprocess's behavior differs from AppBringUp's
+:markdown
+  `AppBringUp` is meant to call up a program with a GUI window and
+  remember that window for future use with `AppSwapWith`.  To do that,
+  Dragon switches focus to a Dragon window (the results box in old
+  versions I believe), runs your command in the background then waits
+  for the focus to change to the new window.  As soon as the focus
+  changes, it remembers the window ID of the window with focus and
+  returns.  If the focus never changes, Dragon times out after
+  something like 30 seconds and returns anyways.
+
+  Because of this behavior, you should only use `AppBringUp` for
+  executables that create windows or change focus.  Because Subprocess
+  does not wait for focus to change, it can be used even for
+  executables that do not create Windows or change focus.

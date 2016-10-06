@@ -1,0 +1,65 @@
+- content_for :title do
+  The Vocola extension: displaying text and stopping commands early
+
+
+.downloads
+  %a{href: "vocola.zip"} Download Vocola extension
+  \[requires Vocola version 2.8.5 or higher]
+
+
+:markdown
+  This extension currently allows displaying text in the "Messages
+  from NatLink" window and stopping processing of a Vocola command
+  sequence, either silently or with an error.
+
+
+  ## Displaying text
+
+  The procedure `Vocola.Print(`*message*`)` displays *message* in the
+  "Messages from NatLink" window in black.
+  `Vocola.Alert(`*message*`)` is similar but shows *message* in red.
+
+
+  ## Stopping commands early
+
+  If one of your commands encounters an error, you may wish to
+  immediately stop processing that command (and any following commands
+  in the current command sequence) and display an error.  You may do
+  this by calling `Vocola.Error(`*message*`)`.  This will generate an
+  error message in the "Messages from NatLink" window in red similar
+  to the following:
+  
+      While executing the following Vocola command:
+         'test error'
+      defined at line 201 of _test_extensions.vcl,
+      the following error occurred:
+         VocolaRuntimeError: your message here
+
+  `Vocola.Error` is an extension function rather than a procedure, so
+  it may be used in value-returning user functions.
+
+
+  Sometimes you may just want to silently stop processing.
+  `Vocola.Abort()`, an extension procedure, takes care of this.  It
+  does not display any messages.  One common use of this procedure is
+  to allow user choice in otherwise fixed lists.  For example, here is
+  one of my PowerPoint commands:
+
+      <shape> := ( shape            = Vocola.Abort()  # user pick
+                 | line             = {down_2} 
+                 | arrow            = {down_2}{right} 
+                 | rectangle        = {down_3} 
+                 | oval             = {down_4}{right}
+                 | curved rectangle = {down_3}{right} 
+                 | left  brace      = {down_7}{right_4}
+                 | right brace      = {down_7}{right_5}
+                 );
+      
+      draw <shape> = Home() sh $1 {enter};
+
+  For every choice except "shape", the appropriate shape is selected
+  from the shape menu and created.  For "shape", the shape menu is
+  pulled down but then the command is stopped before it can send
+  {enter} to close the menu and create the shape.  The user can then
+  send arrow keys followed by enter to choose whatever shape they want
+  from the extensive shape menu.

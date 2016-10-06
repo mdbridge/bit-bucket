@@ -1,0 +1,35 @@
+- content_for :title do
+  The Variable extension: session-persistent variables
+
+
+.downloads
+  %a{href: "variable.zip"} Download Variable extension
+
+
+:markdown
+  This simple extension allows you to remember things between commands
+  during the same session.  For example, you could remember the
+  current contents of the clipboard (obtained via `Clipboard.Get()`)
+  for inserting later via a different command.  By session, it is
+  meant that all these variables are forgotten each time you exit
+  Vocola or use the "load extensions" command.
+  
+  The procedure `Variable.Set(`*name*`,` *value*`)` sets the variable
+  *name* to the value *value* and the function
+  `Variable.Get(`*name*`)` retrieves the current value of the variable
+  *name* or causes a runtime error if that variable hasn't been set.
+  If you aren't sure if *name* has been set yet, you can provide a
+  default value (e.g., `Variable.Get(`*name*`, `*default*`)`) and the
+  provided default value will be returned instead of a runtime error
+  occurring if *name* has not been set yet.
+  
+  If you want to test the extension, you can use the following Vocola
+  commands:
+  
+      <v> := (first | second | third);
+      
+               set  <v> value 1..10 = Variable.Set  ($1, $2);
+             unset  <v> value       = Variable.Unset($1);
+      
+               show <v> value       = Variable.Get($1, UNDEFINED);
+      unsafely show <v> value       = Variable.Get($1);

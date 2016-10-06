@@ -1,0 +1,102 @@
+- content_for :title do
+  The Keys extension: an alternative method of sending keystrokes
+
+
+.downloads
+  %a{href: "keys.zip"} Download Keys extension
+
+
+:markdown
+  Here is a Vocola 2 extension, `Keys`.  It uses a different method of
+  generating synthetic keystrokes and mouse events than
+  `SendDragonKeys`, namely the Windows' `SendInput` call.  This allows
+  it to generate events unavailable with `SendDragonKeys` including:
+  
+    * Windows key shortcuts (e.g., `{win+shift+right}` to move current
+      window to other monitor) (*)
+  
+    * Independent presses and releases of keys and mouse buttons
+      (e.g., use one voice command to press the left mouse button,
+      then move the mouse, then use a second voice command to release
+      the mouse button)
+  
+    * Presses of new keys available on modern keyboards like
+      `{VolumeMute}` or `{MediaNextTrack}`
+  
+    * Key combinations like `@` and `{ctrl+@}` that SendDragonKeys
+      cannot send directly due to a [Dragon bug].
+
+  (*) - As of DNS 12, Windows key shortcuts can also be pressed using
+  `SendSystemKeys`, but not `SendDragonKeys`, using modifier name
+  "win"; e.g., `SendSystemKeys({win+shift+left})`.
+
+   [DNS bug]: https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=20099  
+
+
+
+  ## SendInput
+
+  For now, Keys has one procedure, `SendInput`, whose usage is a
+  superset of that of `SendDragonKeys` (with English key names).  Here
+  are some examples:
+
+      say hello world 
+          = Keys.SendInput("Hello world!{enter}I am @ home{! 4}{enter}");
+      
+      other monitor   = Keys.SendInput({win+shift+right});  # Windows 7+ shortcut
+      mute volume     = Keys.SendInput({VolumeMute});
+      
+      (hold|release) the control key = Keys.SendInput({ctrl_$1});
+        # really the primary mouse button:
+      (hold|release) the left button = Keys.SendInput({LeftButton_$1});
+      
+      type naïve the hard way 
+          = Keys.SendInput(na{alt_hold}
+                               {numkey0}{numkey2}{numkey3}{numkey9}
+                             {alt_release}ve);
+      
+      # remember Vocola 2 & Dragon use the Windows-1252 code page:
+      type naïve the easy way 
+          = Keys.SendInput(naïve);
+
+  `SendInput` is immune to the [doubling/dropping bug][dropping] and
+  has speed comparable to `SendDragonKeys` rather than the much slower
+  `SendSystemKeys`.  The main drawback is that you cannot use
+  `SendInput` to send events to elevated windows when User Account
+  Control (UAC) is turned on.  Lesser drawbacks are that, unlike
+  `SendDragonKeys`, already pressed keys do modify the sent characters
+  (e.g., held shift key makes a into A) and the keys are sent
+  completely asynchronously so waits may be required when mixing
+  `SendInput` and other actions.  I'm also not sure that every
+  character works correctly on non-standard US keyboards yet
+  (`SendDragonKeys` is known to fail here).  Note also that you cannot
+  invoke `{win+l}` (i.e., lock computer) or `{ctrl+alt+Del}` with any
+  form of synthetic events for security reasons.
+
+  Follow the [usual instructions][installing] for installing Vocola 2
+  extensions; note that all three of the included files must be placed
+  in the `extensions` directory in order for the extension to work.
+
+   [dropping]:   https://www.knowbrainer.com/forums/forum/messageview.cfm?catid=4&threadid=15820
+   [installing]: http://vocola.net/v2/UsingExtensions.asp
+    
+
+
+  ## New keys available with SendInput
+
+  Here are some of the new keys available for pressing:
+
+  `Win`, `LeftWin`, `RightWin`, `Apps`, `F17`, `F18`, `F19`, `F20`,
+  `F21`, `F22`, `F23`, `F24`, `BrowserBack`, `BrowserFavorites`,
+  `BrowserForward`, `BrowserHome`, `BrowserRefresh`, `BrowserSearch`,
+  `BrowserStop`, `LaunchApp1`, `LaunchApp2`, `LaunchMail`,
+  `LaunchMediaSelect`, `MediaNextTrack`, `MediaPlayPause`,
+  `MediaPreviousTrack`, `MediaStop`, `VolumeDown`, `VolumeMute`,
+  and `VolumeUp`
+  
+  As always, key names are case insensitive.  You do not need to have
+  a key physically present on your keyboard in order to virtually
+  press it.  `{Apps}` is a new modifier, the Windows applications key,
+  which has a small picture of selecting from a menu on my keyboard at
+  least.  I believe it is usually equivalent to the menu you get when
+  you do a right-click in most applications (also `{shift+f10}`).

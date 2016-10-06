@@ -1,0 +1,52 @@
+- content_for :title do
+  The Excel extension: An example of controlling Excel through VBA
+
+
+.downloads
+  %a{href: "Excel.zip"} Download Excel extension
+
+
+:markdown
+  Here's a simple example extension that controls Excel through Visual
+  Basic for Applications (VBA).  I created this extension originally
+  because Excel was missing a keyboard command for repositioning
+  charts, but expanded it after getting tired of Microsoft changing
+  the keyboard commands for charts seemingly every Excel version.
+  
+  When you call the extension, it opens up a COM connection to the
+  currently open and in focus Excel application instance:
+  
+      def open_Excel():
+          return win32com.client.GetObject(Class="Excel.Application")
+  
+  Using this connection, it can manipulate Excel using the appropriate
+  VBA calls.  Usually the first thing I want to do in this extension
+  is activate the current chart; if no chart is current, I try and use
+  the first embedded chart on the active sheet:
+  
+      def open_Excel_with_active_chart():
+          xlApp = open_Excel()
+          if xlApp.ActiveChart == None:
+              # If no chart currently active, try and use first embedded
+              # chart on active sheet:
+              xlApp.ActiveSheet.ChartObjects(1).Activate()
+          return xlApp
+  
+  As an example, here's the code for Excel.MoveChart, which moves the
+  currently selected chart so it's top is at (x, y):
+  
+      # Vocola procedure: Excel.MoveChart
+      def move_chart(x, y):
+          xlApp = open_Excel_with_active_chart()
+          xlApp.ActiveChart.Parent.Left = int(x)
+          xlApp.ActiveChart.Parent.Top  = int(y)
+  
+  I personally use this procedure to tile charts across sheets:
+  
+      place chart (medium=580|large=580|paper=795) 1..4 = 
+              Excel.MoveChart(Eval('6 + $1 * ($2-1)'), 70);
+  
+  Creating the Python/VBA code to do something usually involves
+  googling for VBA examples/definitions or recording a Excel VBA macro
+  that does what you want then inspecting the result; converting the
+  VBA code to win32com Python; and some some trial and error.

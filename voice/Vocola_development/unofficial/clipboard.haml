@@ -1,0 +1,124 @@
+- content_for :title do
+  The Clipboard extension: getting and setting the clipboard
+
+
+.downloads
+  %a{href: "clipboard.zip"} Download Clipboard extension
+
+
+:markdown
+  Here are some routines to read from and set the Windows clipboard.
+  There are two sets of routines that vary in how they treat the
+  contents of the clipboard as well as a routine for waiting for the
+  clipboard to change.
+
+
+
+  ## Extended ASCII (aka, Windows-1252)
+
+  The first set only handles the Windows character set, not Unicode.
+  The `Clipboard.Get()` function returns the contents of the Windows
+  clipboard converted to the TEXT clipboard format and the
+  `Clipboard.Set(`*text*`)` procedure sets the clipboard to *text*.
+  If the clipboard doesn't contain text, `Clipboard.Get()` returns ""
+  and `Clipboard.Get(`*default*`)` returns *default*.  I believe
+  Unicode characters get turned into ?'s.  Sample Vocola commands
+  using these routines:
+   
+      show clipboard = MsgBoxConfirm('"' Clipboard.Get() '"', 64, 
+                                     "Current contents of clipboard");
+       
+      set clipboard to <_anything> = Clipboard.Set($1);
+   
+  Combining the two routines can do fun things like underscore the
+  current selection (e.g., `X Y Z` becomes `X_Y_Z`):
+   
+      include "string.vch";
+      
+      underscore that = 
+          {ctrl+x} 
+          Clipboard.Set( Replace(Clipboard.Get()," ","_") ) 
+          {ctrl+v};
+  
+  (The latest version of `string.vch` can be found in the Vocola 2
+  samples directory.)  Note that Vocola 2 uses Windows-1252 as its
+  character set because that is what Dragon uses.  Thus, you can write
+  Vocola 2 commands like:
+  
+      set an accent = Clipboard.Set(naïve);
+  
+  and it will work.
+
+
+
+  ## Unicode
+
+  The second set of routines deals with Unicode.  In order to encode
+  Unicode so that Vocola 2 can deal with it, these routines convert
+  it to/from UTF-8.  UTF-8 (or Unicode) cannot be entered directly in
+  Vocola 2 source code or sent as keyboard input (e.g., directly or
+  via `SendDragonKeys` or `SendSystemKeys`).  You can, however, use
+  `Eval` to create UTF-8.  For example, you can write:
+   
+      UTF8(text) := EvalTemplate('u"$text".encode("UTF-8")');
+  
+      paste Greek Delta    = Clipboard.SetUTF8(UTF8(\u03b4)) {ctrl+v};
+      paste Greek sentence =
+          Clipboard.SetUTF8(
+              UTF8("A lowercase Greek delta is written \u03b4"
+                   " and an uppercase one is written \u0394."))
+          {ctrl+v};
+  
+  The input text to UTF8 is in Windows-1252 supplemented with Unicode
+  character specifications of the form \uffff or \Uffffffff where the
+  f's are hexadecimal digits specifying the code point of a Unicode
+  character.  You can get the input for `UTF8(`-`)` by copying some
+  Unicode text from the web or a program like Word into the clipboard
+  then issuing the following command.
+  
+        # this escapes all non-ASCII, using \xFF for Windows-1252 and
+        # \uUUUU otherwise
+      show Unicode clipboard =
+          MsgBoxConfirm(
+              EvalTemplate("%s.decode('utf-8').encode('unicode-escape')",
+                           Clipboard.GetUTF8()), 
+              64, 
+             "Current Unicode contents of clipboard");
+        
+  As a convenience, the routines
+  `Clipboard.`{`Save`,`Restore`}`(`*name*`)` can be used to save and
+  restore the clipboard via the variable `clipboard:`*name* (via the
+  Variable extension; *name* defaults to `save` if omitted).  This
+  saving and restoring is done using Unicode so should leave the
+  clipboard undisturbed if it contains text (as opposed to say an
+  image).  We can use these routines to improve our "underscore that"
+  command so that it does not modify the clipboard as a side effect if
+  it contains text:
+  
+      underscore that = Clipboard.Save() {ctrl+x} 
+                        Clipboard.Set( Replace(Clipboard.Get()," ","_") )
+                        {ctrl+v} Clipboard.Restore();
+
+
+
+  ## Waiting for the clipboard to change
+
+  It can be useful when dealing with slow applications (e.g., due to a
+  high latency connection to a remote application) to be able to wait
+  for the clipboard to change.
+  `Clipboard.WaitForNew(`*unlikely*`[,`*timeout*]`)` does this,
+  waiting either for the clipboard to change from *unlikely* or for
+  *timeout* seconds (defaults to 20 seconds if omitted) to elapse.
+  Its usage typically looks like:
+  
+      ... Clipboard.Set(24578245) {ctrl+c} Clipboard.WaitForNew(24578245)
+      ... Clipboard.Get() ...
+
+
+
+  ## Errors
+
+  The Windows clipboard functionality is fairly temperamental.
+  Occasionally, for reasons I don't understand, getting the clipboard
+  produces an error.  Usually, this error stops occurring after a
+  while.

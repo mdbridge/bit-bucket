@@ -1,0 +1,28 @@
+- content_for :title do
+  The Date extension: getting the current time/date
+
+
+.downloads
+  %a{href: "date.zip"} Download Date extension
+
+
+:markdown
+  Here's a very simple extension for getting the current time and/or
+  date in the local time zone.
+  
+  Sample Vocola commands using the extension:
+  
+      what       day  is it = Date.Now();
+      what short day  is it = Date.Now("%m/%d/%y");
+      what       time is it = Date.Now("%I:%M %p");
+      
+      tell me the time = 
+          TTSPlayString(Date.Now("the time is %H hours and %M minutes"));
+  
+  The default format is December 23, 2010; the second command above
+  produces 12/23/10, and the third 11:04 AM at this moment.  See
+  [here](http://docs.python.org/library/time.html#time.strftime) for
+  the codes you can pass to control the formatting.
+  
+  Note that `Date.Now` is an extension function so you can write
+  things like `Eval( Date.Now("%Y")+1 )` for next year.

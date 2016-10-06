@@ -1,0 +1,551 @@
+- content_for :title do
+  Sample editing commands for Win32Pad 
+
+
+:markdown
+  I realized in 2012 that there isn't any good voice-controllable
+  editor/macro set for new (mostly) hands-free programmers/Vocola
+  users.  Notepad and WordPad support select-and-say but
+  select-and-say alone isn't sufficient for editing programs.
+  Moreover, they lack crucial primitives (line numbers, searching
+  backwards) needed to implement voice commands for editing programs.
+  More powerful editors tend to either lack select-and-say and/or
+  require too much configuration/learning to be a convenient starter
+  editor.
+
+  I discovered [Win32Pad][WP], which sits in the sweet spot for a
+  (programmer) starter editor.  It supports select-and-say, line
+  numbers, decent search, and the Windows-1252 charset (what Dragon
+  and Vocola use).  Combined with some decent voice commands, it
+  should be a perfectly usable editor for small programs.  Biggest
+  limitations are probably only one file per instance and no syntax
+  coloring.
+
+  You can download Win32Pad [here][DL].  Here I give two versions of
+  starter editing commands for Win32Pad written in Vocola.  You will
+  want to turn off "smart home" (see the Win32Pad options) for these
+  commands to work best.
+
+    [WP]: http://www.gena01.com/win32pad/
+    [DL]: http://www.gena01.com/win32pad/download.shtml
+
+
+  ## Version 0.1: Simple but only supports line numbers up to 99
+
+.downloads
+  %a{href: "Win32Pad_0.1.1.zip"} Download version 0.1.1
+
+:markdown
+  ### Part I: Combinable editing operations
+
+  Features of version 0.1 part I include:
+
+  * Concise commands for the usual Windows editing keys:
+    "right 3", "last" (end of line), "down", "shift right 3", "back
+    3", "flee 3" (go back 3 words)
+
+  * Navigating by line numbers: say "go #" to go to line number #.
+    Use "toggle line numbers" to turn on line numbers the first time.
+    For this version, # is limited to 1..99.
+
+  * Navigating by moving to the (nth) next/previous occurrence of a string:
+    "leap semicolon", "retreat Alpha", "leap after second quote",
+    "advance ..." (... = anything)
+
+  * Inserting text:
+    "key semicolon", "key big Alpha", "dictate ..." 
+   
+  * Command sequences: you can string together up to four commands
+    from part I together.  Examples: 
+    * "last key semicolon" to add a ';' to the current line
+    * "leap 3 erase key 4" to replace next '3' with a '4'
+    * "retreat after paren erase last" to temporarily go back to remove
+      an extra space after a '('
+    * "go 1 leap colon kill back" to remove " include" from 1st line
+      of this subsection ("Features of version 0.1 part I include:")
+      assuming it is line # 1 ("kill" deletes backwards to start of
+      word before cursor)
+
+  The code for part I (win32pad.vcl) follows; hopefully it is
+  sufficiently self-documenting.
+
+      ###
+      ### Win32Pad voice commands, part I
+      ###
+      ### Version 0.1.1: line numbers limited to 0..99, word boundaries are Win32Pad's
+      ###
+      
+      $set MaximumCommands 4;  # allow up to four of these commands per utterance
+      
+      
+      ##
+      ## Commands that may optionally take modifiers like shift & control:
+      ##
+      ##     Many useful editing actions in Windows are just simple keyboard
+      ## chords (e.g., {ctrl+shift+right}), possibly repeated some number of
+      ## times.
+      ##
+      ## Often adding shift   to a key means extend/create selection,
+      ##   and adding control to a key means move by a higher unit (e.g., by
+      ##         words instead of characters).
+      ##
+      
+      <modifiers> := (
+             shift           = shift+
+           | control         = ctrl+
+           | control shift   = ctrl+shift+
+           | shift   control = ctrl+shift+
+      );
+      
+        # chords for which repetition doesn't make sense:
+      <unrepeatable_chord> := (
+           # "end" misrecognized too frequently so use first/last instead:
+             (first      |start-of-line) = home
+           | (last       |end-of-line)   = end
+      
+           | (top-of-file|top-of-buffer) = ctrl+home
+           | (end-of-file|end-of-buffer) = ctrl+end
+      );
+                  <unrepeatable_chord> = {  $1};
+      <modifiers> <unrepeatable_chord> = {$1$2};
+      
+      <chord> := (
+              # moving by single characters:
+             soar = up          # "up" by itself sounds too much like noise
+           | down | left | right
+      
+              # erasing by single characters:
+           | back = backspace | erase = del
+      
+           | tab     # moving by fields (add shift for move back a field)
+           | space   # moving by screenfuls
+           | enter   # special case (e.g., pagers)
+      
+              # moving by screenfuls:
+           | page up = PgUp | page down = PgDn
+      
+              # moving by words:
+           | flee = ctrl+left | start-word = ctrl+right
+      );
+                  <chord>        = {  $1   };
+                  <chord> 1..100 = {  $1_$2};
+      <modifiers> <chord>        = {$1$2   };
+      <modifiers> <chord> 1..100 = {$1$2_$3};
+      
+      
+      ##
+      ## Simple cutting and copying actions:
+      ##
+      
+      (copy  that | copy region)    = {ctrl+c};
+      (cut   that | destroy region) = {ctrl+x};
+      (paste that | yank)           = {ctrl+v};
+      
+      
+      <kill_word> := ( kill = ctrl+shift+left | pull-word = ctrl+shift+right );
+      
+      <kill_word>        = {$1   }{ctrl+x};
+      <kill_word> 1..100 = {$1_$2}{ctrl+x};
+      
+      
+      <direction> := ( start = {shift+home} | rest = {shift+end}{shift+left} );
+      
+      copy      start       = {shift+home}            {ctrl+c} {right};
+      copy      rest        = {shift+end}{shift+left} {ctrl+c} {left};
+      
+      highlight <direction> = $1;
+      destroy   <direction> = $1 {ctrl+x};
+      
+      
+      ##
+      ## Navigating by line numbers:
+      ##
+      
+      toggle line numbers = {ctrl+l};
+      
+      <r> := 0..99;
+      
+      LineMod(n) := {ctrl+g}$n{enter};
+      
+      (go | row | line) <r> = LineMod($2);  # moves to the start of the given line
+      
+      
+      ##
+      ## Moving by occurrences of text:
+      ##
+      
+      _Leap(direction, set_target, times) :=
+              {shift+right}             # fake selecting our target at point
+              {ctrl+f}                  # bring up find dialog box
+              {alt+c}- {alt+w}-         # options: not whole words, case insensitive
+              {alt+$direction}          # set direction to find
+              {alt+n} $set_target       # set target for find
+              Repeat($times,
+                {enter}                 # do a find (may produce an error dialog box)
+                {alt+w}{space} {alt+w}- # dismiss error dialog box if any
+              )
+              {esc}                     # dismiss find dialog box
+              {left}                    # exit selection, leaving point at start of
+              ;                         #   target or original if target not found
+      
+      <leap>  := ( leap = "d" | retreat = "u" );
+      <count> := ( first = 1 | second = 2 | third = 3 | fourth = 4 );
+      
+      <leap>               <printable> = _Leap($1, $2, 1 );
+      <leap> after         <printable> = _Leap($1, $2, 1 ) {right};
+      <leap>       <count> <printable> = _Leap($1, $3, $2);
+      <leap> after <count> <printable> = _Leap($1, $3, $2) {right};
+      
+      
+      advance  <_anything> = _Leap(d, $1, 1);
+      fallback <_anything> = _Leap(u, $1, 1);
+      
+      
+      ##
+      ## Inserting text:
+      ##
+      
+      key     <printable> = $1;  # any printable character
+      dictate <_anything> = $1;  # arbitrary text (unformatted)
+      
+      
+      ##
+      ## Miscellaneous:
+      ##
+      
+      escape      = {esc};
+      
+      undo [that] = {ctrl+z};
+      redo [that] = {ctrl+shift+z};
+      
+      
+      ##
+      ## Menu accelerators | Emacs name:
+      ##
+      
+      (file open     |find file)     = {ctrl+o} WaitForWindow("Open")
+                                       {tab}{alt+down}{end}{tab}{alt+n}; # all files
+      
+      
+      ([file] save as|write file)    = {ctrl+shift+s};
+      (file save     |save file)     = {ctrl+s};
+      
+      
+      new file                       = {ctrl+n};
+      new instance                   = {ctrl+shift+n};
+      please (reload |revert buffer) = {ctrl+r};
+      
+      insert file                    = {ctrl+i};
+      search and replace             = {ctrl+h};
+      
+      word wrap mode                 = {ctrl+w};
+      
+      
+      
+      ##
+      ## All printable characters in ASCII order with optional short names:
+      ##
+      
+      <printable> := (
+             space             = " "
+           |  !  | bang        =  !
+           | '"' | quote       = '"'
+           | "#" | pound       = "#"
+           | "$" | dollar      = "\$"
+           |  %  | percent     =  %
+           |  &
+           | "'" | apostrophe  = "'" | single = "'"
+           | "(" | paren       = "("
+           | ")" | close paren = ")"
+           |  *  | asterisk    =  *  | star = *
+           |  +  | plus        =  +
+           | ","
+           |  -  | minus       =  -
+           |  .  | dot         =  .
+           |  /
+      
+                # digits, spelled-out to work around DNS 11 bug with <_anything>:
+           | zero=0 | one=1   | two=2   | three=3 | four=4 | five=5
+           | six=6  | seven=7 | eight=8 | nine=9
+      
+           | ":"
+           | ";" | semi       = ";"
+           | "<" | bend       = "<"
+           | "=" | equal      = "=" | equals = "="
+           | ">" | close bend = ">"
+           |  ?  | question   =  ?
+           |  @
+      
+           | big Alpha    = A
+           | big Bravo    = B
+           | big Charlie  = C
+           | big Delta    = D
+           | big echo     = E
+           | big foxtrot  = F
+           | big golf     = G
+           | big Hotel    = H
+           | big India    = I
+           | big Juliett  = J
+           | big kilo     = K
+           | big Lima     = L
+           | big Mike     = M
+           | big November = N
+           | big Oscar    = O
+           | big Papa     = P
+           | big Quebec   = Q
+           | big Romeo    = R
+           | big Sierra   = S
+           | big tango    = T
+           | big uniform  = U
+           | big Victor   = V
+           | big whiskey  = W
+           | big x-ray    = X
+           | big Yankee   = Y
+           | big Zulu     = Z
+      
+           | "[" | bracket       = "["
+           |       backslash     = "\"
+           | "]" | close bracket = "]"
+           |  ^
+           |  _
+           |  `
+      
+           | Alpha    = a
+           | Bravo    = b
+           | Charlie  = c
+           | Delta    = d
+           | echo     = e
+           | foxtrot  = f
+           | golf     = g
+           | Hotel    = h
+           | India    = i
+           | Juliett  = j
+           | kilo     = k
+           | Lima     = l
+           | Mike     = m
+           | November = n
+           | Oscar    = o
+           | Papa     = p
+           | Quebec   = q
+           | Romeo    = r
+           | Sierra   = s
+           | tango    = t
+           | uniform  = u
+           | Victor   = v
+           | whiskey  = w
+           | x-ray    = x
+           | Yankee   = y
+           | Zulu     = z
+      
+           | "{" = "{{}" | brace        = "{{}"  # SendDragonKeys syntax for {
+           | "|"         | vertical bar = "|" | bar = "|"
+           | "}"         | close brace  = "}"
+           | "~"
+      );
+
+
+  ## Part II: Operations on (ranges of) lines
+  
+  Examples:
+
+  * "copy line", "destroy next 2" (lines), "highlight previous" (line)
+
+  * "copy 3, 10", "destroy single 12", "highlight 13 onwards", "comment 10, 20",
+    "indent 5, 12 by 2", "destroy entire buffer"
+
+  * "copy 10, 20" then "go 30 yank" copies 10 lines from one place to another.
+
+  Here ranges of line numbers include the starting number but not the
+  ending number so "comment 10, 20" adds a "#" to the start of lines
+  10 through 19 inclusive.  These commands may not be combined in a
+  single utterance with any other commands.
+  
+  Code for win32pad_lines.vcl:
+
+      ###
+      ### Win32pad voice commands, part II
+      ###
+      ### Version 0.1.1: line numbers limited to 0..99, word boundaries are Win32Pad's
+      ###
+      
+      ##
+      ## Operating on lines:
+      ##
+      
+      <r> := 0..99;
+      
+      LineMod(n) := {ctrl+g}$n{enter};
+      
+        # Wait's here are for visual feedback to the user:
+      <op> := ( highlight = "" | copy = Wait(100) {ctrl+c}{right}
+              | destroy   = Wait(100) {ctrl+x} );
+      
+        # {shift+down} doesn't work correctly near blank lines in Win32Pad
+        # so use {shift+right}{shift+end} instead to select a line; {end}
+        # reduces the chance of a beep (home or end twice in a row beeps)
+      Apply(count, op) := {end}{home} Repeat($count, {shift+right}{shift+end}) $op;
+      
+      
+      <op> line           =               Apply(1,  $1);
+      <op> line 1..99     =               Apply($2, $1);
+      
+      <op> next           = {home}{down}  Apply(1,  $1);
+      <op> next 1..99     = {home}{down}  Apply($2, $1);
+      
+      <op> previous       = {home}{up}    Apply(1,  $1);
+      <op> previous 1..99 = {home}{up_$2} Apply($2, $1);
+      
+      <op> single <r>     = LineMod($2)   Apply(1, $1);
+        # [start row, end row)
+      <op> <r> comma <r>  = LineMod($2)   Apply(Eval($3 - $2), $1);
+      
+      <op> <r> backwards  = LineMod($2)   {shift+ctrl+home} $1;
+      <op> <r> onwards    = LineMod($2)   {shift+ctrl+end}  $1;
+      
+      <op> entire buffer  = {ctrl+home}   {shift+ctrl+end}  $1;
+      
+      
+      ApplyEach(r1, r2, action) := LineMod($r1) Repeat(Eval($r2-$r1),
+                                       {home} $action {down});
+      
+      # These may not work correctly on word-wrapped lines:
+      comment <r> comma <r>           = ApplyEach($1, $2, "#");
+      indent  <r> comma <r> by 1..20  = ApplyEach($1, $2, {space_$3});
+      outdent <r> comma <r> by 1..20  = ApplyEach($1, $2, {del_$3});
+
+
+  ## Version 0.2: Supporting line numbers up to 99,999 via the Clipboard extension
+
+.downloads
+  %a{href: "Win32Pad_0.2.1.zip"} Download version 0.2.1
+
+:markdown
+  This version is more complicated, comprising three Vocola files plus
+  two unofficial extensions, `Clipboard` and `Variable`, that should
+  be placed in `C:\NatLink\NatLink\Vocola\extensions` [as
+  usual](http://vocola.net/v2/UsingExtensions.asp).  It uses
+  `Clipboard` to determine the current line number the cursor is on as
+  well as to obtain text for case changing.  Improvements include:
+
+  * Most commands deal with visible lines, referring to them by the
+    last two digits of their line number.  This uniquely identifies a
+    line as long as at most 50 lines are visible at once.  For
+    example, if the visible lines are 3270..3320 then "copy 95 comma
+    10" means to copy lines 3295 through 3309 (remember ranges exclude
+    the last number).
+  
+  * Because "go 10" now refers to the visible line ending in 10, a new
+    command "absolute #" is added when you really do want to jump to
+    an absolute line number; e.g., "absolute 7 thousand 2 hundred 14".
+  
+  * The range commands except for highlight and destroy now return the
+    cursor to the start of the line it was on when the command was issued.
+  
+  * A new range operator, yank, copies the selected range of lines and
+    inserts a copy before the line the cursor is on.  For example,
+    "yank line" duplicates the current line.  The analogous command
+    that moves ranges of lines is unfortunately unavailable because
+    deleting lines can disturb the saved return line.
+  
+  * New combinable commands, cap-a-word/lower-a-word/upper-a-word for
+    capitalizing/lowercasing/uppercasing words as you move over them.
+    Very useful for things like "first cap-a-word last" to capitalize
+    the first word of the current line.
+  
+  The change case commands demonstrate the power of selecting text,
+  copying it to the clipboard, processing the copied text via Python,
+  and then pasting over the original text using the revised version:
+  
+      ChangeWord(action, count) :=
+          {ctrl+shift+right_$count} {ctrl+c}
+          Clipboard.Set( EvalTemplate("%s.$action()", Clipboard.Get()) ) {ctrl+v};
+      
+      <change> := ( lower-a-word = lower
+                  | upper-a-word = upper
+                  | cap-a-word   = title
+                  );
+      
+      <change>       = ChangeWord($1, 1 );
+      <change> 2..20 = ChangeWord($1, $2);
+  
+  This paradigm can be used to do all sorts of things like camel case
+  words and hyphenate words.
+  
+
+  ## How selecting visible lines is accomplished
+
+  As long as fewer than 51 lines are visible, the visible line ending
+  with *DD* is the closest line number to the current line number that
+  is equal to *DD* mod 100.  I calculate this in two steps.
+
+  First, I save away the current line number without disturbing the
+  clipboard:
+
+      _SaveCurrentLine(finish) :=
+          Clipboard.Save()
+          {ctrl+g} WaitForWindow("Go To") {ctrl+c}
+          Variable.Set(":current-line", Clipboard.Get())
+          Clipboard.Restore()
+          $finish;
+
+      #
+      # Save current line number (flashes a dialog box).
+      #
+      SaveCurrentLine() := _SaveCurrentLine({esc});
+
+  This relies on the fact that {ctrl+g} in Win32Pad pulls up a dialog
+  box with the current line number already selected.
+  
+  Second, I use some simple math to calculate the desired line number
+  from the saved line number and the last two digits of the desired line
+  number:
+
+        # (x+50)%100-50 maps [0..49] to [0..49] and [50..99] to [-50..-1]:
+      _CalcDelta(n) := EvalTemplate('(%i-%i+50)%%100 - 50',
+                            $n, Variable.Get(":current-line"));
+      
+      #
+      # Calculate line number equaling $n mod 100 closest to the saved
+      # current line (:current-line); returns 1 if the resulting line
+      # number would otherwise be negative or zero.
+      #
+      CalcLine(n) := Max(1, Plus(Variable.Get(":current-line"), _CalcDelta($n)));
+      
+  Finally, I go to the correct line number using {ctrl+g}:
+
+      #
+      # Move to line number equaling $n mod 100 closest to the saved current
+      # line (:current-line); moves to first line if the resulting line
+      # number would otherwise be negative or zero.  (flashes a dialog box)
+      #
+      GoLineMod(n) := {ctrl+g} WaitForWindow("Go To") CalcLine(n) {enter};
+
+  The same trick can be done with any editor that allows you to copy the
+  current line number to the clipboard, jump to an absolute line number,
+  and display line numbers next to lines.  It is possible to up the
+  number of lines visible to 100 if your editor (e.g., Emacs) can tell
+  you which line numbers are actually visible.
+
+
+  ## Other editors
+
+  Another editor in this sweet spot was pointed out to me:
+  [dtpad](http://dtpad.codeplex.com/). It has line numbers, very good
+  search, select-and-say, as well as multiple tabs.  I expect it would
+  not be hard to modify these commands for that editor. For example,
+  here's a definition of `_Leap` that works:
+
+      _Leap(direction, set_target, times) :=
+              {shift+right}             # fake selecting our target at point
+              {ctrl+f}                  # bring up find dialog box
+              $set_target               # set target for find
+              {alt+c}- {alt+u}-         # options: case insensitive, no regular exp.,
+              {alt+s}-                  #          search only this file
+              Repeat($times,
+                  # do a find (may produce an error dialog box):
+                Replace(Replace($direction,u,{shift+f3}),d,{f3})         
+                {alt+c}{space} {alt+c}- # dismiss error dialog box if any
+              )
+              {esc}                     # dismiss find dialog box
+              {left}                    # exit selection, leaving point at start of
+              ;                         #   target or original if target not found

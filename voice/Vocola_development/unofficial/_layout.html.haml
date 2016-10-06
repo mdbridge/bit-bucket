@@ -1,0 +1,24 @@
+!!!
+
+%html(lang="en-US")
+  %head 
+    %meta{charset: "UTF-8"}
+    <meta name="viewport" content="width=720px">
+    - # 720px = 45em for normal size (16px) fonts
+
+    - # html5shiv for HTML 5 IE 8 support:
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    %title= yield :title
+    %link{rel: "stylesheet", type: "text/css", href: "unofficial.css"}
+
+  %body.contains_code
+    %h1= yield :title
+
+    = yield
+
+    - if view !~ /extension/ then
+      %footer
+        %a{href: "extensions.html"} Return to list of all unofficial extensions

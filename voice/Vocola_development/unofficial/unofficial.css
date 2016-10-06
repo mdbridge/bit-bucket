@@ -1,0 +1,92 @@
+html {
+    background: #f7f7f7;
+    margin: 0
+}
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  /* max-width: 45em; */
+  /* max-width: 800px; */
+  max-width: 720px;
+  margin: 0 auto 0 auto;
+  padding: 1em 4em 1em 4em;
+  padding: 1em;
+  background: white;
+  border: 1px solid #ddd;
+  color: #444;
+  color: black;
+}
+p {
+  line-height: 1.3em;
+}
+code {
+  font-family: "Courier New", Courier, monospace; /* serif? */
+  /*font-family: "Lucida Console", Monaco, monospace; /* san-serif? */
+}
+h2 { padding-top: 1em; }
+
+
+/* List of extensions table in extensions.haml */
+#extensions {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 1.5em 1em;
+}
+#extensions th, #extensions td {
+    border: 1px solid transparent;
+    padding-left: 1em;
+    padding-right: 1em;
+    /*background: #eee; */
+}
+#extensions th {
+    /*background: #DFDFDF;  /* Darken header a bit */
+    font-weight: bold;
+    /*border-bottom: 1px solid black;*/
+}
+
+
+
+/* Format code blocks from markdown below element with this class;
+   (don't use pre otherwise below it) */
+.contains_code pre { 
+    overflow: auto; /* add horizontal scrollbar when needed */
+    /* This wraps lines as lose width but screws up comments...
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -o-pre-wrap;
+    */
+
+    padding: .5em;
+
+    /*border-radius: 4px;*/
+    /*border: 1px solid black/*#bebab0 */;
+    border: 1px solid transparent;
+    /*background: #faf8f0; /**/
+    background: #eee; /* #DFDFDF;  /* Darken header a bit */
+    /*background: #efefef; /* #DFDFDF;  /* Darken header a bit */
+    background: #ffc; border: 1px solid #fda;
+}
+
+
+
+.downloads a {
+  display: inline-block;
+  color: white;
+  background: blue;
+  text-decoration: none;
+  margin-left: 2em;
+  padding: .8em;
+  border-radius: .7em;
+}
+.downloads a:hover {
+  background: orange;
+}
+
+/*
+.downloads {
+  width: 100%;
+  color: white;
+  background: blue;
+  padding: 2em;
+}
+.downloads a { color: white; }
+*/

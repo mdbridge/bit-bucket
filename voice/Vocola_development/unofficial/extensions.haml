@@ -1,0 +1,71 @@
+- content_for :title do
+  Unofficial Vocola 2 extensions
+
+
+%p Here are some unofficial Vocola 2 extensions created by me:
+
+%table#extensions
+  %thead
+    %tr
+      %th{scope: "col"} Extension
+      %th{scope: "col"} Description
+  %tbody
+    %tr
+      %td 
+        %a{href: "clipboard.html"} Clipboard
+      %td getting and setting the clipboard
+    %tr
+      %td 
+        %a{href: "date.html"} Date
+      %td getting the current time/date
+    %tr
+      %td 
+        %a{href: "env.html"} Env
+      %td reading environment variables
+    %tr
+      %td 
+        %a{href: "Excel.html"} Excel
+      %td example of controlling Excel through VBA
+    %tr
+      %td 
+        %a{href: "keys.html"} Keys
+      %td an alternative method of sending keystrokes
+    %tr
+      %td 
+        %a{href: "subprocess.html"} Subprocess
+      %td running subprocesses
+    %tr
+      %td 
+        %a{href: "variable.html"} Variable
+      %td session-persistent variables
+
+    %tr
+      %td 
+        %a{href: "vocola.html"} Vocola
+      %td displaying text and stopping commands early
+
+.downloads
+  %a{href: "all_extensions.zip"} Download all the extensions
+
+
+:markdown
+  These are provided as is, with no warranty.  I use these extensions
+  in my voice control set up, but cannot guarantee that I have tested
+  all corner cases.  So, consider them alpha code.  From time to time
+  I modify these extensions to improve them; in doing so, I may change
+  names, argument order, or otherwise change their APIs.
+  
+  These extensions are unofficial and not part of the Vocola 2
+  distribution.  Their functionality may or may not be incorporated
+  into a future standard extension library for Vocola 2, possibly
+  under different names.
+  
+  You can find more detailed instructions on how to install and use
+  extensions [here][using].  If you encounter a bug, have an idea for
+  improvement, or want to contribute an extension, please post in the
+  [KnowBrainer Vocola forum][KB]
+  
+    [using]: http://vocola.net/v2/UsingExtensions.asp
+    [KB]:    https://www.knowbrainer.com/forums/forum/categories.cfm?catid=25
+        
+  \- Mark
