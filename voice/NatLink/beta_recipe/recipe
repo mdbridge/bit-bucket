@@ -1,0 +1,117 @@
+From: Mark Lillibridge <mdl@alum.mit.edu>
+To: VoiceCoder@yahoogroups.com
+Subject: recipe for experimenting with Vocola 2 on DNS 12 [WAS: Re: [VoiceCoder] Dragon NaturallySpeaking 12]
+In-Reply-To: <87haqf5p5n.fsf@foil.strangled.net> (message from Mark Lillibridge on Sun, 30 Sep 2012 11:41:40 -0700)
+CC: derek_penguin@hotmail.com
+Reply-to: mdl@alum.mit.edu
+BCC: mdl@alum.mit.edu
+Date: Sun, 30 Sep 2012 13:18:49 -0700
+Message-ID: <87ehlj5knq.fsf@foil.strangled.net>
+--text follows this line--
+
+    By request, here's my attempt to pull together the latest recipe for
+working around the issues with DNS 12 for Vocola 2 into a single email.
+This hasn't been tested yet so tester beware.  Explanations in []'s.
+
+* install DNS 12  [Duh]
+
+* Install NatLink and Vocola 2 with Python 2.6; instructions at:
+    http://vocola.net/v2/InstallVocola.asp
+  * you must use Python 2.6 for now  [only have new Natlink.pyd for 2.6]
+  * be sure to install NatLink to the default location, C:\NatLink
+  * after step 4 of the above, *disable* NatLink using the same
+    configuration program
+    [we enable then disable things to get things set up properly]
+
+* edit C:\NatLink\NatLink\macrosystem\core\natlinkmain.py and change
+  line 99 from:
+cmdLineStartup=0
+  to:
+cmdLineStartup=1
+  [make output go to standard out rather than a nonexistent macro messages window]
+
+* replace C:\NatLink\NatLink\macrosystem\core\NatLink26.pyd with the
+  attached version
+  [this version uses a generic engine sink interface rather than the no
+  longer available NatLink one]
+
+* copy it also to NatLink.pyd in the same destination directory
+  (replacing old version)
+
+* copy attached start_8.py also to the same destination directory
+
+* copy attached vcl2py.py to C:\NatLink\NatLink\Vocola\exec\
+  [A new experimental Vocola compiler that does not rely on gotBegin
+  calls to determine when an utterance starts.]
+
+* edit C:\NatLink\NatLink\macrosystem\_vocola_main.py,
+  locate the runVocolaTranslator routine definition; should be somewhere
+  around line 350.  Then add the following line:
+        call = 'c:\Python26\Python.exe "' + self.VocolaFolder + r'\exec\vcl2py.py" '  
+  before the following line:
+        call += '-extensions "' + ExtensionsFolder + r'\extensions.csv" '
+  [switch to the new Vocola compiler]
+
+
+* start DNS 12; NatLink will not start yet
+
+* start a MS-DOS command prompt window (start menu->cmd.exe?)
+  type "C:\python26\python" then enter to start an instance of Python
+  type "import start_8" then enter
+
+* with luck, you'll see something like the following in your command
+  prompt window:
+c:\>C:\python26\python
+Python 2.6.4 (r264:75708, Oct 26 2009, 08:23:19) [MSC v.1500 32 bit (Intel)] on
+win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import start_8
+Vocola version 2.7.3I starting...
+Starting natlinkmain from C:\NatLink\NatLink\MacroSystem\core:
+  NatLink version: 4.0
+  DNS version: 12
+  Python version: 2.6
+  Windows Version: Vista
+
+natlinkmain started (imported)
+
+  In addition, a window labeled "NatLink heartbeat control" should have
+  popped up in the center of one of your monitors.
+
+* At this point, NatLink is running and your global non-title specific
+  Vocola commands should be working.  Any output will go to the command
+  prompt window instead of a macro messages from Python window.
+  However, commands for applications and title-specific commands are
+  probably not working correctly.  Click the start button on the NatLink
+  heartbeat control window and you should start getting heartbeat
+  messages from the command prompt window.  At this point, all of your
+  Vocola commands should be working.  [The heartbeat watches for changes
+  of title and window, and makes sure the correct commands are active
+  for the new title/window.]
+
+  The heartbeat messages are pretty verbose at the moment for debugging;
+  feel free to comment out the relevant print statements in start_8.py
+
+* When you are done, click the stop button in the NatLink heartbeat
+  control then the close window button for that window.  That should
+  make the NatLink heartbeat control window disappear and your Python
+  instance in the command prompt window exit.
+
+* If done with DNS, shut it down now.  Else, you should be able to
+  restart NatLink by invoking Python and start_8.py again.
+
+
+    Assuming this recipe works well and doesn't reveal new problems, it
+can probably be cleaned up somewhat -- fewer hand motions, less verbose,
+something closer to the macro messages window, etc.
+
+- Mark
+PS, thanks again to reckoner for building the needed NatLink.pyd.
+
+
+<#part filename="~/natlink26.pyd" disposition=attachment>
+<#/part>
+<#part filename="~/start_8.py" disposition=attachment>
+<#/part>
+<#part filename="~/vcl2py.py" disposition=attachment>
+<#/part>
