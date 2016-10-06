@@ -1,0 +1,99 @@
+## 
+## Generating some Vocola lists automatically:
+## 
+
+# 
+# <personal_email> list:
+# 
+
+source:: 
+	(cd ~/mail/contacts; make personal_email.txt)
+	cat ~/mail/contacts/personal_email.txt | \
+	    ruby generators/convert_DNS_list.rb personal_email \
+	    > commands/personal_emails.vch
+
+clean::
+	rm -f commands/personal_emails.vch
+
+
+# 
+# <personal_folder> list:
+# 
+
+source::
+	(cd generators; ruby personal_folders.rb)
+
+clean::
+	rm -f commands/personal_folder.vch
+
+
+# 
+# <web_site> list:
+# 
+
+source:: web.htm
+	(cd generators; ruby websites.rb web > ../commands/web_sites.vch)
+
+web.htm: ~/backups/bookmarks/Firefox-home.htm  ~/http/extract_folder.rb
+	ruby ~/http/extract_folder.rb \
+	    ~/backups/bookmarks/Firefox-home.htm Web  >  $@
+	ruby ~/http/extract_folder.rb \
+	    ~/backups/bookmarks/Firefox-home.htm Web2 >> $@
+
+clean::
+	rm -f web.htm
+	rm -f commands/web_sites.vch
+
+
+# 
+# <home_bookmark_folder> list:
+# 
+
+source:: ~/backups/bookmarks/Firefox-home.htm generators/generate_accelerators.rb
+	(cd generators; ruby generate_accelerators.rb home)
+
+clean::
+	rm -f commands/home_bookmark_folders.vch
+	rm -f ~/Tmp/home-accelerators.html
+
+
+# 
+# Prepare information for generating filesystem lists (e.g., <UNIX>):
+# 
+
+filesystem::
+	ruby generators/scan_Unix.rb > commands/filesystem/foil_Unix_scan.txt
+
+clean::
+	rm -f commands/filesystem/foil_Unix_scan.txt
+
+
+
+## 
+## Generating a training corpus for DNS:
+## 
+
+local-corpus::
+	ruby ~/mail/analysis/extract_email.rb 240 \
+	    ~/Rmail/RMAIL ~/Rmail/personal_hold ~/Rmail/computer_hold \
+	    ~/Rmail/reading > corpus/top_foil.txt
+
+
+
+## 
+## 
+## 
+
+backup:
+	(cd backups; rm -rf *)
+	-cp -r -n * backups/
+	(cd backups; rm -rf backups home bookmark.htm work.htm in inactive to_DNS.xml to_Vocola analysis)
+	(cd backups; rm -rf */.svn)
+	(cd backups; rm -rf mini/to_DNS.xml FAQ.txt)
+	# cleanup_tree:
+	(cd backups; find . \( -name \*~ -o -name \#\* -o -name \*\# -o -name \*.bak \) -exec rm "{}" \;)
+	(cd backups; make clean)
+	-(cd backups; find . -type d -print0 | xargs -0 -L 1 fix_permissions)
+	(cd backups; git status)
+	# cd backups; git commit -a
+	# was: git add .; git status |& more
