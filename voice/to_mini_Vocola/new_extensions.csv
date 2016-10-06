@@ -1,0 +1,8 @@
+String.Replace,3,3,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Len,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Left,2,2,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Right,2,2,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.LCase,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.UCase,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+Special.EQ,2,2,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+Special.Split,3,3,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
