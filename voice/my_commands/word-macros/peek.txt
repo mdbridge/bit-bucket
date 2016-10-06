@@ -1,0 +1,19 @@
+Sub peekLeft()
+'
+' peekLeft Macro
+'
+'
+' currently failing at start of buffer
+
+    Dim myRange As Range
+
+    Set myRange = Selection.Range
+
+    myRange.MoveStart Unit:=wdCharacter, Count:=-10
+
+    If myRange.Text <> "" Then
+        myRange.Copy
+    Else
+        ' Clipboard.SetText "MyText"   ' this needs forms library code...
+    End If
+End Sub

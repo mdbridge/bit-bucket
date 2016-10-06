@@ -1,0 +1,189 @@
+^k:
+
+    Selection.EndKey Unit:=wdLine, Extend:=wdExtend
+    Selection.Cut
+
+select line:
+    Selection.HomeKey Unit:=wdLine
+    Selection.EndKey Unit:=wdLine, Extend:=wdExtend
+
+
+      Sub ExchangePointAndMark()
+;          Set oDoc = ActiveInspector.WordEditor
+;          Set oWord = oDoc.Application
+;          Set s = oWord.Selection
+;     
+;          s.StartIsActive = Not s.StartIsActive
+;      End Sub
+;     
+;      Sub TransposeChars()
+;          Set oDoc = ActiveInspector.WordEditor
+;          Set oWord = oDoc.Application
+;          Set s = oWord.Selection
+;     
+;          s.MoveLeft Unit:=wdCharacter, Count:=1, Extend:=wdExtend
+;          On Error GoTo ErrExit
+;          s.Cut
+;          s.MoveLeft Unit:=wdCharacter, Count:=1
+;          s.Paste
+;          s.MoveRight Unit:=wdCharacter, Count:=1
+;      ErrExit:
+;      End Sub
+
+
+
+
+
+Set myRange = Selection.Range
+
+myRange.SetRange Start:=myRange.Start + 1, End:=myRange.End
+
+    Dim rngDoc As Range
+
+
+    rngDoc.Bold = True
+
+
+    rngParagraph.Select
+
+    Selection.Font.Italic = True
+
+
+  With myRange
+        .MoveEnd Unit:=wdWord, Count:=1
+        .Select
+
+
+With myRange
+        .MoveStart Unit:=wdWord, Count:=-1
+        .Select
+
+
+
+
+
+    Dim myRange As Range
+
+    Set myRange = Selection.Range
+
+    myRange.MoveStart Unit:=wdCharacter, Count:=-10
+
+    myRange.Copy
+
+    ' myRange.Select
+    ' myRange.Font.Italic = True
+
+
+above the mostly works, but crashes if at start of document.
+
+
+.Text to get contents of a range
+
+
+
+
+Sub peekLeft()
+'
+' peekLeft Macro
+'
+'
+
+    Dim myRange As Range
+
+    Set myRange = Selection.Range
+
+    myRange.MoveStart Unit:=wdCharacter, Count:=-10
+
+    myRange.Copy
+End Sub
+
+
+    Set MyData = New DataObject
+    
+    MyData.SetText TextBox1.Text
+    MyData.PutInClipboard
+
+
+
+
+
+
+
+
+
+Sub peekLeft()
+'
+' peekLeft Macro
+'
+'
+
+    Dim myRange As Range
+
+    Set myRange = Selection.Range
+
+    myRange.MoveStart Unit:=wdCharacter, Count:=-10
+
+    If myRange.Text <> "" Then
+        myRange.Copy
+    Else
+        ' Clipboard.SetText "MyText"   ' this needs forms library code...
+    End If
+End Sub
+
+
+
+  Selection.Words(1).Case = wdTitleWord
+
+
+Dim strData As String
+strData = InputBox("Enter character to leap to")
+MsgBox (strData)
+
+
+
+Here's a code sample that will give you the Line Numbering count for the page currently selected in a document:
+
+ 
+
+Code Snippet
+Sub GetLastLineNumberOnCurrentPage()
+    Dim doc As Word.Document
+    Dim rng As Word.Range
+    Dim curLineNumbering As Long
+    Dim curSelection As Range
+    Dim curPageNr As Long
+    
+    doc = wdAppActiveDocument
+    'Preparation
+    curLineNumbering = doc.PageSetup.LineNumbering.Active
+    curSelection = wdApp.Selection.Range
+    curPageNr = curSelection.Information(wdActiveEndPageNumber)
+    wdApp.ScreenUpdating = False
+   
+    doc.PageSetup.LineNumbering.Active = True
+    rng = doc.Bookmarks("\Page").Range
+    rng.Collapse(Word.WdCollapseDirection.wdCollapseEnd)
+    rng.Select()
+    If rng.Information(Word.WdInformation.wdActiveEndPageNumber) <> curPageNr Then
+        wdApp.Selection.MoveEnd Unit:=Word.WdUnits.wdLine, Count:=-1
+    End If
+    MsgBox wdApp.Selection.Information(wdFirstCharacterLineNumber)
+   
+    'clean up
+    curSelection.Select()
+    wdApp.ScreenUpdating = True
+    doc.PageSetup.LineNumbering.Active = curLineNumbering
+End Sub 
+
+
+Range.InformationwdActiveEndPageNumber)
+
+
+ 
+GoTo, Go to Page 1
+Selection.GoTo What:=wdGoToPage, Which:=wdGoToNext, Name:="1"
+
+
+
+Application.GoBack   ' Go back to last edit?
+
