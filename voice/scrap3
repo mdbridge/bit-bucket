@@ -1,0 +1,155 @@
+## 
+## Can't make this work...
+## 
+
+__Path(path) := _Either2Rsync($path); 
+
+TestRync(source, destination) :=
+#    Subprocess.Sync(PCfromPC(~pf32/cwRsync/bin/rsync.exe), rsync.exe,
+    Subprocess.Sync(c:\cygwin\bin\rsync.exe, rsync.exe, -e, c:\cygwin\bin\ssh.exe,
+                    -t, --progress, -z, -p, -r, 
+		    --ignore-times,   # -force
+		    __Path($source), __Path($destination));
+#		    _Path($source), _Path($destination));
+
+least view <PDF> = 
+    GoWindow($1, Wait(200) {alt+f4} Wait(200))
+    Increment()
+    TestRync(@$1, PC(Local($1)))
+#    TestRync(@foil:~/doubling.txt, ~/scratch/imported Current() .pdf)
+#	PCHome() \scratch\imported Current() .pdf
+#    )
+ #   WaitForWindow('*Adobe Reader');
+    Beep()
+    AppBringUp($1, PC(Local($1)))
+    WaitForWindow('*Adobe Reader') Wait(100) SetWindow($1);
+
+
+
+
+
+
+
+include "switch.vch";
+get in trouble =	                    AutoHotkeyAsync3(async_message,
+		                "SwitchTo", "name: no such window found", 3);
+get in trouble 2 =	                    AutoHotkeyAsync3(async_message2,
+		                "SwitchTo", "name: no such window found", 3);
+call the dogs = Subprocess.Sync(fred, Fred);
+what is my ID = Window.ID();
+what is my new ID = MyWindow.ID();
+
+include "control.vch";
+
+Transfer question = SwitchTo("foil emacs")
+    IF3(Window.MatchTitle("emacs"), 
+        MsgBoxConfirm("Yes", 64, "Debug info"),
+        MsgBoxConfirm("No", 64, "Debug info"));
+
+
+compromised both test = "send input both test (SendInput):"{enter}
+                        Repeat(5, Repeat(10,
+                                             Keyboard.SendKeys("d{SPACE}")
+                                             Keyboard.SendKeys("c{SPACE}")
+                                         ) Keyboard.SendKeys(!{ENTER}))
+					  Keyboard.SendKeys({SPACE}{ENTER});
+
+again both test = "send input both test (SendInput):"{enter}
+                        Repeat(5, Repeat(10,
+                                             Keyboard.SendKeys("df{SPACE}r")
+                                             Keyboard.SendKeys("cy{SPACE}")
+                                         ) Keyboard.SendKeys(!{ENTER}))
+					  Keyboard.SendKeys({SPACE}{ENTER});
+
+
+wait for me = Subprocess.System("timeout 5");
+wait for me to = Subprocess.System("timeout 5 && timeout 5");
+
+
+include "control.vch";
+
+If(condition, then_part) := 
+    Repeat(EvalTemplate("1 if %s.lower() == 'true' else 0", $condition),
+           $then_part);
+
+#Mark Test [(true|upper true="TRUE"|false|George|empty="")] = < When($1, !)>;
+#Mark Test [(true|upper true="TRUE"|false|George|empty="")] = < IF($1, !)>;
+Mark Test [(true|upper true="TRUE"|false|George|empty="")] = < IF3($1, !, -)>;
+Mark compare [(true|upper true="TRUE"|false|George|empty="")] = < IF(EQ($1,"true"), !)>;
+did that succeed = MsgBoxConfirm( Window.Success(), 64, "Debug info");
+
+only evaluate once = IF3(MsgBoxConfirm("evaluating ", 64, "Debug info") true, !, -);
+
+
+old show ID    = MsgBoxConfirm(Window.ID(), 64, "Debug info");
+
+
+include "gnu.vch";
+SetMacro(keys) := Elisp('(setq last-kbd-macro (edmacro-parse-keys "' $keys '"))');
+
+try it = SetMacro("ESC f <deletechar>") ;
+try loading = Clipboard.SetUTF8(UTF8('lowercase is \u03b4'));
+
+
+DirEdit(directory, pattern) :=
+	%m $pattern {enter} ;#t;#k;
+#	{up_2}{m_2}k;    # kill "." and ".." lines...
+
+try restrict <_anything> = U DirEdit("", $1);
+try monster <_anything> = U DirEdit("", \< Symbols.Monster($1)\>);
+
+
+
+
+
+Test send input = Keyboard.SendKeys("Hello{SPACE}there!{ENTER}");
+again Test = Keyboard.SendKeys("h{SPACE}+{SPACE}^e!{ENTER}");
+holding Test = Keyboard.SendKeys("h{+VK_LSHIFT}there{-VK_LSHIFT}again{ENTER}");
+
+
+please (hold=+|release=-) shift = Keyboard.SendKeys("{$1VK_LSHIFT}");
+
+
+
+<hex> := zero=0|one=1|two=2|three=3|four=4|five=5|six=6|seven=7|eight=8|nine=9|alpha=a|bravo=b|Charlie=c|delta=d|echo=e|foxtrot=f;
+
+press <hex> <hex> = Key.Press(EvalTemplate("0x$1$2"));
+
+
+
+
+press pad <hex> <hex> = Key.Press(EvalTemplate("0x10$1$2"));
+#
+
+try Unicode = Kludge.Unicode(3b4);
+please try Unicode again = Kludge.Unicode(d00f);
+normal ASCII via Unicode = Kludge.Unicode(4d);
+
+
+push it = {SysReq};
+push that = {Break};
+
+
+
+
+
+
+
+
+
+
+
+
+########################################
+
+# mouse buttons are swapped
+# no auto repeat for normal keys
+
+
+test plus key = Kludge.Send(+,{+},{shift++});
+
+try typing naive = Kludge.Send(n,a) Char(0,2,3,9) Kludge.Send(v,e);  # check, but not "seen"
+
+
+
+# Speed versus SendSystemKeys?

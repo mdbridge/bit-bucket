@@ -1,0 +1,209 @@
+import sys
+# Vocola function: Clipboard.Get,0-1
+def clipboard_get(default=""):
+    open_clipboard()
+    result = default
+    if win32clipboard.IsClipboardFormatAvailable(win32con.CF_TEXT):
+        retries = 3
+        while retries > 0:
+            try:
+                result = win32clipboard.GetClipboardData(win32con.CF_TEXT)
+                retires = -1
+            except:
+                print >> sys.stderr, "retrying get clipboard... " + str(retries)
+                #time.sleep( random.random()/50 )
+                time.sleep( 0.050 )
+                retries = retries - 1
+    win32clipboard.CloseClipboard() 
+    null = string.find(result, chr(0))
+    if null>0:
+        result = result[0:null]
+    return result
+
+
+
+GetClientRect 
+DestroyWindow
+BringWindowToTop
+
+
+
+	    haml -f html4 $$i staging/$${i%.haml}.html; \
+
+       The contents of this article reflect my opinions only and not
+       necessarily those of my employer.
+
+       This article is provided as is without any express or implied
+       warranties.  While every effort has been taken to ensure the
+       accuracy of the information contained in this article, the
+       author/maintainer/contributors <take your pick> assume(s) no
+       responsibility for errors or omissions, or for damages resulting
+       from the use of the information contained herein.
+
+
+#
+#  # this isn't quite right; it restores then minimizes...
+#(minimize|minimise) [the] window = SendSystemKeys({win+up}{win+down_2});
+#maximize	    [the] window = SendSystemKeys({win+up});
+#restore		    [the] window = SendSystemKeys({win+up}{win+down});
+#
+#close		    [the] window = {alt+f4};
+#
+
+
+
+
+
+
+#gdb: thread apply all backtrace
+# top -H
+
+
+    for e in events:
+        print hex(e.wVk), e.dwFlags,
+    print
+
+JumpIdentifier()  := LeapRegex(D+, '[a-z0-9_]+');
+FleeIdentifier()  := LeapRegex(u+, '[a-z0-9_]\|\`') 
+		     LeapRegex(u+, '[^a-z0-9_]\|\`');
+StartIdentifier() := LeapRegex(D+, '[^a-z0-9_]+');
+
+
+~/setup/cygwin-setup -q -Pautoconf,automake,binutils,bison,bzip2,cygport,diffutils,fileutils,findutils,flex,gawk,gcc4,git,libtool,make,patch,pkg-config,python3,sed,tar
+~/setup/cygwin-setup -q -Pbigreqsproto,compositeproto,damageproto,dmxproto,fixesproto,fontsproto,glproto,inputproto,kbproto,randrproto,recordproto,renderproto,resourceproto,scrnsaverproto,windowswmproto,xcmiscproto,xextproto,xineramaproto,xproto,xf86bigfontproto
+~/setup/cygwin-setup -q -Plibdmx-devel,libfontenc-devel,libglapi-devel,libfreetype-devel,libGL-devel,libpixman1-devel,libX11-devel,libXau-devel,libXaw-devel,libxcb-icccm-devel,libxcb-image-devel,libXdmcp-devel,libXext-devel,libXfont-devel,libXinerama-devel,libXmu-devel,libXpm-devel,libXRes-devel,libxkbfile-devel,zlib 
+~/setup/cygwin-setup -q -Pdri-drivers,font-util,khronos-opengl-registry,python3-lxml,xorg-util-macros,xtrans 
+
+bunzip2 xserver-cygwin-1.14.3-1.tar.bz2 
+tar xvf xserver-cygwin-1.14.3-1.tar 
+cd xserver-cygwin-1.14.3-1
+
+
+[cmd, directory ~/setup]
+cygwin-setup -q -Pautoconf,automake,binutils,bison,bzip2,cygport,diffutils,fileutils,findutils,flex,gawk,gcc4,git,libtool,make,patch,pkg-config,python3,sed,tar
+
+cygwin-setup -q -Plibdmx-devel,libfontenc-devel,libglapi-devel,libfreetype-devel,libGL-devel,libpixman1-devel,libX11-devel,libXau-devel,libXaw-devel,libxcb-icccm-devel,libxcb-image-devel,libXdmcp-devel,libXext-devel,libXfont-devel,libXinerama-devel,libXmu-devel,libXpm-devel,libXRes-devel,libxkbfile-devel,zlib 
+
+
+
+C:\Windows\winsxs\x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_9.0.30729.6161_none_50934f2ebcb7eb57
+C:\Program Files (x86)\Intel\iCLS Client
+
+both msvcr90.dll
+
+- <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+- <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">
+- <security>
+- <requestedPrivileges>
+  <requestedExecutionLevel level="asInvoker" uiAccess="false" /> 
+  </requestedPrivileges>
+  </security>
+  </trustInfo>
+- <dependency>
+- <dependentAssembly>
+  <assemblyIdentity type="win32" name="Microsoft.VC90.CRT" version="9.0.21022.8" processorArchitecture="x86" publicKeyToken="1fc8b3b9a1e18e3b" /> 
+  </dependentAssembly>
+  </dependency>
+  </assembly>
+
+
+def chord_key(modifiers, key, releasing, repeat=1):
+    return chord_event(modifiers, single(key, releasing), releasing, repeat)
+
+def chord_event(modifiers, event, releasing, repeat=1):
+    events = [event]
+    if not releasing: events = events * repeat
+    
+    modifiers.reverse()
+    for modifier in modifiers:
+        if releasing:
+            events += single(modifier, releasing)
+        else:
+            events =  single(modifier, releasing) + events
+    
+    return events
+
+
+            IntPtr fore = GetForegroundWindow();
+            uint tpid = GetWindowThreadProcessId(fore, IntPtr.Zero);
+            IntPtr hKL = GetKeyboardLayout(tpid);
+
+# Vocola procedure: Kludge.Foo
+def foo():
+    e = []
+    for i in range(0x80,0xff): 
+        e += by_number([], chr(i), 1, 1)
+    SendInput.send_input(e)
+
+
+VK_RMENU               = 0xA5  # Right MENU key
+VK_RCONTROL            = 0xA3  # Right CONTROL key
+VK_INSERT              = 0x2D  # INS key
+VK_DELETE              = 0x2E  # DEL key
+VK_HOME                = 0x24  # HOME key
+VK_END                 = 0x23  # END key
+VK_PRIOR               = 0x21  # PAGE UP key
+VK_NEXT                = 0x22  # PAGE DOWN key
+VK_UP                  = 0x26  # UP ARROW key
+VK_DOWN                = 0x28  # DOWN ARROW key
+VK_LEFT                = 0x25  # LEFT ARROW key
+VK_RIGHT               = 0x27  # RIGHT ARROW key
+VK_NUMLOCK             = 0x90  # NUM LOCK key
+
+VK_SNAPSHOT            = 0x2C  # PRINT SCREEN key
+VK_DIVIDE              = 0x6F  # Divide key
+VK_RETURN              = 0x0D  # ENTER key
+
+
+Keyboard.SendKeys("!(");
+
+> 4. I then have commands like "try catch it" for error
+  logging/exception handling. So what that would do for example is
+  simply insert a try catch exceptionally around any selected code (code
+  selected with HeadMouse).
+
+>             catch (Exception exc)
+> 
+>             {
+> 
+>              //    errLog.writeErrorLog("Problem ");
+> 
+>              //   errLog.writeErrorLog(exc.Message.ToString());
+> 
+>              //   errLog.writeErrorLog(exc.StackTrace.ToString());
+> 
+
+  
+    # Load the grammar and activate the rule "normalState".  We use 
+    # activateSet instead of activate because activateSet is an efficient
+    # way of saying "deactivateAll" then "activate(xxx)" for every xxx
+    # in the array.  
+    
+
+
+
+JumpIdentifier() := LeapRegex(D+, '[a-z0-9_]+');
+FleeIdentifier() := LeapRegex(u+, '\`\|[a-z0-9_]') LeapRegex(u+, '\`\|[^a-z0-9_]');
+
+try flee identifier = FleeIdentifier();
+
+
+FleeEnglish() := LeapRegex(u+, '\`\|[a-z0-9_]') 
+	         LeapRegex(u+, '\`\|[^a-z0-9_ ]')
+		 LeapRegex(D, '[a-z0-9_]');
+
+
+
+try flee English = FleeEnglish();
+
+toggle word = FleeEnglish() LeapRegex(D+, '[a-zA-Z0-9_ ]*[a-zA-Z0-9_]')
+       {esc}w
+       "{ctrl+u}{esc}|cd ~/Tmp; ~/bin/ruby solve.rb '?0' '{ctrl+y}'{enter}"
+       {ctrl+x}{ctrl+x};
+
+toggle second = FleeEnglish() LeapRegex(d+, "  *")  
+       LeapRegex(D+, '[a-zA-Z0-9_ ]*[a-zA-Z0-9_]')
+       {esc}w
+       "{ctrl+u}{esc}|cd ~/Tmp; ~/bin/ruby solve.rb '?0' '{ctrl+y}'{enter}"
+       {ctrl+x}{ctrl+x};
+

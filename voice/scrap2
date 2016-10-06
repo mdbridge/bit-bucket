@@ -1,0 +1,43 @@
+    Subprocess.System(
+          # need echo here for some reason to make things work:
+        'echo downloading: && '
+        Rsync("-type -force", @$PDF, Local($PDF))
+          # START runs Adobe reader in the background:
+        'START '
+	     # the following may help close the bookmarks toolbar:
+	     # (add ",page=#,fit=FitH after none"?)
+ 	   '"downloading PDF..." "' 
+           IfHome(
+             PC("~pf32/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe") '" /A pagemode=none ',
+             PC("~pf32/Adobe/Reader 11.0/Reader/AcroRd32.exe") '" /A pagemode=none '
+	   )
+	   PC(Local($PDF))
+    )
+
+
+
+test buffer = Elisp('(pop-to-buffer "RMAIL")');
+test switch buffer = Elisp('(switch-to-buffer "RMAIL")');
+
+test status = Elisp('(string-match-p "^RMAIL\\(-summary\\)?$" (buffer-name))');
+
+test conditional = Elisp('(if (not (string-match-p "^RMAIL\\(-summary\\)?$" (buffer-name))) (pop-to-buffer "RMAIL"))');
+
+
+include "new.vch";
+
+  # count number of characters in $characters at start of $text:
+Span(text, characters) := EvalTemplate("len(%s) - len(%s.lstrip(%s))", $text, $text, $characters);
+
+Jump(text) := 
+    EvalTemplate("min([(%s+%s).find(x,%i) for x in %s])", $text,"abcdefghijklmnopqrstuvwxyz", Span($text,"abcdefghijklmnopqrstuvwxyz"), 
+             "abcdefghijklmnopqrstuvwxyz");
+
+
+test span = {ctrl+c} Wait(100) Span(Clipboard.Get(), "abcdefghijklmnopqrstuvwxyz");
+
+test fixed span =Span("0fred", "abcdefghijklmnopqrstuvwxyz");
+
+test jump = Jump("fred  bob") / Jump("  fred  bob");
+
+new start word = {shift+end} {ctrl+c}{left} Wait(100) {right_ Jump(Clipboard.Get()) };
