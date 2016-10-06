@@ -1,0 +1,60 @@
+### 
+### Functions for accessing files (across) filesystems
+### 
+
+include "environment.vch";
+include "extended_string.vch";
+include "control.vch";
+
+
+## 
+## Special portability pathname conventions for PC filenames:
+## 
+
+PCExpand(pathname) := Replace5($pathname, "~pf32", PF32(),
+	                                  "~pf",   "C:\Program Files",
+                                          "~",     PCHome(),
+                                          "/",     "\",
+                                          "\\",    "\");   # c://foo case...
+
+
+## 
+## Accessing files from UNIX:
+## 
+
+UNIXfromUNIX(pathname) := 
+    If(Window.Match(Cygwin),		       
+       Replace2($pathname,
+                "work:~", "/cygdrive/w",
+                "foil:~", "/cygdrive/p"),
+       Replace2($pathname,
+                # ignore domain names on UNIX <<<>>>
+                "work:~", "~",
+                "foil:~", "~"));
+
+PCfromUNIX  (pathname) := 
+    If(Window.Match(Cygwin),		       
+          # hack for Cygwin; assume given absolute path on C:
+       "/cygdrive/c/" Replace(Mid(PCExpand($pathname),3), "\", "/"),
+       Vocola.Error("PC files are not accessible from Linux!"));
+
+
+
+## 
+## Accessing files from PC:
+## 
+
+  # access Unix from PC via {P,W} drives:
+  # 
+  # Note: cmd.vcl depends on the result of the PC function starting
+  # with <drive>: and it doesn't support UNC paths, so UNC paths can't
+  # be used for it.
+ViaDrive(pathname) := 
+    Replace4($pathname,
+        "work:~", "w:/",
+        "foil:~", "p:/",
+        "~",      IfHome("p:/","w:/"),
+        "//",     "/");
+
+PCfromPC  (pathname) := PCExpand($pathname);
+UNIXfromPC(pathname) := PCfromPC(ViaDrive($pathname));

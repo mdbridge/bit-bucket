@@ -1,0 +1,161 @@
+### 
+### Global short command grammar.
+### 
+### 
+###     ALL application-specific short command grammars should include
+### this file to make sure that their grammar is a superset of this
+### one in order to ensure complete overriding.  (If X and Y were
+### short commands and only X was overwritten for Word, then "X X"
+### works fine but "X Y" will result in the global version of X, not
+### the Word one.)
+### 
+###     To allow these commands' implementations to differ based on
+### the application they are being used with, many of them are
+### implemented via user functions that must be defined by the file
+### including us.
+### 
+
+  # to ensure complete overriding, all short command grammers should
+  # support at least this many commands per utterance:
+$set MaximumCommands 4;
+
+
+include "numbers.vch";  # <<<>>>
+
+
+## 
+## Commands for moving/erasing a fixed distance in a compass direction
+## by simple units:
+## 
+
+<simple_modifiers> := (
+       shift         = shift+
+     | control       = ctrl+
+     | control shift = ctrl+shift+
+     | shift control = ctrl+shift+
+     | alt           = alt+
+);
+
+<fixed_simple> := (
+        # moving by single characters:
+       soar = up          # "up" by itself sounds too much like noise
+     | down | left | right
+
+        # erasing by single characters:
+     | back = backspace | erase = del
+
+     | tab     # moving by fields (add shift for move back a field)
+     | space   # moving by screenfuls
+     | enter   # special case (e.g., pagers)
+     | slap = enter   # <<<>>>
+);
+
+# moving by pages is a long command
+
+[<simple_modifiers>] <fixed_simple> [<my1to100>] = {$1$2 When($3,_$3)};
+
+
+
+## 
+## Commands for moving/copying/killing to the extreme of a compass direction:
+## 
+
+<extreme> := (
+       start-of-line = home
+     | end-of-line   = end
+
+     # "end" misrecognized too frequently so use first/last instead:
+     | first         = home 
+     | last          = end     
+);
+
+# moving to top/bottom are long commands
+
+[<simple_modifiers>] <extreme> = {$1$2};
+
+
+copy    start = CopyStart();
+copy    rest  = CopyRest();
+
+destroy start = KillStart();
+destroy rest  = KillRest();
+
+
+
+## 
+## Commands for moving/selecting/killing by words:
+## 
+
+<fixed_word> := (
+        # moving:
+             flee       = MoveLeftStart()
+     |       jump       = MoveRightEnd()
+     |       start-word = MoveRightStart()
+
+        # selecting:
+     | shift flee       = SelectLeftStart()
+     | shift jump       = SelectRightEnd()
+     | shift start-word = SelectRightStart()
+
+        # killing:
+     |       kill       = KillLeftStart()
+     |       toast      = KillRightEnd()    # zap & zortch misrecognized too much
+     |       pull-word  = KillRightStart()
+);
+
+<fixed_word> [<my1to100>] = WordMove($1, When($2,$2,1));
+
+
+
+## 
+## Printable keys (including uppercase letters):
+## 
+
+include "printables.vch";
+
+key <prn> = PrintablesToKeys($1);
+
+
+
+## 
+## Dictating arbitrary text (useful at the end of a command sequence):
+## 
+
+dictate <_anything> = $1;
+
+
+
+## 
+## Special non-compass keys with names:
+## 
+
+  # This is a short for powerpoint combos ("escape tab slap").
+  # No repetition count because "escape 1" is a chord.
+  # Do have "triple escape" in _any.vcl
+escape = {esc};
+
+control Alpha = {ctrl+a};  # <<<>>>
+
+
+
+## 
+## Multistep cutting/copying and pasting:
+## 
+
+copy    region = Copy();
+destroy region = Cut();
+
+yank           = Paste();
+
+
+
+## 
+## Changing words:
+## 
+
+<change> := ( lower-a-word = LowerWord()
+            | upper-a-word = UpperWord()
+            | cap-a-word   = CapWord()
+            );
+
+<change> [2..20] = ChangeWord($1, When($2,$2,1));

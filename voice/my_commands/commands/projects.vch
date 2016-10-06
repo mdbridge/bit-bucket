@@ -1,0 +1,176 @@
+###
+### Resource lists for projects:
+###
+### See also:
+###
+###   machines.vch
+###   Rmail_folder.vch
+###   filesystem/Unix_scan_recipe.txt
+###   filesystem/components.txt
+###   ../generators/units.rb
+###   ~/voice/symbols/Makefile.local
+###   ~/mail/contacts/work_lists.txt
+###   <vocabulary files>
+###   <bookmarks>
+###   ~/published/CV/work.tex
+###   ~/mail/analysis/generate_alist.rb
+###   Outlook contacts, ~/mail/contacts/work_extras.rol
+###
+
+##
+## git branches:
+##
+
+<branch> :=  ( prompt = @
+	     | master 
+             | temporary
+	     | temporary two   = temporary_2
+	     | temporary three = temporary_3
+	     | temporary four  = temporary_4
+
+	        # bold:
+
+	        # express:
+	     | latching
+
+	        # Vocola
+	     | 2.8.5
+	     | backend
+	     | anything
+	     | optional anything = optional_anything
+
+	     | vortex
+	     | dragonfly
+	     | redacted
+
+	     | Mark 
+	     | at-patch | extended-eval
+
+	     | beta | hotfix
+);
+
+
+##
+## git remotes:
+##
+
+<remote> := ( origin );
+
+
+## 
+## Latex paper source:
+## 
+
+<paper> := (
+	 # The Machine:
+
+         # tube:
+    | fragmentation = "~/tube/papers/fragmentation_FAST13"
+    | sticky        = "~/tube/papers/sticky_technical_report" # <<<>>>
+         # power faults:
+    | power         = "~/past/HP/power_faults/SSD_study/paper/fast13-cam"
+    | torturing     = "~/past/HP/power_faults/torturing_databases/paper/osdi14-cam"
+
+
+    | blue place    = "~/Tmp/places/blue" # <<<>>>
+);
+
+<paper_part> := (
+      abstract | approach | background | conclusion=concl* | design 
+    | experiments | future | introduction=intro*
+    | main | methodology | paper | problem 
+    | related | results
+);
+
+
+##
+## Collections of source files to search via locate:
+##
+##    <name> = <root directory>[,<find arguments>]
+##
+
+<where> := (
+               # express project:
+	     [main] Zero = ~/past/HP/express/repository/Zero/src 
+           | Zero source = ~/past/HP/express/repository/Zero  
+                           ",\( -name '*.h' -o -name '*.cpp' -o -name '*.pl'"
+                              " -o -name '*.dat' \)"
+           | full Zero   = ~/past/HP/express/repository/Zero  
+                           ",! -path '*/.git/*' ! -path '*/dox/*'"
+
+              # system include files:
+	   | include     = /usr/include
+           );
+
+
+##
+## Collections of source files for use with dired mode (aka, Mondo):
+##
+
+<mondo_where> := (
+        # express:
+      main zero   = "~/past/HP/express/repository/Zero/src,"
+        >>sm >>sthread >>fc >>common
+    | zero source = "~/past/HP/express/repository/Zero,"
+        >>config
+	>>experiments
+            >>baloon >>bus_bench >>cursor >>init_db 
+    	    >>lock_bench >>random_inserts >>tpcb >>verify 
+        >>src
+            >>sm >>sthread >>fc >>common 
+        >>tests
+            <<common <<fc <<sm <<sthread
+        >>tpcc-bdb
+            <<DISTRIBUTION
+                <<bdb
+    	        <<lib
+);
+
+
+## 
+## PDF files we want to be easily viewable or are repeatedly editing:
+## 
+
+SavedPDF() := Variable.Get("buffer:saved_PDF", 
+	      		   UNIX(IfHome(foil,work) ":~/Tmp/buffer.pdf"));
+
+Tube(directory) := "work:~/tube/papers/$directory/main.pdf";
+
+<PDF> := (
+	     # The Machine:
+
+             # Tube:
+         | sparse indexing  = Tube(sparse_indexing_FAST09)
+         | white paper	    = Tube(evaluation)
+         | reliability	    = Tube(reliability_HotMetrics10)
+         | fragmentation    = Tube(fragmentation_FAST13)
+         | sticky	    = Tube(sticky_technical_report)  # <<<>>>
+
+             # power faults:
+         | power	    =
+            "work:~/past/HP/power_faults/SSD_study/paper/fast13-cam/paper.pdf"
+         | torturing	    =
+            "work:~/past/HP/power_faults/torturing_databases/paper/osdi14-cam/paper.pdf"
+
+             # Wholesale memory broker:
+
+
+         | CV		    = "work:~/published/CV/main.pdf"
+         | restricted CV    = "work:~/published/CV/restricted.pdf"
+
+         | buffer PDF	    = SavedPDF()
+         | saved  PDF	    = SavedPDF()
+
+         | work blue place  = "work:~/Tmp/places/blue/paper.pdf"
+         | foil blue place  = "foil:~/Tmp/places/blue/paper.pdf"
+
+         | work	  saved PDF = "work:~/Tmp/buffer.pdf"  
+         | foil	  saved PDF = "foil:~/Tmp/buffer.pdf"  
+         | Fedora saved PDF = "Fedora:~/Tmp/buffer.pdf"
+
+
+    | Amazon = "~/interview/Amazon/innovation.pdf"
+
+
+
+         );

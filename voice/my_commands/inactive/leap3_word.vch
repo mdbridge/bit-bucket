@@ -1,0 +1,76 @@
+###
+### Implementation of Mark Lillibridge's leap3 functions v2.0 for Microsoft 
+### Word
+###
+###
+###   See leap_definition.vch for the specification of the leap3 API
+### that this file implements for Microsoft Word.
+###
+###
+### Implementation details:
+###
+###   Movement on failure (aiming for $target start): moves slightly if start at
+###                                                   end of document
+###
+###   Movement on failure (aiming for $target end):   moves slightly
+###
+###
+###   Leap Same:        always leaps to start of $target
+###
+###   Case sensitivity: none
+###
+###   Wrapping around:  never
+###
+###
+### Other:
+###
+###   * LeapSame does not work if there is a selection; it destroys
+###     the clipboard as a side effect.
+###
+
+include "leap_definition.vch";
+
+
+  # private function
+_Leap(direction, set_target, times) :=
+	  # fake selecting our target at point:
+	  #   (fails at end of buffer, letting point move if find fails)
+	{shift+right}
+	  # bring up find dialog box:
+	{ctrl+f}
+	  # set target for find:
+	$set_target
+	  # set common options:
+	{alt+m}
+	{alt+h}-    {alt+y}-   {alt+u}-   {alt+k}-  {alt+w}-
+	{alt+x}-    {alt+t}-   {alt+s}-   {alt+a}-
+	  # set direction to find:
+	{alt+:} _IfUp($direction, u, d) {enter}
+	  # do the find $times times:
+	Repeat($times,
+	    # do the find (may produce an error dialog box):
+	  {alt+f}
+	    # dismiss error dialog box if any without doing another find:
+	  {alt+:} {esc}
+	)
+	  # dismiss find dialog box:
+	{esc} Wait(200)
+	  # exit selection, leaving point at start of target or original
+	  # point if target not found:
+	{left}
+	;
+
+Leap3(direction, target, count) :=
+	_Leap($direction, {backspace} PrintablesToKeys($target), $count)
+	_AdjustLeap($direction, $target);
+
+  # side effect: sets Clipboard to current target
+  # ({ctrl+f} while a selection exists uses that selection as a target)
+LeapSame(direction, count) :=
+	  # set clipboard to current search target:
+	{ctrl+f} {ctrl+c} {esc} Wait(100)
+	_Leap($direction, {ctrl+v}                             , $count);
+
+
+
+Leap(direction, target) := Leap3($direction, $target, 1);

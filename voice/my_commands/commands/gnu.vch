@@ -1,0 +1,168 @@
+#############################################################################
+#                                                                           #
+# Primitives useful in defining Gnuemacs voice macros                       #
+#                                                                           #
+#############################################################################
+
+Rep(n) := When($n, {ctrl+u}$n);
+
+
+## 
+## Running named commands/executing elisp/shell commands:
+## 
+
+Do (command)           :=  {esc}x  $command    {enter};
+Do2(command, argument) :=  {esc}x  $command    {enter} $argument {enter};
+
+Elisp(expression)      := '{esc}:' $expression {enter};
+
+Shell(command)         := '{esc}!' $command    {enter};
+
+
+## 
+## Under DNS 9.5 onwards, some macros do not clear the utterance
+## buffer; use this function at the end of such macros to ensure the
+## utterance buffer is cleared.
+## 
+
+#Empty() := {f5};      # I made this keystroke ignored by emacs and Xterms
+# <<<>>>
+Empty() := If(Window.Match("Cygwin"), {ctrl+e},
+				      If(Window.Match(emacs), {f5}, ""));
+
+
+## 
+## Setting the mark, with and without activating the region:
+## 
+##   These work as they do due to elisp code in voice-routines.el  <<<>>>
+## 
+
+Mark()       := {ctrl+space};
+MarkActive() := Do(set-mark-command);
+
+  # exchange mark and point, don't activate mark if not already activated:
+Exchange()   := {ctrl+x}{ctrl+x};
+
+
+##
+## Saving and restoring to Emacs registers
+##
+##   Registers are named by a single character.
+##
+
+  # These registers are for internal use by macros.
+ScratchRegister ()         := "~";
+ScratchRegister2()         := "`";
+ScratchRegister3()         := "'";
+
+   SavePoint(register)     := {ctrl+x}r{space} $register;
+RestorePoint(register)     := {ctrl+x}rj       $register;
+
+  # note that these do not affect the kill ring:
+CopyToRegister  (register) :=           {ctrl+x}rs $register;
+ CutToRegister  (register) := {ctrl+u}1 {ctrl+x}rs $register;
+YankFromRegister(register) := {ctrl+u}  {ctrl+x}ri $register;
+
+
+  # delete from point to start-of-line leaving kill ring alone (sets mark):
+EraseToStart() := Mark() {home} CutToRegister(ScratchRegister());
+
+  # execute $actions then restore point to where it was before:
+SaveExcursion(actions)     := SavePoint(ScratchRegister())
+			        $actions
+			      RestorePoint(ScratchRegister());
+
+
+## 
+## Kludge; this should belong with Mark commands above. <<<>>>
+## 
+
+  # activate current mark without moving it or point:
+ActivateMark() := SavePoint   (ScratchRegister2()) 
+                    Exchange() Do(set-mark-command) 
+                  RestorePoint(ScratchRegister2());
+
+
+## 
+## Visual feedback of the text a command selected:
+## 
+
+include "environment.vch";
+
+  # use these to select region to visually copy:
+HighMark() := MarkActive();
+HighCopy() := IfHome(Wait(50),Wait(300)) {esc}w;
+
+
+## 
+## Fetching:
+## 
+
+  # FetchPoint() is set by LineMod(-) via elisp:
+FetchPoint() := RestorePoint(*);
+
+Fetch()      := FetchPoint() {ctrl+y};
+
+
+##
+## Visiting files
+##
+##   Note: switches to an existing buffer if file already visited
+##
+
+FindFile(prefix) := {ctrl+x}{ctrl+f} EraseToStart() $prefix;
+
+
+##
+## Jump to nearest line to the line the point is on whose line number is
+## equal to r mod 100.
+##
+##    Requires line-numbers.el has been loaded into Gnuemacs.
+##
+
+<row> := ( row | line | go );
+
+#<r> := 0..99;	             # By convention, a row/line number mod 100
+include "numbers.vch";       # deal with recognizer problems <<<>>>
+
+LineMod(r) := {ctrl+u} $r {esc}G;
+
+
+##
+## Mark Lillibridge's Occurs function
+##
+##   Requires occurs.el elisp code has been loaded into Gnuemacs.
+##
+
+#
+# Look for occurrences of $regex in current buffer:
+#
+#   if none,   display no matches message in minibuffer
+#   if one,    jump to the start of that occurrence
+#   otherwise, open an *occurs* buffer showing all of the occurrences
+#                 (may replace current window if enough occurrences exist)
+#
+#   in the last case, use 'teleport <r>' to choose an occurrence
+#
+Occurs      (regex) := Do2(mdl-occur,         $regex);
+
+  # same, but always case-sensitive:
+OccursNoFold(regex) := Do2(mdl-occur-no-fold, $regex);
+
+
+##
+## Implementation of Mark Lillibridge's leap4 functions v2.0 for gnuemacs
+##
+##   Requires leap.el elisp code has been loaded into gnuemacs.
+##
+
+include "leap4_gnuemacs.vch";
+
+
+##
+## Apply Mark's toggle transform to the given region; leaves point at
+## region start and mark at region end
+##
+
+ToggleRegion() := 
+    '{ctrl+u}{esc}|cd ~/voice/symbols; ruby toggle.rb{enter}';

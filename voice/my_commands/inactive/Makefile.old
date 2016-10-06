@@ -1,0 +1,252 @@
+default: Vocola to_DNS.xml
+
+all: source Vocola to_DNS.xml
+
+
+## 
+## Master external targets:
+## 
+##   source
+## 
+##   Vocola
+##   to_DNS.xml
+## 
+## 
+## WARNING: although the later two depend on source, those
+## dependencies have been commented out to allow for incremental
+## recompilation.
+## 
+
+source: mini-source Vocola-lists
+
+clean::
+	rm -f mini-commands/*~ mini-lists/*~ commands/*~
+
+
+
+## 
+## Generating mini-Vocola lists:
+## 
+
+MINI = java_type work_email personal_email
+
+mini-source: ${MINI:%=mini-lists/%.list}
+
+clean::
+	rm -f ${MINI:%=mini-lists/%.list}
+
+#
+
+.PHONY:: mini-lists/java_types.list
+
+mini-lists/java_type.list:
+	(cd ~/deduplication/client; make symbols) > /dev/null
+	cp ~/deduplication/client/symbols.txt $@
+
+#
+
+mini-lists/work_email.list: ~/mail/analysis/outlook.txt \
+	  ~/mail/analysis/get_work_email
+	(cd ~/mail/analysis; get_work_email) > $@
+
+#
+
+mini-lists/personal_email.list: ~/personal/addresses/addresses \
+	  ~/personal/addresses/get_personal_email.rb \
+	  ~/personal/addresses/rolodex.rb
+	(cd ~/personal/addresses; ruby get_personal_email.rb) > $@
+
+
+
+## 
+## Converting mini-Vocola lists to Vocola lists:
+## 
+
+LIB=generators/Vocola_quoting.rb generators/list_generator.rb \
+    generators/priority_list.rb
+
+CONVERTER=generators/convert_mini_list.rb ${LIB}
+
+converted-lists/%.vch: mini-lists/%.list   ${CONVERTER}
+	ruby generators/convert_mini_list.rb $<
+
+convert_all_lists: mini-source             ${CONVERTER}
+	ruby generators/convert_mini_list.rb mini-lists/*.list
+
+clean::
+	rm -f converted-lists/* 
+
+
+
+## 
+## Generating Vocola lists:
+## 
+
+CONVERT=java_types work_emails personal_emails
+
+LISTS=${CONVERT} numbers websites UNIX PC COM \
+      macro_files command_files include_files vocabulary_files \
+      units interface personal_folder
+
+Vocola-lists: ${LISTS:%=commands/%.vch}
+
+clean::
+	rm -f ${LISTS:%=commands/%.vch}
+
+
+# 
+# Converted lists: for some of these, we pluralize the name:
+# 
+commands/java_types.vch: converted-lists/java_type.vch
+	@diff -q $< $@ || cp $< $@
+
+commands/work_emails.vch: converted-lists/work_email.vch
+	@diff -q $< $@ || cp $< $@
+
+commands/personal_emails.vch: converted-lists/personal_email.vch
+	@diff -q $< $@ || cp $< $@
+
+#
+
+commands/websites.vch: web.htm work.htm   generators/websites.rb ${LIB}
+	(cd generators; ruby websites.rb > ../commands/websites.vch)
+
+web.htm: ~/backups/bookmarks/Firefox-home.htm  ~/http/extract_folder.rb
+	ruby ~/http/extract_folder.rb \
+	         ~/backups/bookmarks/Firefox-home.htm Web >$@
+	ruby ~/http/extract_folder.rb \
+	         ~/backups/bookmarks/Firefox-home.htm Web2 >>$@
+
+clean::
+	rm -f web.htm
+
+#
+
+commands/numbers.vch: generators/numbers.rb ${LIB}
+	(cd generators; ruby numbers.rb > ../commands/numbers.vch)
+
+#
+
+.PHONY:: commands/macro_files.vch
+
+NAMER=generators/voice_source.rb ${LIB}
+
+commands/macro_files.vch commands/command_files.vch \
+                         commands/include_files.vch \
+			 commands/vocabulary_files.vch: \
+	                     ${NAMER} Makefile
+	ruby generators/voice_source.rb ${LISTS:%=%.vch}
+
+#
+
+.PHONY:: commands/units.vch
+
+MAKE_UNITS=generators/units.rb ${LIB}
+
+commands/units.vch commands/interface.vch: ${MAKE_UNITS}
+	ruby generators/units.rb
+
+#
+
+.PHONY:: commands/UNIX.vch
+
+commands/UNIX.vch commands/PC.vch commands/COM.vch: ${LIB} \
+		                    generators/folders.rb
+	(cd generators; ruby folders.rb)
+
+#
+
+.PHONY:: commands/personal_folder.vch
+
+commands/personal_folder.vch: ${LIB} generators/Rmail_folders.rb
+	(cd generators; ruby Rmail_folders.rb)
+
+
+
+## 
+## Prepare command files for export to Vocola:
+## 
+
+Vocola: #Vocola-lists
+	ruby -E Windows-1252 translate.rb commands/*.vch
+	ruby -E Windows-1252 translate.rb commands/*.vcl commands/*.vch
+
+clean::
+	rm -f to_Vocola/*
+
+
+
+## 
+## How to compile mini-Vocola code:
+## 
+
+.PHONY:: to_DNS.xml
+
+to_DNS.xml: #mini-source
+	(cd ~/voice/mini-Vocola/compiler; make to_DNS.xml)
+	cp ~/voice/mini-Vocola/compiler/to_DNS.xml .
+
+clean::
+	rm -rf to_DNS.xml
+
+
+
+## 
+## Make a half-hearted translation from advanced scripting commands to Vocola:
+## 
+
+convert_advanced:
+	for i in advanced-scripting/*.xml ; do convert $$i; done
+
+clean::
+	rm -f advanced-scripting/*.converted
+
+
+
+## 
+## Other:
+## 
+
+leap: 
+	mkdir -p leap-export
+	cp commands/leap*.vch      leap-export/
+	cp inactive/leap3_word.vch leap-export/
+	cp commands/printables.vch leap-export/
+	cp commands/string.vch     leap-export/
+	cp word-macros/leap.bas    leap-export/
+	cp ~/elisp/leap.el         leap-export/
+	# deal with .Xdefaults translation for xterm?  .tcshrc...
+	# gnu_short, gnu_search, using from dragonopad, word 
+
+clean::
+	rm -rf leap-export
+
+
+## 
+## Generating a training corpus for DNS:
+## 
+
+clean::
+	-rm -rf corpus
+
+.PHONY:: corpus
+
+corpus:
+	-rm -rf corpus
+	mkdir corpus
+	#
+	for p in evaluation fragmentation_FAST11 reliability_HotMetrics10 \
+	    sparse_index_FAST09 extreme_binning_Usenix ;do \
+	    cat ~/deduplication/tube/papers/$$p/*.tex > corpus/$$p.txt; \
+	done
+	#
+	cat ~/past/HP/limiter/paper/*.tex > corpus/limiter.txt; \
+	#
+	ruby ~/mail/analysis/extract_email.rb 240 \
+	    ~/Rmail/RMAIL ~/Rmail/hold ~/Rmail/personal_hold \
+	    ~/Rmail/computer_hold ~/Rmail/miss > corpus/top_mail.txt
+	#
+	for p in b c d f h m p r s ;do \
+	    ruby ~/mail/analysis/extract_email.rb 240 ~/Rmail/$$p/* ~/Rmail/$$p/*/* \
+		> corpus/mail_$$p.txt; \
+	done

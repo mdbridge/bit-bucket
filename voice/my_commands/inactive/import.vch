@@ -1,0 +1,79 @@
+###
+### Functions for copying files from UNIX to PC quickly
+### 
+
+## 
+## Robocopy command: source and destination are both PC paths
+## 
+##   Warning: do not use folder names ending with backslashes
+## 
+
+TypeRobocopy(source, destination, which, options) :=
+                  'robocopy.exe '
+                  '"$source" "$destination" $which $options';
+
+Robocopy(source, destination, which, options) :=
+                 ShellExecute(TypeRobocopy($source, $destination, $which, 
+					   $options));
+
+## 
+## Rsync command: source is a UNIX path, destination is a PC path
+## 
+
+TypeRsync(source, destination, which, options) :=
+                  '"' PC(~pf32/cwRsync/bin/rsync.exe) '" '
+		  ' -z -p $options '
+		  IfHome(
+                  '"mdl@192.168.1.2:$source/$which" ',
+                  '"lillibridgem@ts-rhel5.hpl.hp.com:$source/$which" '
+		  )
+		  '"/cygdrive/c/' 
+                       Replace(Replace($destination, "\", "/") , "C:/", "") '"';
+
+    Rsync(source, destination, which, options) :=
+                 ShellExecute(TypeRsync($source, $destination, $which, $options));
+
+
+## 
+## 
+## 
+
+  # Import one regular file:
+ImportFile(UNIX, PC) := 
+	ShellExecute('xcopy /y /h "' UNIX($UNIX) '" "' PC($PC) '"');
+
+
+  # Import all files of one UNIX directory into a PC directory:
+ImportAll(UNIX, PC) := 
+	ShellExecute('xcopy /y /h "' UNIX($UNIX) '" "' PC($PC) '"');
+
+
+  # Import all files of one UNIX directory matching $pattern into a PC
+  # directory if they are more recent than any existing file, if any:
+#ImportInc(UNIX, PC, pattern) := 
+#	Robocopy(UNIX($UNIX), PC($PC), $pattern, "/W:1");
+#
+#TypeImportInc(UNIX, PC, pattern) := 
+#	TypeRobocopy(UNIX($UNIX), PC($PC), $pattern, "/W:1");
+
+
+#TypeImportInc(UNIX, PC, pattern) := 
+#	TypeRsync($UNIX, PC($PC), $pattern, "-t --progress");
+#
+#ImportInc(UNIX, PC, pattern) := 
+#	Rsync($UNIX, PC($PC), $pattern, "-t --progress");
+ 
+
+  # Import all files of one UNIX directory matching $pattern into a PC
+  # directory if they are more recent than any existing file, if any:
+ImportInc(UNIX, PC, pattern) := 
+    IfHome(
+	Rsync($UNIX, PC($PC), $pattern, "-t --progress"),
+	Robocopy(UNIX($UNIX), PC($PC), $pattern, "/W:1")
+    );
+
+TypeImportInc(UNIX, PC, pattern) := 
+    IfHome(
+	TypeRsync($UNIX, PC($PC), $pattern, "-t --progress"),
+	TypeRobocopy(UNIX($UNIX), PC($PC), $pattern, "/W:1")
+    );

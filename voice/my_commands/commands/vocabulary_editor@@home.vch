@@ -1,0 +1,62 @@
+### 
+### Functions for controlling the DPI 14 vocabulary editor
+### 
+
+  #
+  # precondition: Vocabulary Editor is opened and has focus ("edit words");
+  #               Display is set to "all words" (default)
+  #
+Word(written, spoken) := WaitForWindow("Vocabulary Editor",,30000) Wait(50)
+                         Vocola.Print(loading " " $written\ $spoken)
+                         Variable.Set(:written, $written)
+                         Variable.Set(:spoken, $spoken);
+
+
+AwaitChange(actions) :=
+    Variable.Set(:target, Window.ID())
+    $actions
+    Repeat(50, 
+        If(Window.Match(ID> Variable.Get(:target)), Wait(100)));
+
+Add() := {alt+a} WaitForWindow("Add word or phrase")
+         Variable.Get(:written) {tab} Variable.Get(:spoken)
+         {tab_2} AwaitChange({enter})
+         If(Window.Match(Dragon), 
+            Vocola.Print("  Dragon") N WaitForWindow("Add word or phrase") {esc}, 
+            If(Window.Match("Guess Pronunciation of Word"),
+               {space}))
+         WaitForWindow("Vocabulary Editor",,30000);
+         
+
+  # gives runtime error if word doesn't already exist
+POpen() := Dragon.open_properties( Variable.Get(:written), Variable.Get(:spoken) );
+PClose() := {enter};
+
+
+Delete() := Add()  POpen() PClose()  {alt+d} Wait(100) y Wait(50); 
+
+
+Done() := MsgBoxConfirm("Done loading words.", 64, "Word Compiler");
+
+
+
+SetSpacing(before, after) :=  {alt+n}$before {alt+d}$after;
+
+
+prefix() := SetSpacing(1, 0);
+suffix() := SetSpacing(0, 1);
+tight()  := SetSpacing(0, 0);
+normal() := SetSpacing(1, 1);
+
+p() := prefix();
+s() := suffix();
+t() := tight();
+n() := normal();
+
+
+#alt(written) := {alt+u}{alt+o}{space}{alt+u}{alt+u} # force alt 1 on
+#               {tab} $written;
+alt(written) := {alt+o}$written;
+
+#alt_s() := {alt+f} WaitForWindow("Alternate Written Form Formatting") s() {enter};
+alt_s() := s();

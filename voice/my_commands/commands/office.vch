@@ -1,0 +1,11 @@
+### 
+### Common voice commands and functions for Office 2013 applications
+### 
+
+include "printers.vch";
+
+
+SetPrinter(printer) := {alt+p}i {home}{down_$printer}{enter};
+
+  # override of global command in _dialogue.vcl:
+set print [<printer_position>] = {alt+p}i SetPrinter(When($1,$1,Vocola.Abort()));

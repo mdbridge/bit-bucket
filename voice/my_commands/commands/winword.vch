@@ -1,0 +1,31 @@
+#############################################################################
+#                                                                           #
+# Primitives useful in defining Microsoft Word voice macros                 #
+#                                                                           #
+#############################################################################
+
+
+
+##
+## Implementation of Mark Lillibridge's leap4 functions v2.0 for Microsoft Word
+##
+##   Requires leap.bas VBA code has been loaded into Word.
+##
+
+include "leap4_word.vch";
+
+
+
+##
+## Jump to location on current page whose line number on that page is equal
+## to N:
+##
+##    Requires line_numbers.bas has been loaded into Word.
+##
+
+<row> := ( go | row | line );
+
+#<r> := 0..99;	             # By convention, a row/line number mod 100
+include "numbers.vch";       # deal with recognizer problems <<<>>>
+
+Line(row) := {ctrl+shift+g} $row {enter};

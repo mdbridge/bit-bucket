@@ -1,0 +1,4 @@
+  # type Windows clipboard; do not use for long text, or text containing
+  # control characters, etc.
+paste keys = Replace(Replace( Eval("Clipboard()"), Eval("Chr$(13)"), ""),
+	             "{", "{{}");

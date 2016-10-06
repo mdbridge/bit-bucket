@@ -1,0 +1,44 @@
+### 
+### Functions for dealing with URLs from Gnuemacs:
+### 
+
+include "URLs.vch";
+
+
+## 
+## Copy next URL after point; leaves point at end of URL:
+## 
+
+CopyURL() := LeapRegex(d, '\(http\|https\|file\):')      HighMark()
+             LeapRegex(d, '\.?["<> ,)]\|\.?$')           Wait(100) HighCopy();
+
+
+CopySplitURL() := LeapRegex(d, '\(http\|https\|file\):') HighMark()
+	{down}{home}
+	LeapRegex(d, '\.?["<> ,)]\|\.?$')
+	LeapRegex(u, '\(http\|https\|file\):')           Wait(100) HighCopy();
+
+
+
+## 
+## attempt to view the URL in the kill ring (aka, ^y) in the lookup browser:
+## 
+
+CutToL1() :=
+	   # create web page redirecting to that link:
+	{ctrl+x}b *l1*{Enter} {esc}<
+	{ctrl+y} {Enter}
+	Wait(10)  # <<<>>> avoid Xming bug
+	'<a href="' {ctrl+y} '">go there</a>' {enter}
+	Wait(10)  # <<<>>> avoid Xming bug
+	{enter}
+	'<meta http-equiv="REFRESH" content= "0;url=' {ctrl+y} '">' {enter}
+	{ctrl+space} {esc}> {ctrl+w}
+	Do(mdl-export-buffer-to-l1) {ctrl+x}k{Enter}
+	Wait(5000);
+
+#ViewURL()          := CutToL1() Lookup(            UNIX(~/Tmp/l1.html));
+#ViewURLIn(browser) := CutToL1() LookupIn($browser, UNIX(~/Tmp/l1.html));
+
+ViewURL()          := Lookup({ctrl+v});
+ViewURLIn(browser) := LookupIn($browser, {ctrl+v});

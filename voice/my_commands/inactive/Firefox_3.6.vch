@@ -1,0 +1,48 @@
+###
+### Functions for Firefox (version 3.5)
+###
+
+
+
+## 
+## Going to the address bar.
+## 
+##   This allows using some browser commands even with embedded PDF
+##   documents (e.g., {ctrl+1}).
+##
+
+  # Firefox plug-ins eat all keystrokes (Firefox bug since 2001)
+Address() := SetMousePosition(5, 500, 30) ButtonClick(1, 1);
+
+
+
+## 
+## Move from the address bar back to the current document.
+## 
+## Attempts to leave focus where it was (e.g., current frame,
+## scrolling position) as much as possible.
+## 
+
+UnAddress() := {shift+f6};
+
+
+
+##
+## Going to Bookmarks:
+##
+
+   OpenURL(URL) := Address() {ctrl+a} $URL {enter};
+
+  #  open URL in a new tab:
+OpenNewURL(URL) := Address() {ctrl+a} $URL {alt+enter};
+
+
+
+## 
+## Clicking on links:
+## 
+
+Click      (word) := {ctrl+NumKey/} "'$word"      {enter};
+
+ClickFirst (word) := {ctrl+NumKey/} "'$word"      {enter};
+ClickSecond(word) := {ctrl+NumKey/} "'$word" {f3} {enter};

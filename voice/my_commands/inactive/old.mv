@@ -1,0 +1,7 @@
+indent lines	 = "{home}{ctrl+space}{down 20}{esc}{ctrl+\}{ctrl+x}{ctrl+x}";
+
+#  indent next N lines:
+indent lines 2..20 = Repeat($1, {home}{tab}{down});
+
+Indent Region		= "{Esc}{Ctrl+\}";
+

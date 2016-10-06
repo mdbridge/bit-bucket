@@ -1,0 +1,65 @@
+###
+### Functions for chrome (version 51)
+###
+
+include "control.vch";
+
+
+## 
+## Going to the address bar.
+## 
+##   This allows using some browser commands even with embedded PDF
+##   documents (e.g., {ctrl+1}).
+##
+
+#Address() := {ctrl+l} Wait(500);  # also {alt+d}
+Address() := Mouse.Click(interior,610,50);
+
+
+
+## 
+## Move from the address bar back to the current document.
+## 
+## Attempts to leave focus where it was (e.g., current frame,
+## scrolling position) as much as possible.
+## 
+
+UnAddress() := {shift+f6};
+
+
+
+##
+## Going to Bookmarks:
+##
+
+   OpenURL(URL) := Address() {ctrl+a} Wait(100) $URL Wait(100) {enter};
+
+  #  open URL in a new tab:
+OpenNewURL(URL) := Address() {ctrl+a} Wait(100) $URL Wait(100) {alt+enter};
+
+
+
+## 
+## Going to directories:
+## 
+
+  # remove any / at end:
+Remove() := {end}{shift+left}{ctrl+c} Wait(0)
+	    If(EQ(Clipboard.Get(), "/"),{end}{backspace},{end});
+
+CD  (pathname) := OpenURL(file:/// $pathname);
+  # {Del} prevents suggestions?
+UP  (count)    := Address() Remove() Repeat($count,/..) {Del}{enter};
+DOWN(pathname) := Address() Remove() / $pathname        {Del}{enter};
+
+
+
+## 
+## Clicking on links:
+## 
+
+Click      (word) := {ctrl+f} Wait(100) $word{enter} Wait(100) 
+	             {esc} Wait(100) {enter};
+
+ClickFirst (word) := Click($word);
+# didn't bother implementing ClickSecond because not currently used

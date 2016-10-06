@@ -1,0 +1,66 @@
+###
+### Functions for Firefox (version 47.0)
+###
+
+include "control.vch";
+
+
+## 
+## Going to the address bar.
+## 
+##   This allows using some browser commands even with embedded PDF
+##   documents (e.g., {ctrl+1}).
+##
+
+  # Firefox plug-ins eat all keystrokes (Firefox bug since 2001)
+  # <<<>>> this doesn't work with add-in's page (no address bar there)
+  #        actually, works reasonably ok in terms of allow commands...
+#Address() := Mouse.Click(interior, 500, 65);
+Address() := Mouse.Click(interior, 500, 75);
+
+
+
+## 
+## Move from the address bar back to the current document.
+## 
+## Attempts to leave focus where it was (e.g., current frame,
+## scrolling position) as much as possible.
+## 
+
+UnAddress() := {tab_2}; #{shift+f6};
+
+
+
+##
+## Going to Bookmarks:
+##
+
+   OpenURL(URL) := Address() {ctrl+a} $URL {enter};
+
+  #  open URL in a new tab:
+OpenNewURL(URL) := Address() {ctrl+a} $URL {alt+enter};
+
+
+
+## 
+## Going to directories:
+## 
+
+  # remove any / at end:
+Remove() := {end}{shift+left}{ctrl+c} Wait(0)
+	    If(EQ(Clipboard.Get(), "/"),{end}{backspace},{end});
+
+CD  (pathname) := OpenURL(file:/// $pathname);
+UP  (count)    := Address() Remove() Repeat($count,/..) {enter};
+DOWN(pathname) := Address() Remove() / $pathname        {enter};
+
+
+
+## 
+## Clicking on links:
+## 
+
+Click      (word) := {ctrl+NumKey/} "'$word"      {enter};
+
+ClickFirst (word) := {ctrl+NumKey/} "'$word"      {enter};
+ClickSecond(word) := {ctrl+NumKey/} "'$word" {f3} {enter};

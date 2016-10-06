@@ -1,0 +1,33 @@
+###
+### Prespecified targets for leaping.
+###
+###   Designed to be distinguishable from <prn>.  
+###
+###   These are character sequences, not Dragon key sequences.
+###
+
+<leap_point> := (
+	  # multiple character punctuation with special names:
+       empty paren     = "()"
+     | bang equals     = "!="
+     | comment         = /*
+     | M. D. L. break  = "// mdl-break"
+     | double slash    = //
+     | double equals   = "=="
+     | Kluge mark      = "<<<>>>"
+
+         # C++ targets:
+     | double colon    = "::"
+     | standard prefix = "std::"
+     | constant        = const
+
+          # Java keywords:
+     | abstract | boolean | break | case | catch | class | continue 
+     | double | else | extends | false | final | finally | float 
+     | for symbol = for	          # to distinguish from <prn> 4
+     | if | implements # | import too easily confused with clipboard
+     | instance of = instanceof
+     | int | interface | long | new | null | package | param | private
+     | protected | public | return | short | static | super | switch
+     | synchronized | this | throw | throws | true | try | void | while
+);

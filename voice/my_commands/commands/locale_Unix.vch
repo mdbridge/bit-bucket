@@ -1,0 +1,9 @@
+### 
+### Definitions specific to applications running under unix
+### 
+
+include "file_access.vch";
+
+
+UNIX(pathname) := UNIXfromUNIX($pathname);
+PC(pathname)   := PCfromUNIX  ($pathname);

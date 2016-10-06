@@ -1,0 +1,23 @@
+### 
+### Definitions appropriate only for my new home Windows 7 machine:
+### 
+
+IfHome(home, work) := $home;
+
+
+# 
+# Screen resolution (each):
+# 
+
+XSize() := 1920;
+YSize() := 1080;
+
+
+# 
+# Where various PC directories are located:
+# 
+
+PCHome() := "C:/Users/Mark/Documents";
+PF32()   := "C:/Program Files (x86)";
+
+Cygwin() := "C:/cygwin64/bin";

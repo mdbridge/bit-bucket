@@ -1,0 +1,78 @@
+###
+### Names of files commonly accessed, common file "patterns"
+###
+
+Development() := ~/voice/Vocola_development/Vocola_2/;
+
+  # these are in the UNIX domain only:
+<file> := (
+       done 11          = work:~/private/evaluations/2011_done
+     | done 12          = work:~/private/2012_done
+     | done 13          = work:~/private/2013_done
+     | done 14          = work:~/private/2014_done
+     | done 15          = work:~/private/2015_done
+     | done 16          = work:~/private/2016_done
+     
+     | patents          = work:~/published/patents.txt
+
+
+     | home recipe      = ~/admin/home-2013.txt
+     | foil recipe      = ~/admin/foil-2013.txt
+     | work recipe      = ~/admin/work-2014.txt
+
+     | in         books = foil:~/wanted/books/in.txt
+     | ready      books = foil:~/wanted/books/ready.txt
+     | out        books = foil:~/wanted/books/out
+     | fiction    books = foil:~/wanted/books/fiction.txt
+     | processing books = foil:~/wanted/books/processing.txt
+
+     | money            = foil:~/household/finances/money.ca
+
+
+     | addresses        = ~/mail/contacts/addresses.rol
+     | calendar         = ~/mail/contacts/calendar
+
+     | my Emacs         = ~/elisp/my-emacs.el
+     | tasks            = ~/private/to-do/tasks.txt
+     | projects         = ~/private/to-do/projects.txt
+     | reminders        = ~/private/to-do/reminders.txt
+     | work streams     = ~/private/to-do/workstreams.txt
+     | home computer    = foil:~/private/to-do/computer.txt
+
+
+     | scrap            = ~/Tmp/scrap
+     | scrap two        = ~/Tmp/scrap2
+     | scrap three      = ~/Tmp/scrap3
+
+     | Unix directories = ~/voice/my_commands/commands/filesystem/Unix_scan_recipe.txt
+     | PC directories   = ~/voice/my_commands/commands/filesystem/PC_directories.txt
+     | components       = ~/voice/my_commands/commands/filesystem/components.txt
+     | files            = ~/voice/my_commands/commands/files.vch
+
+     | Vocola compiler  = Development() src/exec/vcl2py.py
+     | Vocola utilities = Development() src/to_core/VocolaUtils.py
+     | Vocola main      = Development() src/to_MacroSystem/_vocola_main.py
+     | release notes    = Development() src/Release-2-8-notes.txt
+     | vortex           = Development() src/to_MacroSystem/_vortex.py
+);
+
+
+  # this is used in <UNIX|PC> [slash <COM>] <last> in Gnu emacs:
+<last> := (
+               # run dir edit on given directory:
+           slap                  =                  {enter}
+
+             #
+             # look for a given file name:
+             #
+        | / README               = /README{tab}     {enter}
+        | / browse               = /BROWSE          {enter}
+        | / Makefile             = /Makefile        {enter}
+        | / local Makefile       = /Makefile.local  {enter}
+        | / experiments          = /experiments.txt {enter}
+
+        | / Vocola compiler      = /vcl2py.py       {enter}
+        | / Perl Vocola compiler = /vcl2py.pl       {enter}
+        | / Vocola utilities     = /VocolaUtils.py  {enter}
+        | / Vocola main          = /_vocola_main.py {enter}
+        );

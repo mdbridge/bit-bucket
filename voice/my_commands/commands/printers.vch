@@ -1,0 +1,30 @@
+### 
+### Printer specifications -> names/positions of printers:
+### 
+
+  # By Linux printer name:
+<Linux_printer> := (
+          on Left    = pal01p137  # near Martin
+        | on Right   = pal01p135  # next to interns
+        | on Interns = pal01p136  # next to interns
+);
+
+
+  # by first letter of printer:
+<printer_name> := (
+          on left    = l
+        | on right   = r
+	| on interns = i
+
+	| on home    = H
+        );
+
+
+  # by zero-based position of printer in Microsoft Office list:
+<printer_position> := (
+          on left    = 3
+        | on right   = 5
+	| on interns = 2
+
+	| on home    = 1
+        );

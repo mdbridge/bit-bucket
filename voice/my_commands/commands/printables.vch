@@ -1,0 +1,118 @@
+###
+### List of ASCII printable characters with short spoken names, designed
+### so that <prn> <prn> ... is not ambiguous.
+###
+###
+### WARNING: characters != Dragon key sequences; use PrintablesToKeys
+### below to convert the written form of <prn>* to a string suitable for
+### passing to SendDragonKeys to type those characters.
+###
+
+include "string.vch";
+
+  # convert a string of ASCII printable characters to the corresponding
+  # SendDragonKeys argument:
+PrintablesToKeys(printables) := Replace($printables, "{", "{{}");
+
+
+  # in ASCII order:
+<prn> := (
+       space             = " "
+     |  !  | bang        =  !
+     | '"' | quote       = '"'
+     | "#" | pound       = "#"
+     | "$" | dollar      = "\$"
+     |  %  | percent     =  %
+     |  & 
+     | "'" | apostrophe  = "'" | single = "'"
+     | "(" | paren       = "("
+     | ")" | close paren = ")"
+     |  *  | asterisk    =  *  | star = *
+     |  +  | plus        =  +
+     | ","
+     |  -  | minus       =  -
+     |  .  | dot         =  .
+     |  / 
+
+          # digits:
+       # use spelled-out numbers to work around DNS 11 bug with <_anything>:
+     | zero=0 | one=1   | two=2   | three=3 | four=4 | five=5
+     | six=6  | seven=7 | eight=8 | nine=9
+     # | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+     | ":" 
+     | ";" | semi       = ";"
+     | "<" | bend       = "<"
+     | "=" | equal      = "=" | equals = "="
+     | ">" | close bend = ">"
+     |  ?  | question   =  ?
+     |  @ 
+
+          # uppercase letters:
+     | big Alpha    = A
+     | big Bravo    = B
+     | big Charlie  = C
+     | big Delta    = D
+     | big echo     = E
+     | big foxtrot  = F
+     | big golf     = G
+     | big Hotel    = H
+     | big India    = I
+     | big Juliett  = J
+     | big kilo     = K
+     | big Lima     = L
+     | big Mike     = M
+     | big November = N
+     | big Oscar    = O
+     | big Papa     = P 
+     | big Quebec   = Q
+     | big Romeo    = R
+     | big Sierra   = S
+     | big tango    = T
+     | big uniform  = U
+     | big Victor   = V
+     | big whiskey  = W
+     | big x-ray    = X
+     | big Yankee   = Y
+     | big Zulu     = Z
+
+     | "[" | bracket       = "["
+     |       backslash     = "\"
+     | "]" | close bracket = "]"
+     |  ^
+     |  _ 
+     |  `
+
+          # lowercase letters:
+     | Alpha    = a
+     | Bravo    = b
+     | Charlie  = c
+     | Delta    = d
+     | echo     = e
+     | foxtrot  = f
+     | golf     = g
+     | Hotel    = h
+     | India    = i
+     | Juliett  = j
+     | kilo     = k
+     | Lima     = l
+     | Mike     = m
+     | November = n
+     | Oscar    = o
+     | Papa     = p 
+     | Quebec   = q
+     | Romeo    = r
+     | Sierra   = s
+     | tango    = t
+     | uniform  = u
+     | Victor   = v
+     | whiskey  = w
+     | x-ray    = x
+     | Yankee   = y
+     | Zulu     = z
+
+     | "{" | brace        = "{"
+     | "|" | vertical bar = "|" | bar = "|"
+     | "}" | close brace  = "}"
+     | "~"
+);

@@ -1,0 +1,282 @@
+standard Zen test = 
+                        Repeat(8, Repeat(7,
+                                             SendDragonKeys(0)
+                                             SendDragonKeys(1)
+                                             SendDragonKeys(2)
+                                             SendDragonKeys(3)
+                                             SendDragonKeys(4)
+                                             SendDragonKeys(5)
+                                             SendDragonKeys(6)
+                                             SendDragonKeys(7)
+                                             SendDragonKeys(8)
+                                             SendDragonKeys(9)
+                                         ) {space}{enter});
+
+
+include "control.vch";
+
+Exit() := Repeat(10, Beep() Wait(100));
+
+Wait for enlightenment =
+     Repeat(10000,
+        SendDragonKeys(0)
+        SendDragonKeys(1)
+        SendDragonKeys(2)
+        SendDragonKeys(3)
+        SendDragonKeys(4)
+        SendDragonKeys(5)
+        SendDragonKeys(6)
+        SendDragonKeys(7)
+        SendDragonKeys(8)
+        SendDragonKeys(9)
+	{home}{home}{ctrl+space}{end}{ctrl+Ins} Wait(100)
+	If(EQ(Clipboard.Get(), "0123456789"), 
+	  {home}{home}{ctrl+k},
+	  Exit() Vocola.Abort()
+	) 
+    );
+
+
+
+deeper Zen test = 
+                        Repeat(8, Repeat(19,
+                                             SendDragonKeys("A.B,") Wait(0)
+                                         ) {space}{enter});
+
+Janus Zen test =
+                        Repeat(16, Repeat(8,
+                                             SendDragonKeys(".{ctrl+q}{ctrl+i}") Wait(0)
+                                         ) !{enter});
+
+word Janus Zen test =
+                        Repeat(16, Repeat(8,
+                                             SendDragonKeys(".{tab}") Wait(0)
+                                         ) !{enter});
+
+LiveJournal Janus Zen test =
+                        Repeat(16, Repeat(8,
+                                             SendDragonKeys(".  ") Wait(0)
+                                         ) !{enter});
+
+
+
+
+upper Janus Zen test =
+                        Repeat(16, Repeat(8,
+                                             SendDragonKeys("A  ") Wait(0)
+                                         ) !{enter});
+
+
+
+
+
+standard Janus Zen test = "Standard Janus Zen test (sendDragonKeys):"{enter}
+                        Repeat(8, Repeat(30,
+                                             SendDragonKeys(". ") Wait(0)
+                                         ) !{enter}) {enter};
+
+odd Janus Zen test = "odd Janus Zen test (sendDragonKeys):"{enter}
+                        Repeat(8, Repeat(15,
+                                             SendDragonKeys(". ") Wait(0)
+                                             SendDragonKeys(", ") Wait(0)
+                                         ) !{enter}) {enter};
+
+
+dropping Zen test = "dropping Zen test (sendDragonKeys):"{enter}
+                        Repeat(2, Repeat(50,
+                                             SendDragonKeys("D") Wait(0)
+                                         ) {space}{enter}) {enter};
+
+both Zen test = "both Zen test (sendDragonKeys):"{enter}
+                        Repeat(5, Repeat(10,
+                                             SendDragonKeys(". ") Wait(0)
+                                             SendDragonKeys(", ") Wait(0)
+                                         ) !{enter}) {enter};
+
+fast dropping Zen test = "fast dropping Zen test (sendDragonKeys):"{enter}
+                        Repeat(2, Repeat(50,
+                                             SendDragonKeys("D")
+                                         ) {space}{enter}) {enter};
+
+fast both Zen test = "fast both Zen test (sendDragonKeys):"{enter}
+                        Repeat(5, Repeat(10,
+                                             SendDragonKeys(". ")
+                                             SendDragonKeys(", ")
+                                         ) !{enter}) {enter};
+
+
+
+
+standard dropping test = "standard dropping test (sendDragonKeys):"{enter}
+                        Repeat(4, Repeat(25,
+                                             SendDragonKeys("D ") 
+                                         ) {space}{enter}) {space}{enter};
+
+standard both test = "standard both test (sendDragonKeys):"{enter}
+                        Repeat(5, Repeat(10,
+                                             SendDragonKeys(". ")
+                                             SendDragonKeys(", ")
+                                         ) !{enter}) {space}{enter};
+
+
+
+
+system variant test = "system variant test (SendSystemKeys):"{enter}
+                        Repeat(5, Repeat(10,
+                                             SendSystemKeys(". ")
+                                             SendSystemKeys(", ")
+                                         ) !{enter}) {space}{enter};
+
+HeardWord variant test = "HeardWord variant test (HeardWord):"{enter}
+                        Repeat(4, Repeat(25,
+                                             HeardWord("at")
+                                         ) {space}{enter}) {space}{enter};
+
+protect via (shift|control=ctrl|system request=SysReq|empty={f5}) Zen test =
+                        Repeat(16, Repeat(8,
+                                             SendDragonKeys({$1} ".  ") Wait(0)
+                                         ) !{enter});
+
+
+
+send input dropping test = "send input dropping test (SendInput):"{enter}
+                        Repeat(4, Repeat(25,
+                                             Keys.SendInput("D{SPACE}") 
+                                         ) Keys.SendInput({SPACE}{ENTER}))
+					  Keys.SendInput({SPACE}{ENTER});
+
+send input both test = "send input both test (SendInput):"{enter}
+                        Repeat(5, Repeat(10,
+                                             Keys.SendInput(".{SPACE}")
+                                             Keys.SendInput(",{SPACE}")
+                                         ) Keys.SendInput(!{ENTER}))
+					  Keys.SendInput({SPACE}{ENTER});
+
+
+
+
+
+
+
+
+
+
+test other buffers = Repeat(50, {ctrl+x}o . Wait(100));
+
+test single window = Repeat(500, {ctrl+x}1 . Wait(100));
+test single window word = Repeat(25, HeardWord(SingleWindow) . Wait(100));
+
+refined test = Repeat(8, Repeat(25, HeardWord(SingleWindow) . Wait(100)) {enter});
+
+faster refined test = Repeat(8, Repeat(25, HeardWord(SingleWindow) . ) {enter});
+
+refined test = Repeat(8, Repeat(25, HeardWord(SingleWindow) . Wait(100)) {enter});
+
+
+stable refined test = Repeat(4, Repeat(25, HeardWord(press, dot) '|' Wait(100)) {enter}) {enter};
+
+
+alternative dot = .;
+
+alternative refined test = Repeat(4, Repeat(25, HeardWord(alternative, dot) '|' Wait(100)) {enter}) {enter};
+
+new test = Repeat(4, Repeat(25, . Wait(0) {ctrl+b}< Wait(0) {ctrl+f}> 
+                            Wait(0)) 
+                     {enter});
+
+new test long = Repeat(20, Repeat(4, Repeat(25, . Wait(0) {ctrl+b}< Wait(0) {ctrl+f}> 
+                            Wait(0)) 
+                     {enter}) {enter});
+
+double (test=1|long=20) = 
+Repeat($1,
+Repeat(4,
+Repeat(25,
+'.|' Wait(0)
+)
+{enter})
+{enter})
+;
+
+test Delaware = Repeat(25, HeardWord(Delaware) {enter});
+
+
+
+explicit refined test = Repeat(8, Repeat(10, HeardWord(SingleWindow) . Wait(100)
+                                             HeardWord(SingleWindow) '|' Wait(100)
+                                         ) {enter});
+
+faster explicit refined test = 
+                        Repeat(8, Repeat(10, HeardWord(SingleWindow) . Wait(10)
+                                             HeardWord(SingleWindow) '/' Wait(10)
+                                         ) {enter});
+
+minimal explicit refined test = 
+                        Repeat(8, Repeat(30, . Wait(10)
+                                             '/' Wait(10)
+                                         ) {enter});
+
+multiple explicit refined test = 
+                        Repeat(8, Repeat(15, '.,/' Wait(10)
+                                             '[\]' Wait(10)
+                                         ) {enter});
+
+test catalog = Repeat(25, HeardWord(catalog) {enter});
+
+Zen explicit refined test = 
+                        Repeat(8, Repeat(30, SendDragonKeys(.)
+                                             SendDragonKeys('/')
+                                         ) {enter});
+Zen HeardWord test = 
+                        Repeat(8, Repeat(30, HeardWord(dot)
+                                             HeardWord(slash)
+                                         ) {enter});
+
+Zen HeardWord 2 test = 
+                        Repeat(8, Repeat(30, HeardWord(.\dot)
+                                             HeardWord(/\slash)
+                                         ) {enter});
+
+
+Zen lost test = 
+                        Repeat(8, Repeat(7,
+                                             SendDragonKeys(0)
+                                             SendDragonKeys(1)
+                                             SendDragonKeys(2)
+                                             SendDragonKeys(3)
+                                             SendDragonKeys(4)
+                                             SendDragonKeys(5)
+                                             SendDragonKeys(6)
+                                             SendDragonKeys(7)
+                                             SendDragonKeys(8)
+                                             SendDragonKeys(9)
+                                         ) {enter});
+
+TT() := {ctrl};
+Zen found test = 
+                        Repeat(8, Repeat(7,
+                                             SendDragonKeys(TT() 0)
+                                             SendDragonKeys(TT() 1)
+                                             SendDragonKeys(TT() 2)
+                                             SendDragonKeys(TT() 3)
+                                             SendDragonKeys(TT() 4)
+                                             SendDragonKeys(TT() 5)
+                                             SendDragonKeys(TT() 6)
+                                             SendDragonKeys(TT() 7)
+                                             SendDragonKeys(TT() 8)
+                                             SendDragonKeys(TT() 9)
+                                         ) {enter});
+
+compromised both test = "send input both test (SendInput):"{enter}
+                        Repeat(5, Repeat(10,
+                                             Keys.SendInput("d{SPACE}")
+                                             Keys.SendInput("c{SPACE}")
+                                         ) Keys.SendInput(!{ENTER}))
+					  Keys.SendInput({SPACE}{ENTER});
+
+again both test = "send input both test (SendInput):"{enter}
+                        Repeat(5, Repeat(10,
+                                             Keys.SendInput("df{SPACE}r")
+                                             Keys.SendInput("cy{SPACE}")
+                                         ) Keys.SendInput(!{ENTER}))
+					  Keys.SendInput({SPACE}{ENTER});

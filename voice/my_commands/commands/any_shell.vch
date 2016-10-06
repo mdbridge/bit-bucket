@@ -1,0 +1,35 @@
+###
+### Shell commands that work both for Unix and Windows shells
+###
+###  (This file is included by both cmd.vcl and UNIX_shell.vcl; both
+###   define Empty().)
+
+include "machines.vch";
+
+
+## 
+## Simple process/command repetition control:
+## 
+
+Interrupt() := {ctrl+c}q{ctrl+c} Wait(100);
+
+
+  # stop currently running process, then repeat previous command:
+#restart process = {ctrl+c} Wait(2000) {ctrl+c}{up}{enter};
+
+
+  # repeat nth previous shell command:
+     repeat command =		  {up}   {enter};
+hard repeat command = Interrupt() {up}   {enter};
+     repeat 2..10   =		  {up_$1}{enter};
+
+repeat two commands = {up_2}{enter} {up_2}{enter};
+
+
+## 
+## Common commands that take predefined machine names:
+## 
+
+ping         <machine> = "ping "    Machine($1) {enter};
+  # Windows only:
+ping forever <machine> = "ping -t " Machine($1) {enter};

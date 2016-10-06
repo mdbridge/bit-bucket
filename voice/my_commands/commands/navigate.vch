@@ -1,0 +1,42 @@
+### 
+### Commands for navigating around filesystems
+### 
+###
+### Our includer must:
+###
+###   include one of the locale files
+###   define functions CD & DOWN on local pathnames and UP
+###
+### Included in browser.vcl, cmd.vcl, explorer.vcl, Unix_shell.vch
+###
+### Grammar copy with different command prefixes in _dialogue.vcl
+###
+
+include "directories.vch";
+
+
+# 
+# CD requires absolute pathnames (i.e., ?:\...) on PC's
+# 
+
+
+##
+## Change to given absolute directory:
+##
+
+move to [<D>] <UNIX> [/ <COM>] = CD(UNIX($1$2 When($3,/$3)));
+move to       <PC>   [/ <COM>] = CD(PC  (  $1 When($2,/$2)));
+
+
+##
+## Go down one or more directory components:
+##
+
+move down to <COM> [/ <COM>] = DOWN(UNIX($1 When($2,/$2)));
+
+
+##
+## Go up one or more directories:
+##
+
+go up [1..10] = UP(When($1,$1,1));

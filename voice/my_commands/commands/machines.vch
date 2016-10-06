@@ -1,0 +1,47 @@
+### 
+### A list of machines I use frequently; written form includes my usual
+### account name for that machine.
+###
+### If you want just the account name or machine name, see accessor
+### functions below.
+### 
+
+include "string.vch";
+
+User(machine)         := Split($machine, "@", 0);
+Machine(machine)      := Split($machine, "@", 1);
+
+ShortMachine(machine) := Split(Machine($machine), ".", 0);
+
+
+<machine> := (
+         # standard RESS time-sharing machines (=standard home directory)
+       release six      = mdl@ts-rhel6.labs.hpecorp.net
+     | release seven    = mdl@ts-rhel7.labs.hpecorp.net
+        # mdl & LillibridgeM work for public keys; password only works with LillibridgeM:
+     | password seven   = lillibridgem@ts-rhel7.labs.hpecorp.net
+
+     | P.O. Box         = mdl@pobox-pa.labs.hpecorp.net
+
+        # utility cluster machines, all with same home directory:
+     | PA install       = lillibridgem@pa-install.u.labs.hpecorp.net
+     | [build] L four T M  = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
+     | [build] Linux for T M  = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
+     | build   L four   = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
+         # depreciated, mirrors broken:
+     | build Fedora     = lillibridgem@build-fedora19-1.u.labs.hpecorp.net
+     | build Debian     = lillibridgem@build-debian-3.u.labs.hpecorp.net
+
+        # The Machine machines:
+     | moonshot	      = lillibridgem@ms02010-013.labs.hpecorp.net # <<<>>>
+     | T mass         = ubuntu@16.111.21.192
+     | T mass two     = ubuntu@16.111.21.195
+
+        # RESS cluster machines (=standard home directory):
+     | lark             = mdl@lark.labs.hpecorp.net
+
+
+        # My (non-HP) personal machines:
+     | remote foil      = mdl@foil.strangled.net
+     | local  foil      = mdl@192.168.1.2
+);

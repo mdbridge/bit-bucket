@@ -1,0 +1,160 @@
+### 
+### Mark Lillibridge's leap functions
+### 
+### Version: 2.0
+### 
+
+## 
+## This file contains the (text) specification for these functions as
+## well as useful functions for implementing them for an application
+## and some lists for use in implementing voice commands.
+##
+## The actual implementations for applications are contained in files
+## of the form leap{3,4}_<application>.vch.
+## 
+
+
+### 
+### Specification of leap functions:
+### 
+
+# 
+# There are two levels of functionality, leap3 and leap4.  The later
+# is a strict superset of the former.
+# 
+
+
+## 
+## Leap3 specification:
+## 
+
+#
+# An implementation of leap3 includes the following functions:
+#
+#     Leap3   (direction, target, count)
+#     LeapSame(direction,         count)
+#  
+#     Leap    (direction, target) 
+#
+#
+#   $target is a nonzero sequence of printable characters that
+# specifies the string we are looking for.  This is not a keystroke
+# specification so you do not need to quote {'s as {{} here.  In the
+# case of LeapSame, the target is taken to be the same as that of the
+# last Leap.
+#
+#   $count, a positive integer, refers to the target instance number
+# in the given direction.  For example, $count=2 means the second
+# occurrence of $target, not counting any instance starting at the
+# current cursor location.  $count=1 for Leap(-, -).
+#
+#   $direction indicates the direction to look for $target and what
+# end of $target to stop at:
+#  
+#     u:  look backward and stop at         the start of $target
+#     u+: look backward and stop just after the end   of $target
+#     d:  look forward  and stop at         the start of $target
+#     d+: look forward  and stop just after the end   of $target
+#
+#
+#   These leap functions should move the cursor to the start or just
+# after the end (depending on $direction) of the $count-th occurrence
+# of $target in the given direction, not counting any occurrence
+# starting at the current cursor location; ideally, the cursor should
+# not be moved (or less ideally, not moved far) if no such occurrence
+# is found.  Implementations may differ on whether they wrap around.
+# Ideally, case should be ignored unless $target contains an uppercase
+# letter.  Many implementations may (non-ideally) LeapSame only
+# to the start of $target regardless of the value of $direction.
+#
+
+
+## 
+## Leap4 specification:
+## 
+
+#
+# An implementation of leap4 also includes the following function:
+#
+#     Leap4(direction, target, count, action)
+# 
+# 
+#   Leap4 is like Leap3 except that a potentially different action then
+# simply moving the cursor may be performed.  $action specifies the
+# action to be performed:
+# 
+#   m: move cursor; this produces the same behavior as using Leap3
+# 
+#   s: select text between starting point and new location
+# 
+#   c: in addition to moving, copy the text between the starting point
+#      and the new location to the clipboard
+# 
+#   x: cut the text between the starting point and the new location
+# 
+# If no $count-th $target is found in the given direction, then
+# nothing happens except possibly (in the nonideal case) the cursor
+# moving slightly.
+# 
+
+
+
+### 
+### Functions useful for implementing the leap functions:
+### 
+
+include "string.vch";
+include "control.vch";
+
+
+## 
+## Switching on $direction's up/down or start/end aspects independently:
+## 
+
+_IfUp   (direction, up, down) := 
+	CASE5(Left($direction,1), u, $up, d, $down);
+
+_IfAfter(direction, after, before) :=
+	CASE5(Right(Left($direction -,2),1), -, $before, +, $after);
+
+
+## 
+## Move from start of $target to just after its end if $direction
+## indicates we want to be after $target:
+## 
+
+_AdjustLeap(direction, target) :=
+	   # kludge: this does move the cursor somewhat when we fail:
+	_IfAfter($direction, "{right " Len($target) }, "");
+
+## 
+## How to implement one kind of leap function from another:
+## 
+
+  # Leap(-,-) from Leap3(_,_,_,):
+#Leap(direction, target) := Leap3($direction, $target, 1);
+
+
+  # Leap3(-,-,-) from Leap(-,-):
+#  # this moves the cursor a lot on failure with $count>1:
+#Leap3(direction, target, count) :=
+#	Repeat(Eval($count-1), Leap(Replace($direction, +, ""), $target))
+#	Leap($direction, $target);
+
+
+  # Leap3(-,-,-) from Leap4(-,-,-,-):
+#Leap3(direction, target, count) := Leap4($direction, $target, $count, m);
+
+
+
+### 
+### Lists for use in defining voice commands:
+### 
+
+<leap>  := ( leap              = "d"  | retreat          = "u" 
+           | leap        after = "d+" | retreat    after = "u+" );
+
+<kill>  := ( erase until       = "d"  | back until       = "u"
+           | erase until after = "d+" | back until after = "u+" );
+
+include "printables.vch";

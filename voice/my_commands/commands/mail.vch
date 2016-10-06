@@ -1,0 +1,29 @@
+##
+## Macros for composing mail
+##
+##   
+##   Assumes existence of Compose(addresses) and Forward(addresses) functions
+##
+
+include "email_addresses.vch";
+
+
+
+compose message for      <personal_email> [comma <personal_email>]
+	= Compose($1 When($2,",$2")); 
+
+compose message for work <work_email>     [comma <work_email>]
+	= Compose($1 When($2,",$2")); 
+
+compose message for      clipboard
+	= Compose({shift+Ins}); 
+
+
+forward message to       <personal_email> [comma <personal_email>]
+	= Forward($1 When($2,",$2")); 
+
+forward message to work  <work_email>     [comma <work_email>]
+	= Forward($1 When($2,",$2")); 
+
+forward message to       clipboard
+	= Forward({shift+Ins});

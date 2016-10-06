@@ -1,0 +1,21 @@
+### 
+### Definitions appropriate only for Laura's laptop:
+### 
+
+IfHome(home, work) := $home;
+
+
+# 
+# Screen resolution (each):
+# 
+
+XSize() := 1280;
+YSize() := 800;
+
+
+# 
+# Where various PC directories are located:
+# 
+
+PCHome() := "C:/Users/Laura/Documents";
+PF32()   := "C:/Program Files";

@@ -1,0 +1,61 @@
+### 
+### Functions and declarations for Win32Pad, version 0.2:
+### 
+
+  # recognition of numbers may be improved using their written-out forms:
+$set numbers "zero,one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eighteen,nineteen,twenty,twenty-one,twenty-two,twenty-three,twenty-four,twenty-five,twenty-six,twenty-seven,twenty-eight,twenty-nine,thirty,thirty-one,thirty-two,thirty-three,thirty-four,thirty-five,thirty-six,thirty-seven,thirty-eight,thirty-nine,forty,forty-one,forty-two,forty-three,forty-four,forty-five,forty-six,forty-seven,forty-eight,forty-nine,fifty,fifty-one,fifty-two,fifty-three,fifty-four,fifty-five,fifty-six,fifty-seven,fifty-eight,fifty-nine,sixty,sixty-one,sixty-two,sixty-three,sixty-four,sixty-five,sixty-six,sixty-seven,sixty-eight,sixty-nine,seventy,seventy-one,seventy-two,seventy-three,seventy-four,seventy-five,seventy-six,seventy-seven,seventy-eight,seventy-nine,eighty,eighty-one,eighty-two,eighty-three,eighty-four,eighty-five,eighty-six,eighty-seven,eighty-eight,eighty-nine,ninety,ninety-one,ninety-two,ninety-three,ninety-four,ninety-five,ninety-six,ninety-seven,ninety-eight,ninety-nine";
+
+
+## 
+## Useful arithmetic primitives:
+## 
+
+Max  (i, j) := EvalTemplate("max(%i,%i)", $i, $j);
+Plus (i, j) := EvalTemplate("%i + %i",    $i, $j);
+Minus(i, j) := EvalTemplate("%i - %i",    $i, $j);
+
+
+## 
+## Specifying line numbers near the current line by their last two
+## digits (i.e., mod 100).
+## 
+
+  # (x+50)%100-50 maps [0..49] to [0..49] and [50..99] to [-50..-1]:
+_CalcDelta(n) := EvalTemplate('(%i-%i+50)%%100 - 50', 
+	                      $n, Variable.Get(":current-line"));
+
+#
+# Calculate line number equaling $n mod 100 closest to the saved
+# current line (:current-line); returns 1 if the resulting line
+# number would otherwise be negative or zero.
+#
+CalcLine(n) := Max(1, Plus(Variable.Get(":current-line"), _CalcDelta($n)));
+
+#
+# Move to line number equaling $n mod 100 closest to the saved current
+# line (:current-line); moves to first line if the resulting line
+# number would otherwise be negative or zero.  (flashes a dialog box)
+#
+GoLineMod(n) := {ctrl+g} WaitForWindow("Go To") CalcLine(n) {enter};
+
+
+_SaveCurrentLine(finish) :=
+    Clipboard.Save()
+    {ctrl+g} WaitForWindow("Go To") {ctrl+c}
+    Variable.Set(":current-line", Clipboard.Get())
+    Clipboard.Restore()
+    $finish;
+
+# 
+# Save current line number (flashes a dialog box).
+# 
+SaveCurrentLine() := _SaveCurrentLine({esc});
+
+
+#
+# Move to line number equaling $n mod 100 closest to the current line;
+# moves to first line if the resulting line number would otherwise be
+# negative or zero.  (flashes a dialog box)
+#
+  # optimized version of SaveCurrentLine() GoLineMod(n):
+LineMod(n) := _SaveCurrentLine(CalcLine($n) {enter});

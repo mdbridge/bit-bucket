@@ -1,0 +1,215 @@
+# -*- encoding: windows-1252 -*-
+### 
+### Voice commands for testing my SendInput extension:
+### 
+
+include "extended_string.vch";
+
+
+############################################################
+
+  # test basic functionality:
+type hello world = Keys.SendInput("Hello world!{enter}I am @ home{! 4}{enter}");
+
+
+############################################################
+
+# 
+# Test can produce all printable characters:
+# 
+
+PrintablesToKeys(printables) := Replace($printables, "{", "{{}");
+
+Range(start, end) := PrintablesToKeys(
+    EvalTemplate('"".join([chr(x) for x in range(%i, %i+1)])', $start, $end));
+
+Compare(string)	  := SendDragonKeys($string {enter})  
+		     Keys.SendInput($string {enter});
+
+compare send input ASCII   = Compare(Range(32,126));
+compare send input Windows = Compare(Range(128, 191)) Wait(3000) 
+	     	   	     Compare(Range(192, 255));
+
+
+  # remember Vocola 2 & DNS use Windows-1252 code page:
+type naïve the easy way = Keys.SendInput(naïve);  
+
+type naïve the hard way = 
+    Keys.SendInput("na{alt_hold}{numkey0}{numkey2}{numkey3}{numkey9}{alt_release}ve");
+
+  # the following produces some warnings:
+try naïve combos = 
+    Keys.SendInput(naïve{ï_4}{space}{ï_hold}/{ï_release}/{shift+ï}™);
+
+
+try long input = Compare(Repeat(500, *));
+
+
+  # @\{}[]Gg + set's mark in emacs
+test German characters = Keys.SendInput("@\{{}}[]Gg{ctrl+@}");
+  # @{~Hh0@@€
+test characters	       = Keys.SendInput(@{{}~Hh0{shift+2}{shift+@}{ctrl+@}€);
+
+
+############################################################
+
+test specification	 = Keys.SendInput({space}Hello{enter}+{+}{shift++});
+test new specification	 = Keys.SendInput({+_hold}{+_release}!{+_5});
+test extra specification = Keys.SendInput({ï});
+
+  # does *not* generate an error, but types "{impossible}":
+try impossible		 = Keys.SendInput({impossible});
+
+try repeat count 0	 = Keys.SendInput({a+b_0});
+
+  # need to use Windows detective to look at event ordering here:
+test modifier order	 = Keys.SendInput({ctrl+shift+left});
+
+  # we do not share a DNS bug:
+watch this		 = Compare("{}_5}");
+
+  # mostly test that we type things that aren't valid key names:
+run my test	= Keys.SendInput({crap} {{} } {x} é {left+crap} {left+left+crap} 
+                                 {crap_0}{left+crap+l_0} {crap_2} {crap_hold}  
+                                 {left_crap});
+run my test two = Keys.SendInput({x_crap} {left_x} {left_crap_1} 
+                                 "{a+crap 1}{crap+ }{crap+  hold}");
+
+
+############################################################
+
+## 
+## Who can see the keystrokes sent by SendInput?
+## 
+
+invoke a window shortcut     = Keys.SendInput({win+r});  
+
+  # follow up by "select that" in Emacs:
+can Dragon see this	     = Keys.SendInput({shift+h}ello);  
+
+# note that Dragon can not see naïve when sent this way (e.g., "type
+# naïve the easy way")
+
+invoke security code	     = Keys.SendInput({win+l});        # fail
+again  security code	     = Keys.SendInput({ctrl+alt+del}); # fail
+
+  # try against elevated task manager:
+send to elevated application = Keys.SendInput({down});         # FAIL!
+
+  # with volume.ahk, this should lower the volume:
+invoke a AutoHotkey hotkey   = Repeat(30, Keys.SendInput({win+alt+down}));  # check
+
+
+############################################################
+
+## 
+## new keys:
+## 
+
+<new> := Win| LeftWin| RightWin| Apps| F17| F18| F19| F20| F21| F22| F23| F24|
+         BrowserBack| BrowserFavorites| BrowserForward| BrowserHome|
+	 BrowserRefresh| BrowserSearch| BrowserStop| LaunchApp1| LaunchApp2|
+	 LaunchMail| LaunchMediaSelect| MediaNextTrack| MediaPlayPause|
+	 MediaPreviousTrack| MediaStop| VolumeDown| VolumeMute| VolumeUp;
+
+press new key <new> = Keys.SendInput({$1});
+
+
+try clicking here = Keys.SendInput({leftButton});
+
+  # make sure left and right mouse buttons are not swapped:
+try ( left   = leftbutton   |
+      middle = middlebutton |
+      right  = rightbutton  |
+      X 1    = xbutton1	    |
+      X 2    = xbutton2) button = 
+    Keys.SendInput({$1_hold}) Wait(200) Keys.SendInput({$1_release});
+
+<it> := (shift | control=ctrl 
+        | left=leftbutton | middle=middlebutton | right=rightbutton 
+	| X one=Xbutton1 | X two=Xbutton2 | A=a | error);
+
+hold down <it> = Keys.SendInput({$1_hold});
+let  up   <it> = Keys.SendInput({$1_release});
+
+
+<hex> := zero=0|one=1|two=2|three=3|four=4|five=5|six=6|seven=7|eight=8
+        |nine=9|alpha=a|bravo=b|Charlie=c|delta=d|echo=e|foxtrot=f;
+
+  # 4D = M key, 0D = enter w/o pad
+press     <hex> <hex> = Keys.SendInput({VK0x$1$2});
+press pad <hex> <hex> = Keys.SendInput({VK0x10$1$2});
+
+
+############################################################
+
+# 
+# Examples for others:
+# 
+
+#other monitor   = Keys.SendInput({win+shift+right});
+#mute volume     = Keys.SendInput({VolumeMute});
+#
+#(hold|release) the control key = Keys.SendInput({ctrl_$1});
+#  # really the primary mouse button:
+#(hold|release) the left button = Keys.SendInput({LeftButton_$1});
+
+Char(a,b,c,d) := Keys.SendInput({alt_hold}{numkey$a}{numkey$b}{numkey$c}
+	                                  {numkey$d}{alt_release});
+
+#try typing naive = Keys.Send(n,a) Char(0,2,3,9) Keys.Send(v,e);  # check, but not "seen"
+
+  # 239 = ï
+#try using 0..9 0..9 0..9 = Char(0,$1,$2,$3);
+
+
+############################################################
+############################################################
+############################################################
+
+QuotedRange(start, end) := 
+    EvalTemplate('"".join(["{ctrl+q}"+chr(x)+" " for x in range(%i, %i+1)])', $start, $end);
+
+  # these are Emacs only:
+compare send input control = Compare(QuotedRange(1,31));
+just    send input control = Keys.SendInput(QuotedRange(1,31));
+just    SendDragonKeys control = QuotedRange(1,31);
+
+
+
+reload please = Kludge.Send(!);
+
+test accent behavior = Compare("A`e`") Wait(2000) Compare("a^o^") Wait(2000) Compare("a'o'");
+
+# no auto repeat for normal keys
+# Speed versus SendSystemKeys?
+
+spin 1..10	     = Kludge.Wheel($1);
+spin backwards 1..10 = Kludge.Wheel(-$1);
+
+# demo's HeardWord bug:
+Spacecraft 2..100 = 
+  HeardWord("hold", "down", "left") 
+  HeardWord("let", "up", "left") 
+  Repeat($1, 
+    {Enter} 
+  ) 
+;
+
+
+Unicode implies		 = Kludge.Unicode(21d2);
+try Unicode		 = Kludge.Unicode(3b4);
+please try Unicode again = Kludge.Unicode(d00f);
+normal ASCII via Unicode = Kludge.Unicode(4d);
+
+push it	  = {SysReq};
+push that = {Break};
+
+
+
+Test send input = Keyboard.SendKeys("Hello{SPACE}there!{ENTER}");
+again Test	= Keyboard.SendKeys("h{SPACE}+{SPACE}^e!{ENTER}");
+holding Test	= Keyboard.SendKeys("h{+VK_LSHIFT}there{-VK_LSHIFT}again{ENTER}");
+
+please (hold=+|release=-) shift = Keyboard.SendKeys("{$1VK_LSHIFT}");
+

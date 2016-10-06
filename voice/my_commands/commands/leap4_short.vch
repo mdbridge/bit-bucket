@@ -1,0 +1,15 @@
+### 
+### Short leap4 commands.
+### 
+###   Requires Mark Lillibridge's leap4 API 2.0 already implemented.
+### 
+
+include "leap3_short.vch";
+
+
+## 
+## Target: the first (Nth) occurrence of a character:
+## 
+
+      <kill> [<count>] <prn> = Leap4($1, $3, When($2,$2,1), x);
+shift <leap> [<count>] <prn> = Leap4($1, $3, When($2,$2,1), s);

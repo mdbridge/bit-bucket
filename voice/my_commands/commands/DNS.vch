@@ -1,0 +1,21 @@
+### 
+### Setting the DNS formatting state:
+### 
+
+
+# for DNS 11.5, 12.5:
+
+Cap()    := HeardWord("\Cap");
+NoCaps() := HeardWord("\No-Caps");
+
+
+# for DNS 11:
+
+#Cap()    := HeardWord("\cap");
+#NoCaps() := HeardWord("\no-caps");
+
+
+# before DNS 11:
+
+#Cap()    := HeardWord(\Cap);
+#NoCaps() := HeardWord(\No-Caps);

@@ -1,0 +1,37 @@
+### 
+### Functions for opening up an Internet browser viewing a given URL
+### 
+
+include "switch.vch";
+
+
+LookupIn(browser, URL) := 
+	BringUpBrowser($browser) Wait(3000)
+	  # universal method of OpenURL...
+        HeardWord(go, to, address) $URL {enter};
+
+
+#Lookup(URL) := LookupIn(DefaultBrowser(), $URL);
+
+Lookup(URL) := AppBringUp(direct$URL, "firefox.exe $URL");  # <<<>>>
+
+
+
+
+# 
+# The following method doesn't appear to respect family and doesn't work with
+# URLs like w:\...
+#
+
+#LookupURL(family, URL) :=
+#	AppBringUp($family, $URL);
+
+
+
+#
+# I experimented with using the following code to bring up a URL:
+#
+#	Set objIE = CreateObject("InternetExplorer.Application")
+#	objIE.Visible = 1
+#	objIE.Navigate URL
+#	alas, this fails to bring the new window to the foreground;

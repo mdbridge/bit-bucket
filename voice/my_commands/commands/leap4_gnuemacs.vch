@@ -1,0 +1,150 @@
+###
+### Implementation of Mark Lillibridge's leap4 functions v2.0 for Gnu emacs
+###
+### Requires leap.el elisp code has been loaded into gnuemacs.
+###
+###
+###   See leap_definition.vch for the specification of the leap4 API
+### that this file implements for Gnu emacs.
+###
+###
+### Implementation details:
+###
+###   Movement on failure (aiming for $target start): never
+###
+###   Movement on failure (aiming for $target end):   never
+###
+###
+###   Leap Same:        works correctly
+###
+###   Case sensitivity: none
+###
+###   Wrapping around:  can wrap around at the cost of an extra $count;
+###                     e.g., $count=1 never wraps around but $count=2
+###                     will find 2nd occurance or if that fails, 1st
+###                     occurance after wrapping.
+###
+###
+### Other:
+###
+###   Can be used anywhere (including the mini-buffer) that
+### incremental search can be.
+###
+###   Rings Emacs bell (this terminates keyboard macros) on failure.
+###
+###   These functions work even over a telnet connection (e.g., all
+### keys are ASCII characters).
+###
+###   Mark is set on a successful leap at original location.
+###
+###   The special direction letter D when used in place of d indicates
+### that targets starting at the cursor should be counted as well.
+###
+###   Additional functions, including regular expression targets, are
+### available; see end of this file.
+###
+###   It is possible to use xterm's keyboard translation feature to
+### map the keys from a small subset of these functions so they work
+### in tcsh (but not an Emacs running in that xterm in terminal mode).
+### The subset that can currently be mapped is:
+###
+###    Leap[{3,4}](-,-...) where $count=1, $direction does not include
+###                              D, and if using +, Len($target) = 1
+###
+### The tcsh implementation is less ideal, and is case-sensitive.
+###
+
+include "leap_definition.vch";
+
+
+## 
+## Leap3 implementation:
+## 
+
+# 
+# We use {shift+s} and {shift+r} here so xterm can apply translations
+# to make some Leap functions work for tcsh.  Note that leap { does
+# not work due to a tcsh bug.  :-(
+# 
+# We use {ctrl+_} because it is an ASCII character.
+# 
+_StartLeap(direction) := 
+	CASE7(Left($direction, 1),
+	        u, {shift+ctrl+r}, d, {shift+ctrl+s}{ctrl+ _ }a, D, {ctrl+s});
+
+_ContLeap(direction) := 
+	CASE7(Left($direction, 1),
+	        u, {ctrl+r}, d, {ctrl+s}, D, {ctrl+s});
+
+_ExitLeft () := {ctrl+ _ } l;
+_ExitRight() := {ctrl+ _ } r;
+
+
+Leap3   (direction, target, count) := 
+	_StartLeap($direction) PrintablesToKeys($target) 
+	Repeat(Eval($count-1), _ContLeap($direction))
+	_IfAfter($direction, _ExitRight(), _ExitLeft());
+
+
+LeapSame(direction,         count) := Leap3($direction, "", Eval($count+1));
+
+Leap    (direction, target       ) := Leap3($direction, $target, 1);
+
+
+
+## 
+## Leap4 implementation:
+## 
+
+Leap4(direction, target, count, action) :=
+	CASE9($action,
+	    # moving:
+	  m,              Leap3($direction, $target, $count),
+            # selecting: turn on transient mark; fails to extend selection<<<>>>
+	  s, MarkActive() Leap3($direction, $target, $count),
+            # copying:
+	  c, Mark()       Leap3($direction, $target, $count) {esc}w,
+            # killing:
+	  x, Mark()       Leap3($direction, $target, $count) {ctrl+w});
+
+
+
+##
+## Extended leap functionality available only in gnuemacs:
+##
+
+#
+# The LeapRegex functions are like the corresponding Leap functions,
+# but for them $target denotes a gnuemacs regular expression.
+#
+# Warning: LeapSame cannot be used to repeat a LeapRegex correctly.
+#
+# Raw variants take a key sequence (e.g., {ctrl+j}) instead of a
+# string of printable characters; regrettably, this is sometimes
+# necessary to specify tab or newline characters in a regular expression.
+#
+
+
+LeapRaw3(direction, target, count) := 
+	_StartLeap($direction) $target 
+	Repeat(Eval($count-1), _ContLeap($direction))
+	_IfAfter($direction, _ExitRight(), _ExitLeft());
+
+
+LeapRegex3   (direction, target, count) :=
+	{ctrl+u}1 Leap3   ($direction,$target,$count);
+
+LeapRegexRaw3(direction, target, count) := 
+	{ctrl+u}1 LeapRaw3($direction,$target,$count);
+
+
+LeapRegex    (direction, target) := LeapRegex3   ($direction, $target, 1);
+LeapRegexRaw (direction, target) := LeapRegexRaw3($direction, $target, 1);
+
+
+LeapRegexRaw4(direction, target, count, action) :=
+	CASE9($action, 
+	  m,              LeapRegexRaw3($direction, $target, $count),
+	  s, MarkActive() LeapRegexRaw3($direction, $target, $count),
+	  c, Mark()       LeapRegexRaw3($direction, $target, $count) {esc}w,
+	  x, Mark()       LeapRegexRaw3($direction, $target, $count) {ctrl+w});

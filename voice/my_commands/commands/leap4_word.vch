@@ -1,0 +1,60 @@
+###
+### Implementation of Mark Lillibridge's leap4 functions v2.0 for Microsoft 
+### Word
+###
+### Requires leap.bas marcos code has been loaded into Word and the
+### appropriate keys bound as described in that file.
+###
+###
+###   See leap_definition.vch for the specification of the leap4 API
+### that this file implements for Microsoft Word.
+###
+###
+### Implementation details:
+###
+###   Movement on failure (aiming for $target start): moves slightly
+###
+###   Movement on failure (aiming for $target end):   moves slightly
+###
+###
+###   Leap Same:        always leaps to start of $target
+###
+###   Case sensitivity: none
+###
+###   Wrapping around:  never
+###
+###
+### Other:
+###
+###    Leap4 with s can be used to extend an existing selection by
+###  moving the active end.
+###
+
+include "leap_definition.vch";
+
+
+  # private function
+_Leap(direction, target, times) :=
+	Repeat($times, 
+	    _IfUp($direction, {ctrl+shift+r}, {ctrl+shift+l}) $target {enter})
+	_IfAfter($direction, "{shift+right " Len($target) }, "");
+
+_Exit(direction) := _IfUp($direction, {left},{ right});
+
+
+Leap4(direction, target, count, action) :=
+	CASE9($action, 
+	    # moving:
+	  m, _Leap($direction, $target, $count)          _Exit($direction),
+            # selecting:
+	  s, _Leap($direction, $target, $count)                           ,
+            # copying:
+	  c, _Leap($direction, $target, $count) {ctrl+c} _Exit($direction),
+            # killing:
+	  x, _Leap($direction, $target, $count) {ctrl+x}                  );
+
+Leap3   (direction, target, count) := Leap4($direction, $target, $count, m);
+
+LeapSame(direction,         count) := Leap3($direction, "",      $count);
+
+Leap    (direction, target       ) := Leap3($direction, $target, 1);

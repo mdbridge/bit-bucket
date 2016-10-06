@@ -1,0 +1,88 @@
+###
+### Commands for manipulating arbitrary windows, including dialog boxes
+###
+
+### 
+###     These commands require access to the system menu of the current
+### window.  Unfortunately, accessing the system menu requires
+### different commands in different applications.  Accordingly, this
+### header file of commands is included in each such application
+### (including the global _any.vcl file for the default case) after a
+### different definition of the function System(key).
+### 
+### 
+### The specification for System(key) is:
+### 
+###   System(""):  open the system menu for the current window
+###   System(key): open the system menu and access the menu item labeled $key
+### 
+### (The second form exists to allow inserting a Wait after $key.)
+### 
+### Note that this function can be used to access the system menu of
+### dialog box windows, allowing moving and/or resizing them in many
+### cases.
+### 
+
+#
+# One general method of implementing System(-) is via a right click at
+# the top left of the window.
+#
+# Drawback: may fail if some always-on-top window (e.g., the
+#           recognition window) is located at that spot.  Ditto if the window 
+#           top left is located off the screen.
+#
+#System(key) := Mouse.Click(right, window, 10, 10) Wait(100) $key Wait(10);
+
+
+### 
+### Command files that include this header:
+### 
+###   _any_window.vcl - global defaults ({alt+space})
+### 
+###   emacs.vcl	      - use right click because local emacs treats alt as meta
+###   xwin.vcl	      - use right click
+###   putty.vcl	      - use right click because alt space fails
+### 
+###   iexplore.vcl    - for overriding IE-specific broken DNS built-ins
+### 
+
+
+  # for testing:
+my system menu = System("");
+
+
+
+##
+## closing/minimizing/maximizing windows:
+##
+
+  # minimize current window:
+really minimize = System(n);
+
+
+
+
+##
+## moving/resizing windows:
+##
+
+  # follow these by arrow commands (e.g., "right 10") then enter.
+  # for resize, first direction chooses edge to adjust
+slide  window = System(m);
+resize window = System(s);
+
+
+<direction> := (left | right | up | down);
+
+<edge>      := ( left  = left}{right 
+               | right = right}{left 
+               | up    = up}{down 
+               | down  = down}{up
+               );
+
+slide                window <direction> 1..100 = 
+	                           System(m)     {$1_$2} {enter};
+(grow|expand|extend) window <direction> 1..100 = 
+                                   System(s) {$2}{$2_$3} {enter};
+
+shrink window <edge>      1..100 = System(s)     {$1_$2} {enter};

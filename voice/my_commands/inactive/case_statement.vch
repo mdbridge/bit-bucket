@@ -1,0 +1,21 @@
+## 
+## Switch functions:
+## 
+##   Do a switch with single character targets; e.g., Switch3(b, abc,
+## A_code, B_code, C_code) is equivalent to B_code.  If $char is not
+## in $cases, generates a runtime error.
+## 
+
+include "string.vch";
+
+Switch2(char, cases, case1, case2) :=
+	Eval("[str($case1),str($case2)]"
+                "[str($cases).index(str($char))]");
+Switch3(char, cases, case1, case2, case3) :=
+	Eval("[str($case1),str($case2),str($case3)]"
+                "[str($cases).index(str($char))]");
+
+Switch4(char, cases, case1, case2, case3, case4) :=
+	Eval("[str($case1),str($case2),str($case3),str($case4)]"
+                "[str($cases).index(str($char))]");
+

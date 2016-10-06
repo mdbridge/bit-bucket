@@ -1,0 +1,19 @@
+### 
+### Functions for unpacking compass commands:
+### 
+
+include "string.vch";
+
+
+# 
+# "x[,y]", n -> "xxx....xxx[y]" where there are n x's:
+# 
+Unpack2(spec, n) := Repeat($n, Split($spec,    ",", 0) )
+                               Split("$spec,", ",", 1);
+
+# 
+# "x[,y[,z]]", n -> "[z]xxx....xxx[y]" where there are n x's:
+# 
+Unpack3(spec, n) :=            Split("$spec,,", ",", 2) 
+	            Repeat($n, Split($spec,     ",", 0) )
+                               Split("$spec,",  ",", 1);

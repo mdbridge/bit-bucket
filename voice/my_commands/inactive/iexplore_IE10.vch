@@ -1,0 +1,123 @@
+###
+### Functions for Internet Explorer (version 8)
+###    (used with Adobe reader 9)
+###
+
+# 
+# Creating keystroke sequences that work reliably in IE 8 for any
+# document is frustratingly hard.
+# 
+#     For example, webpages can capture {alt+X} keys (via the
+# accesskey attribute) and PDF documents capture most control keys
+# (e.g., {ctrl+t}, {ctrl+o}, {ctrl+1}) and function keys (e.g., {f4}).
+# HP Disclose also steals {f4}.
+# 
+#     When the address bar is selected, access keys are still in
+# effect, but the keys stolen by PDF work again.  Keys work normally
+# in browser dialog boxes like open URL.
+# 
+# 
+# These functions have been carefully crafted to avoid these issues as
+# much as possible.
+# 
+
+
+
+## 
+## Opening menus:
+## 
+
+#
+# Only works for actual named menus; need escape in case focus
+# already on menu bar.
+#
+# VERY slow in many cases; particular derived functions give maximum
+# observed delay.
+#
+_Menu(letter) := {esc} Wait(100) {f10}$letter;
+
+
+Favorites() := _Menu(a) Wait(2000);  # with PDF; otherwise 1 second
+File()      := _Menu(f) Wait(5000);  # with PDF; otherwise 1 second
+
+  # not available with PDF documents:
+Tools()     := _Menu(t) Wait(1000);
+
+
+
+## 
+## Going to the address bar.
+## 
+##   This allows using some browser commands even with embedded PDF
+##   documents (e.g., {ctrl+1}).
+## 
+
+  #
+  # This doesn't work with documents using d as an access key, but is
+  # otherwise very simple:
+  #
+Address()   := {alt+d} Wait(50);
+
+
+  #
+  # I think this works everywhere, but is quite complicated.  Timing
+  # may be a bit problematic currently.
+  #
+  # Magic: 
+  #
+  # {f4} moves to the address bar in normal documents, but just
+  #      toggles the left pane on/off in PDF documents.
+  #
+  # {ctrl+o}{enter} is a no-op in PDF 9 but pulls up the Open URL
+  #        dialog in non-PDF.  
+  #
+  # {alt+d} is ignored in Open URL Dialog, but moves to the address bar in PDF.
+  #
+  # {esc} closes the dialog box or has no effect in the address bar (PDF)...
+  #
+#Address()   := {f4}{f4} {ctrl+o} Wait(50) {enter} {alt+d} Wait(50) {esc} 
+#               Wait(50) {shift+end};
+
+
+
+## 
+## Move from the address bar back to the current document.
+## 
+## Attempts to leave focus where it was (e.g., current frame,
+## scrolling position) as much as possible.
+## 
+
+UnAddress() := HeardWord(next, pane);
+
+#UnAddress() := HeardWord(next, pane) {ctrl+d} Wait(75) {esc};
+#UnAddress() := {f6}{f6} {ctrl+d} WaitForWindow("Add a Favorite") {esc};
+
+#UnAddress() := {f6}{f6};
+
+
+
+
+##
+## Going to Bookmarks:
+##
+
+# 
+# Notes: {ctrl+o} doesn't work from PDF documents
+#        Menu(f)o is VERY slow
+#
+
+   OpenURL(URL) := Address() $URL {enter};
+
+  #  open URL in a new tab:
+OpenNewURL(URL) := Address() $URL {alt+enter};
+
+
+
+## 
+## Clicking on links:
+## 
+
+Click      (word) := HeardWord(click, $word);
+
+ClickFirst (word) := HeardWord(click, $word) HeardWord(choose, 1);
+ClickSecond(word) := HeardWord(click, $word) HeardWord(choose, 2);

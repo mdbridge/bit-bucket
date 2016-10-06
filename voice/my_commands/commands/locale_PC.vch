@@ -1,0 +1,9 @@
+### 
+### Definitions specific to applications running on a PC
+### 
+
+include "file_access.vch";
+
+
+UNIX(pathname) := UNIXfromPC($pathname);
+PC(pathname)   := PCfromPC  ($pathname);

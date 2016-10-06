@@ -1,0 +1,63 @@
+###
+### Implementation of Mark Lillibridge's leap3 functions v2.0 for DragonPad
+###
+###
+###   See leap_definition.vch for the specification of the leap3 API
+### that this file implements for DragonPad.
+###
+###
+### Implementation details:
+###
+###   Movement on failure (aiming for $target start): moves slightly if start at
+###                                                   end of document
+###
+###   Movement on failure (aiming for $target end):   moves slightly
+###
+###
+###   Leap Same:        always leaps to start of $target
+###
+###   Case sensitivity: none
+###
+###   Wrapping around:  always
+###
+
+include "leap_definition.vch";
+
+
+  # private function
+_Leap(direction, set_target, times) :=
+	  # fake selecting our target at point:
+	  #   (fails at end of buffer, letting point move if find fails)
+	{shift+right}
+	  # bring up find dialog box:
+	{ctrl+f}
+	  # set options (do not match by whole words, case insensitive):
+	{alt+c}-    {alt+w}-
+	  # set direction to find:
+	{alt+ _IfUp($direction, u, d) }
+	  # set target for find:
+	{alt+n} $set_target
+	  # do the find $times times:
+	Repeat($times,
+  	    # do a find (may produce an error dialog box):
+	  {enter}
+	    # dismiss error dialog box if any without doing another find:
+	  {alt+ _IfUp($direction, u, d) }{space}
+	)
+	  # dismiss find dialog box:
+	{esc}
+	  # exit selection, leaving point at start of target or original
+	  # point if target not found:
+	{left}
+	;
+
+Leap3(direction, target, count) :=
+	_Leap($direction, PrintablesToKeys($target), $count)
+	_AdjustLeap($direction, $target);
+
+LeapSame(direction, count) :=
+	_Leap($direction, ""                       , $count);
+
+
+
+Leap(direction, target) := Leap3($direction, $target, 1);

@@ -1,0 +1,39 @@
+### 
+### Long leap3 commands.
+### 
+###   Requires Mark Lillibridge's leap3 API 2.0 already implemented.
+### 
+
+include "leap_definition.vch";
+
+
+## 
+## Target: one of a set of prespecified targets:
+## 
+
+include "leap_points.vch";
+
+<leap> <leap_point>                       = Leap($1, $2);
+
+
+## 
+## Target: a (partially) spelled-out target:
+## 
+
+include "printables.vch";
+
+<leap> keys <prn> [<prn> [<prn> [<prn>]]] = Leap($1, $2$3$4$5);
+
+
+## 
+## Target: an arbitrary phrase:
+## 
+
+<leap> phrase <_anything>                 = Leap($1, $2);
+
+
+##
+## Repeating the previous leap/retreat N times, possibly in the other direction
+##
+
+<leap> same [1..20]                       = LeapSame($1, When($2,$2,1));

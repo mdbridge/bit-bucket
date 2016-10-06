@@ -1,0 +1,81 @@
+### 
+### Functions for (incrementally) copying files using Rsync
+### 
+### Additional faux Rsync options:
+### 
+###   -force:       copy a file even if destination file has same time and
+###                 size
+###
+###   -replace-dir: delete destination files that no longer exist in the source;
+###                 must copy a directory not a pattern (e.g., *) for
+###                 this to work.
+###
+###   -type:        just type the Rsync command rather than executing it
+###                 immediately.
+###
+### Default options automatically exclude .svn
+###
+
+include "extended_string.vch";
+include "control.vch";
+include "file_access.vch";
+
+
+## 
+## Special pathname conventions are used with Rsync:
+## 
+## Form is either @[{work,foil}:]<Unix pathname> 
+##             or an absolute C-drive <PC pathname> after PCfromPC(-) abbreviations
+## 
+
+_Unix2Rsync(path) :=
+    Replace4(@@$path, 
+        "@@work:",   "mdl@ts-rhel7.labs.hpecorp.net:",
+        "@@Fedora:", "lillibridgem@build-fedora19-1.u.labs.hpecorp.net:", # <<<>>>
+        "@@foil:",    mdl@ IfHome(192.168.1.2,foil.strangled.net) ":",
+	"@@",         IfHome(mdl@192.168.1.2,mdl@ts-rhel7.labs.hpecorp.net) ":");
+
+  # here PCfromPC($path) must be an absolute path on drive C:
+_PC2Rsync(path) :=
+    '/cygdrive/c/' Replace3(PCfromPC($path), "\", "/", "C:/", "", "c:/", "");
+
+_Either2Rsync(path) :=
+    If(EQ(Left($path,1), "@"),
+       _Unix2Rsync(Mid($path,1)),
+       _PC2Rsync($path));
+
+_Path(path) := '"' _Either2Rsync($path) '"';
+
+
+## 
+## Generating the Rsync command itself:
+## 
+
+# note: use -e 'ssh -v -v -v' arguments to rsync to debug it
+
+_Options(options) :=
+      # default options:
+      #   preserve times, show progress, use compression, preserve permissions,
+      #   copy recursively, exclude .svn subdirectories
+    '-t --progress -z -p -r --exclude .svn '
+    Replace3($options, -type,"", -force,--ignore-times, -replace-dir,--delete);
+
+TypeRsync(options, source, destination) :=
+      # Subprocess.System and ShellExecute can't handle spaces/quotes
+      # in the executable name:
+    #'"' PCfromPC(Cygwin() /rsync.exe) '" -e ' Cygwin() '\ssh.exe '
+    PCfromPC(Cygwin() /rsync.exe) ' -e ' Cygwin() '\ssh.exe '
+    _Options($options) ' ' _Path($source) ' ' _Path($destination);
+
+  # this fires off a background task to do the work:
+Rsync(options, source, destination) :=
+    If(EQ(Left($options,5), "-type"),
+       TypeRsync(Mid($options,5), $source, $destination) " && ",
+       ShellExecute(TypeRsync($options, $source, $destination)));
+
+  # this waits for the copy to complete before returning; runtime error if it fails
+SyncRsync(options, source, destination) :=
+    If(EQ(Left($options,5), "-type"),
+       TypeRsync(Mid($options,5), $source, $destination) " && ",
+         # Subprocess.Run doesn't handle quoted arguments properly:
+       Subprocess.System(TypeRsync($options, $source, $destination)));

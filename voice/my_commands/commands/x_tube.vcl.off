@@ -1,0 +1,123 @@
+###
+### Commands for Tube project, restricted to X windows
+###
+
+include gnu.vch;
+
+
+## 
+## Submitting jobs on the XC cluster:
+## 
+
+Submit() := "ruby ~/deduplication/tube/Eiger/scripts/submit.rb{enter}";
+
+submit           job = Submit();
+submit clipboard job = Submit() {shift+Ins} {ctrl+d};
+
+clean out scripts = "rm script-*{enter}";
+
+  # start interactive shell on a high memory node:
+# bsub -q himem -x -Is csh
+
+            B. jobs = "bjobs{enter}";
+      wide  B. jobs = "bjobs -w{enter}";
+      count B. jobs = "bjobs | wc{enter}";
+      find  B. jobs = "bjobs -w | grep ";
+      all   B. jobs = "bjobs -u all{enter}";
+count all   B. jobs = "bjobs -u all | wc{enter}";
+
+
+## 
+## Using create.rb:
+## 
+
+Create(dataset, extra) := 
+        {ctrl+x}{ctrl+s}
+	Do(mdl-copy-buffer-filename)
+	Do(shell) {esc}>
+	"~/deduplication/cluster/fragment/scripts/create.rb -q "
+	'$dataset "{ctrl+y}"' $extra {enter};
+
+<dataset> := ( workgroup
+             | workgroup cycle      = workgroup_cycle30
+             | homer
+             | Marathon cheese      = mc4k
+             | 8 K Marathon cheese  = mc8k
+             | 4 months             = 4months
+             | 4 months cycle       = 4months_cycle30
+             | 4 months complicated = 4months_GFS
+             | 2 years              = 2years
+             | 2 years cycle        = 2years_cycle30
+             | 2 years complicated  = 2years_GFS
+	     | Steiner
+	     | 8 K Steiner          = Steiner_8k
+	     | Nielsens 4           = Nielsens_4
+	     | Nielsens 8           = Nielsens_8
+	     | mix 1                = Mix_1
+	     | all
+	     );
+
+<op> := (create="" | combine="|grep combine" | combine fully="|grep combine|csh" | no combine="|grep -v combine");
+
+run <op>           = Create(4months, $1);
+run <op> <dataset> = Create($2, $1);
+
+
+show <dataset> output = "ls ~/deduplication/cluster/fragment/output/$1*"{enter};
+
+
+
+## 
+## 
+## 
+
+<test> := ( IDs test         = IDs_test
+          | data access test = data_access_test
+          | backend tester   = BackEndTester
+          | single stream    = SingleStreamNoThreadsTester
+          | node test        = node_test
+          );
+
+debug <test> = "gdb $1 core.*" {enter} bt{enter} quit{enter};
+
+#gdb: thread apply all backtrace
+# top -H
+
+check my status = "cd ~/deduplication/cluster/fragment/scripts;"
+      "ls -hs ../tmp | grep szbb; df -h ../tmp; "
+      "ls -hs ../tmp2/ | grep szbb; df -h ../tmp2/; "
+      "ls -hs ../tmp3/ | grep szbb; df -h ../tmp3/; "
+      {enter};
+
+check day status = "cd ~/.lsbatch" {enter}
+      "foreach i ( *.out )" {enter}
+#      "grep -i -H --color=always day \$i | tail -n 1" {enter}
+      "grep -i -H day \$i "
+        "| sed 's/^\([^:]*:\).*\(workgroup_day_[0-9]*\).*/\1 \2/' "
+	"| tail -n 1" {enter}
+      "end" {enter}
+      "cd ~/deduplication/cluster/fragment/scripts" {enter}
+;
+
+check space status = "cd ~/.lsbatch" {enter}
+      "foreach i ( *.out )" {enter}
+      "grep -i -H --color=always GB \$i | tail -n 1" {enter}
+      "end" {enter}
+      "cd ~/deduplication/cluster/fragment/scripts" {enter}
+;
+
+check new day status = "cd ~/.lsbatch" {enter}
+      "foreach i ( *.out )" {enter}
+      "grep -i -H --color=always par-- \$i | tail -n 1" {enter}
+      "end" {enter}
+      "cd ~/deduplication/cluster/fragment/scripts" {enter}
+;
+
+check alternative day status = "cd ~/deduplication/cluster/fragment/tmp" {enter}
+      "foreach i ( *_param.csv )" {enter}
+      "grep -i -H day \$i "
+        "| sed 's/^\([^:]*:\).*\(workgroup_day_[0-9]*\).*/\1 \2/' "
+	"| tail -n 1" {enter}
+      "end" {enter}
+      "cd ~/deduplication/cluster/fragment/scripts" {enter}
+;

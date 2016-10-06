@@ -1,0 +1,37 @@
+###
+### Used by <-> [<->] buffer, Mondo here <->
+### 
+### letters plus a few special characters to the appropriate regex
+### 
+
+
+<letterp> := (
+       Alpha    = a
+     | Bravo    = b
+     | Charlie  = c
+     | Delta    = d
+     | echo     = e
+     | foxtrot  = f
+     | golf     = g
+     | Hotel    = h
+     | India    = i
+     | Juliett  = j
+     | kilo     = k
+     | Lima     = l
+     | Mike     = m
+     | November = n
+     | Oscar    = o
+     | Papa     = p
+     | Quebec   = q
+     | Romeo    = r
+     | Sierra   = s
+     | tango    = t
+     | uniform  = u
+     | Victor   = v
+     | whiskey  = w
+     | x-ray    = x
+     | Yankee   = y
+     | Zulu     = z
+
+     | underscore = _ | dot = \. | star = \*
+);

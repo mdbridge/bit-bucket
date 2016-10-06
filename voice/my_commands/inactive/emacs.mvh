@@ -1,0 +1,96 @@
+#############################################################################
+#                                                                           #
+# Primitives useful in defining gnuemacs voice macros                       #
+#                                                                           #
+#############################################################################
+
+
+##
+## Saving and restoring to Emacs registers
+##
+## Registers are named by a single character.
+##
+
+  # This register is for internal use by macros.
+ScratchRegister()          := "~";
+
+SavePoint(register)        := "{ctrl+x}r " $register;
+RestorePoint(register)     := "{ctrl+x}j"  $register;
+
+  # note that these do not affect the kill ring:
+CopyToRegister(register)   :=           {ctrl+x}rs $register;
+CutToRegister(register)    := {ctrl+u}1 {ctrl+x}rs $register;
+YankFromRegister(register) :=           {ctrl+x}ri $register;
+
+
+  # delete from point to start-of-line leaving kill ring alone:
+EraseToStart() := {ctrl+space} {home} CutToRegister(ScratchRegister());
+
+
+
+##
+## Mark Lillibridge's Occurs function
+##
+##   Requires occurs.el elisp code has been loaded into gnuemacs.
+##
+
+#
+# Look for occurrences of $regex in current buffer:
+#
+#   if none,   display no matches message in minibuffer
+#   if one,    jump to the start of that occurrence
+#   otherwise, open an *occurs* buffer showing all of the occurrences
+#                 (may replace current window if enough occurrences exist)
+#
+Occurs(regex)       := {esc}x mdl-occur         {enter} $regex {enter};
+
+  # same, but always case-sensitive:
+OccursNoFold(regex) := {esc}x mdl-occur-no-fold {enter} $regex {enter};
+
+
+
+##
+## Implementation of Mark Lillibridge's leap functions v1.0 for gnuemacs
+##
+##   Requires leap.el elisp code has been loaded into gnuemacs.
+##
+
+  # private
+LeapKey(direction) :=
+	Replace(Replace($direction, "d", "s"), "u", "r");
+
+Leap(direction, target) :=
+	{ctrl+c} LeapKey($direction) $target {right};
+
+LeapAfter(direction, target) :=
+	Leap($direction, $target)
+	   # kludge: this does moves the cursor somewhat when we fail:
+	"{right " 
+	    Len(Replace(Replace($target, "{space}", " "), "{{}", "{")) 
+	    "}";
+
+LeapSame(direction, count) :=
+	{ctrl+c} LeapKey($direction) 
+	{ctrl+ LeapKey($direction) " " $count }
+	{right};
+
+##
+## Extended leap functionality available only in gnuemacs:
+##
+
+#
+# Like leap, but uses a gnuemacs regular expression to specify target.
+#
+#   Warning: LeapSame cannot be used to repeat a LeapRegex correctly.
+#
+LeapRegex(direction, target) :=
+	{ctrl+u}1 Leap($direction,$target);
+
+
+##
+## Jump to nearest line whose line number is equal to N mod 100.
+##
+##    Requires line-numbers.el has been loaded into gnuemacs.
+##
+
+LineMod(n) := {ctrl+u} $n {esc}G;

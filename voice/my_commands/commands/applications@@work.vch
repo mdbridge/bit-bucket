@@ -1,0 +1,106 @@
+### 
+### List of applications
+### 
+
+include "switch.vch";
+include "control.vch";
+
+
+  # attempt not to create the application if it doesn't already exist:
+NoCreate(application) := Variable.Set(:no_create, true) $application;
+
+AppCommand(switch_specification, commands) :=
+    If(Variable.Get(:no_create, false),
+       Variable.Set(:no_create, false) SwitchTo($switch_specification),
+       SwitchTo2($switch_specification, $commands));
+
+App(switch_specification, pathname) :=
+    AppCommand($switch_specification, 
+               AppBringUp($switch_specification, PC($pathname)));
+
+
+
+  # also need to update AutoHotkey switch.ahk as well
+MacroWindow() := 
+   AppCommand("(Messages from (Python Macros|NatLink))|New PYD Test", 
+              HeardWord(Show, Vocola, Window));
+
+OutlookReminder() := SwitchTo("Reminder(|s|\(s\))$");
+
+
+<application> := (
+        # Internet browsers:
+      fire                 = App("Mozilla Firefox$",        firefox.exe)
+    | (download|downloads) = SwitchTo("Downloads$")  # is this still useful? <<<>>>
+    | IE                   = App(InternetExplorerPattern(), iexplore.exe)
+          # below works only if no Internet Explorer browsers already exist:
+    | no plug-ins IE       = App(InternetExplorerPattern(), "iexplore.exe -extoff")
+    | chrome               = App("- Google Chrome$",        chrome.exe)
+    | edge                 = App("- Microsoft edge",        ApplicationFrameHost.exe)
+
+        # Dragon NaturallySpeaking Windows:
+    | Dragon [Pad]         = AppCommand("^DragonPad",      HeardWord(open, DragonPad))
+    | Dragon bar           =                               HeardWord(switch, to, DragonBar)
+    | command browser      = App("^Command Browser",       nsbrowse.exe)
+    | error                = MacroWindow()
+
+        # Microsoft office windows:
+    | Excel                = App("(^Microsoft |- |^)Excel$",               excel.exe) 
+    | Outlook              = App("((^|- )Microsoft |- |^)Outlook$",        outlook.exe) 
+    | PowerPoint           = App("(^Microsoft |- |^)PowerPoint$",          powerpnt.exe) 
+    | Word                 = IfHome(AppCommand("(^Microsoft |- |^)Word$",  Subprocess.Async(PC("~pf/Microsoft Office 15/root/office15/winword.exe"), winword.exe)),
+                                    App("((^|- )Microsoft |- |^)Word$",    winword.exe))
+    | Word 2007            = App("(^Microsoft |- |^)Word$",         	     winword.exe)  # <<<>>>
+    | chat                 = App("(^Microsoft |- |^)Lync$",        	     lync.exe)
+    | message              = SwitchTo("Message \(Plain Text|HTML\) ?$")        # Outlook [draft] message window
+    | reminder             = OutlookReminder()                                   # Outlook reminder dialog box
+
+        # Other text editing programs:
+    | Notepad              = App(" - Notepad$", notepad.exe)
+    | water [pad]          = App(" - win32pad", ~pf32/Win32Pad/win32pad.exe)
+    | word pad             = App(" - WordPad$", wordpad.exe)
+    | other Emacs          = SwitchTo("^emacs@")
+
+        # Music playing (applications):
+    | D X [player]         = App("^DivX Player$",                 "~pf32\DivX\DivX Player\DivX Player.exe")
+    | iTunes               = App("^iTunes$",                      iTunes.exe)
+    | media player         = App("^Windows Media Player$",        wmplayer.exe)
+    | VLC player           = App("^VLC Media Player$",            "~pf32\VideoLAN\VLC\vlc.exe")
+
+        # Games:
+    | Infocom              = App("^Windows Frotz$", "~pf32/Windows Frotz/Frotz.exe")
+    | StarCraft [two]      = App("^StarCraft II$",  "~pf32/StarCraft II/StarCraft II.exe")
+    | Steam                = App(^Steam$,           ~pf32/Steam/steam.exe)
+    | Warcraft [two]       = App("^Warcraft II$",   "~pf32/Warcraft II BNE/Warcraft II.exe")
+    | Zork                 = SwitchTo("^DOSBox")
+
+        # System utilities:
+    | RSI guard            = App(^RSIGuard$,                         ~pf32/RSIGuard/RSIGuard.exe)
+    | SmartNav             = App(^SmartNAV,                          ~pf32/NaturalPoint/SmartNAV/SmartNAV.exe)
+    | [HP] solution center = App("^HP solution center$",             "~pf32\HP\Digital Imaging\bin\Hpqdirec.exe")
+
+    | host prevention      = App("^McAfee Host Intrusion Prevention$", "~pf32/McAfee/Host Intrusion Prevention/McAfeeFire.exe")
+    | process explorer     = App("^Process Explorer",               "~pf32\Process Explorer\procexp.exe")
+    | reflection           = App("^Reflection X Manager$",           ~pf/Attachmate/Reflection/Rx.exe)
+    | sound                =                                         ShellExecute("mmsys.cpl") WaitForWindow("Sound") {down}
+    | task [manager]       = App("^Windows Task Manager$",           taskmgr)
+    | volume [mixer]       = App("^Volume Mixer$",                   "sndvol /rec")
+    | folder               = SwitchTo(FolderPattern())
+    | true crypt           = App(^TrueCrypt$,                        ~pf/TrueCrypt/TrueCrypt.exe)
+    | vera crypt           = App(^VeraCrypt$,                        ~pf/VeraCrypt/VeraCrypt.exe)
+    | Free SR              =                                         AppBringUp("C:\Program Files (x86)\Freesr\Freesr.exe")
+    | HP pulse             = AppCommand(^Pulse$,                     Subprocess.Sync(PC("~pf32/Common Files/Juniper Networks/JamUI/Pulse.exe"), Pulse.exe, -show))
+
+        # Miscellaneous applications:
+    | Adobe [reader]       = SwitchTo("- Adobe (Reader|Acrobat)")
+    | Java converter       = App(^exe4j$,                          ~pf/exe4j/bin/exe4j.exe)
+    | Kindle               = App("^Mark's Kindle for PC",           ~/../AppData/Local/Amazon/Kindle/application/Kindle.exe)
+    | Photosmart           = App("^HP Photosmart Essential 3.5$",    "~pf32\HP\Digital Imaging\bin\hpqpse.exe")
+    | detective            = App("^Window Detective$",               "~pf32\Window Detective\Window Detective.exe")
+    | e-books              = App("^calibre -",                      ~pf/Calibre2/calibre.exe)
+    | egg timer            = App("^[0-9][0-9]:",                   "~pf32/Egg Timer/eggtimer.exe")
+
+
+    # temporary:
+
+);

@@ -1,0 +1,26 @@
+### 
+### Functions for calling AutoHotkey scripts.
+### 
+
+include "string.vch";
+
+  # Get location of my documents (PCHome()):
+include "environment-$COMPUTERNAME.vch";
+
+
+_AutoHotkey(script, arguments) :=
+	AppBringUp(auto-$script, 
+                   Replace(PCHome() /AutoHotkey/$script.ahk, "/", "\")
+                     ' ' $arguments);
+
+  # Need weird quoting to protect arguments to AutoHotkey:
+_AutoQuote(text) := '"' Replace($text, '"', '\"')  '" ';
+
+
+AutoHotkey0(script)             := _AutoHotkey($script, "");
+AutoHotkey1(script, a1)         := _AutoHotkey($script, 
+        _AutoQuote($a1));
+AutoHotkey2(script, a1, a2)     := _AutoHotkey($script, 
+        _AutoQuote($a1) _AutoQuote($a2));
+AutoHotkey3(script, a1, a2, a3) := _AutoHotkey($script, 
+        _AutoQuote($a1) _AutoQuote($a2) _AutoQuote($a3));

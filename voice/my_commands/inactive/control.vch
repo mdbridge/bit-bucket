@@ -1,0 +1,86 @@
+### 
+### Functions for control flow
+### 
+###   Requires Python 2.5 or better because uses conditional expressions
+### 
+
+## 
+## Branching on whether a value is present (e.g., nonempty)
+## 
+##   (Useful for optional lists)
+## 
+
+  # act when $value is present:
+WHEN(value, actions) :=
+    Repeat(EvalTemplate("1 if %s != '' else 0", $value), $actions);
+
+WHEN3(value, actions, else_actions) :=
+    Repeat(EvalTemplate("1 if %s != '' else 0", $value), $actions)
+    Repeat(EvalTemplate("1 if %s == '' else 0", $value), $else_actions);
+
+
+#Unless?
+
+
+## 
+## Branching on truth values
+## 
+##   Per Vocola 3, true means == "true" mod case
+## 
+
+IF(condition, then_part) := 
+    Repeat(EvalTemplate("1 if %s.lower() == 'true' else 0", $condition),
+           $then_part);
+  # This reevaluates $condition twice; hard to avoid while still being functional:
+  # <<<>>>
+IF3(condition, then_part, else_part) :=
+    IF($condition, $then_part)
+    Repeat(EvalTemplate("1 if %s.lower() != 'true' else 0", $condition),
+           $else_part);
+#IF3(condition, then_part, else_part) :=
+#    Variable.Let(:condition, $condition)
+#    IF(Variable.Get(:condition), $then_part)
+#    Repeat(EvalTemplate("1 if %s.lower() != 'true' else 0", 
+#    	   Variable.Get(:condition)),
+#           $else_part);
+
+
+
+## 
+## Branching on string comparisons:
+## 
+
+  # are two strings equal?  Case-sensitive.
+EQ(first, second) := EvalTemplate("%s == %s", $first, $second);
+
+
+CASE3(value, target_1,case_1) :=
+    IF(EQ($value,$target_1), $case_1);
+CASE5(value, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_2), $case_2, 
+        CASE3($value, $target_1,$case_1)
+    );
+CASE7(value, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_3), $case_3, 
+        CASE5($value, $target_2,$case_2, $target_1,$case_1)
+    );
+CASE9(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_4), $case_4, 
+        CASE7($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1)
+    );
+
+CASE4(value, target_1,case_1, default) :=
+    IF3(EQ($value,$target_1), $case_1, $default);
+
+CASE6(value, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_2), $case_2, 
+        CASE4($value, $target_1,$case_1, $default)
+    );
+CASE8(value, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_3), $case_3, 
+        CASE6($value, $target_2,$case_2, $target_1,$case_1, $default)
+    );
+CASE10(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_4), $case_4, 
+        CASE8($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1, $default)
+    );

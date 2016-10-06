@@ -1,0 +1,183 @@
+###
+### Operations for manipulating items (shell files)
+###
+
+SHELL(pathname) := Replace($pathname, " ", "\ ");
+
+Place(before, after) := $before $after {left_ Len($after) };
+
+
+## 
+## Numbering files
+## 
+
+Item(n)               := {space} \$_$n {ctrl+x}\$;
+Item2(hundreds, ones) := Item(Eval(When($hundreds,$hundreds,0)*100 + $ones));
+
+
+##
+## git source control commands:
+##
+
+<g>   := ( git | grit );
+<git> := ( add                    # git add . works fine
+	 | add patch="add -p"     # add pieces selected interactively
+	 | add some="add -p"      # add pieces selected interactively
+	 | unstage="reset --"     # = unadd
+
+            # these stage changes and modify working:
+         | move=mv | rename=mv 
+         | remove=rm              # need -f if already staged
+
+	 | untrack="rm --cached"  # stage removal, leave working copy
+	 | please reset="checkout --"  # copy over working file from index
+	   # use "checkout HEAD --" to copy from HEAD instead of index
+
+         # for make [non-]executable, just change file perms then commit -a
+
+	 | diff 
+	     # --follow to follow renames:
+	 | log="log --follow" | log diff="log -p --follow"
+	 | blame                  # last changer/commit for each line
+         );
+
+
+##
+## Subversion version control commands:
+##
+
+<Subversion> := ( add 
+	            # don't add children of a directory:
+	     	| add top= "add --depth=empty"
+	     	| cat | delete=rm | remove=rm | diff | info 
+	        | log | make dir=mkdir | make directory=mkdir 
+		| move=mv | rename=mv 
+		| make executable="propset svn:executable '*'"
+		| make non-executable="propdel svn:executable"
+		);
+
+
+##
+## Non-source control commands:
+##
+
+<command> := (
+      cat                       = cat
+    | cleanup                   = cleanup
+    | copy                      = cp
+    | delete                    = rm
+    | DF                        = df
+    | diff                      = diff
+    | disk usage                = 'du -h -s --'
+    | DU                        = du
+    | Emacs                     = emacs
+    | G unzip                   = gunzip
+    | G zip                     = gzip
+    | GDB                       = "gdb -silent"
+    | head
+    | line count                = "wc -l"
+    | link                      = ln
+    | list                      = ls
+    | list recursively          = "ls -R"
+    | LS                        = ls
+    | make                      = make
+    | make dir                  = mkdir
+    | make directory            = mkdir
+    #
+    | make executable           = "chmod -R a+x"
+    | make non-executable       = "chmod -R a-x"
+    | make non-writable         = "chmod -R a-w"
+    | make private              = "chmod -R og="
+    | make read-only            = "chmod -R a-w"
+    | make writable             = "chmod -R a+w"
+    #
+    | more                      = more
+    | move                      = mv
+    | move carefully            = "mv -i"
+    | no warn Ruby              = \ruby
+    | Perl                      = perl
+    | please delete             = rm
+    | please remove recursively = "rm -rf"
+    | please recursively remove = "rm -rf"
+    | please remove             = rm
+    | Python                    = python
+    | remove directory          = rmdir
+    | remove dir                = rmdir
+    | remove                    = rm
+    | R spec                    = rspec
+    | Ruby                      = ruby
+    | sort
+    | source
+    | sum                       = md5sum  # MD five sum badly recognized...
+    | carefully sum             = sha256sum
+    | symlink                   = "ln -s"
+    | tail
+    | tar extract               = "tar xvf "
+    | tar list                  = "tar tf "
+    | trade                     = Place("cp ", " ~/Tmp/trade_area/") 
+    | touch
+    | unzip                     = unzip
+    | word count                = wc
+
+    | from                      = " <"
+);
+
+
+##
+## Names for options:
+##
+
+<option> := (
+       Alpha        = " -a"
+     | Bravo        = " -b"
+     | Charlie      = " -c"
+     | Delta        = " -d"
+     | echo         = " -e"
+     | foxtrot      = " -f"
+     | golf         = " -g"
+     | Hotel        = " -h"
+     | India        = " -i"
+     | Juliett      = " -j"
+     | kilo         = " -k"
+     | Lima         = " -l"
+     | Mike         = " -m"
+     | November     = " -n"
+     | Oscar        = " -o"
+     | Papa         = " -p"
+     | Quebec       = " -q"
+     | Romeo        = " -r"
+     | Sierra       = " -s"
+     | tango        = " -t"
+     | uniform      = " -u"
+     | Victor       = " -v"
+     | whiskey      = " -w"
+     | x-ray        = " -x"
+     | Yankee       = " -y"
+     | Zulu         = " -z"
+     | big Alpha    = " -A"
+     | big Bravo    = " -B"
+     | big Charlie  = " -C"
+     | big Delta    = " -D"
+     | big echo     = " -E"
+     | big foxtrot  = " -F"
+     | big golf     = " -G"
+     | big Hotel    = " -H"
+     | big India    = " -I"
+     | big Juliett  = " -J"
+     | big kilo     = " -K"
+     | big Lima     = " -L"
+     | big Mike     = " -M"
+     | big November = " -N"
+     | big Oscar    = " -O"
+     | big Papa     = " -P"
+     | big Quebec   = " -Q"
+     | big Romeo    = " -R"
+     | big Sierra   = " -S"
+     | big tango    = " -T"
+     | big uniform  = " -U"
+     | big Victor   = " -V"
+     | big whiskey  = " -W"
+     | big x-ray    = " -X"
+     | big Yankee   = " -Y"
+     | big Zulu     = " -Z"
+);

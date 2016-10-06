@@ -1,0 +1,74 @@
+### 
+### Functions for calling AutoHotkey scripts.
+### 
+
+include "string.vch";
+include "file_access.vch";
+
+
+_AutoHotkeyPath()   := PCfromPC(~pf32/AutoHotkey/AutoHotkey.exe);
+_AutoScript(script) := PCfromPC(~/AutoHotkey/$script.ahk);
+
+  # Need weird quoting to protect arguments to AutoHotkey:
+_AutoQuote(text)    := '"' Replace($text, '"', '\"') '"';
+
+
+
+## 
+## By default, we wait for the AutoHotkey script to terminate:
+## 
+
+AutoHotkey0(script)                  := 
+    Subprocess.Sync(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script));
+
+AutoHotkey1(script, a1)              := 
+    Subprocess.Sync(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1));
+
+AutoHotkey2(script, a1, a2)          := 
+    Subprocess.Sync(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2));
+
+AutoHotkey3(script, a1, a2, a3)      := 
+    Subprocess.Sync(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2), _AutoQuote($a3));
+
+
+## 
+## Same, but proceed even if exit code is nonzero:
+## 
+
+AutoHotkeyForce0(script)             := 
+    Subprocess.Sync(_AutoHotkeyPath()-, AutoHotkey.exe, _AutoScript($script));
+
+AutoHotkeyForce1(script, a1)         := 
+    Subprocess.Sync(_AutoHotkeyPath()-, AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1));
+
+AutoHotkeyForce2(script, a1, a2)     := 
+    Subprocess.Sync(_AutoHotkeyPath()-, AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2));
+
+AutoHotkeyForce3(script, a1, a2, a3) := 
+    Subprocess.Sync(_AutoHotkeyPath()-, AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2), _AutoQuote($a3));
+
+
+## 
+## Do not wait for the AutoHotkey script to terminate:
+## 
+
+AutoHotkeyAsync0(script)             := 
+    Subprocess.Async(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script));
+
+AutoHotkeyAsync1(script, a1)         := 
+    Subprocess.Async(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1));
+
+AutoHotkeyAsync2(script, a1, a2)     := 
+    Subprocess.Async(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2));
+
+AutoHotkeyAsync3(script, a1, a2, a3) := 
+    Subprocess.Async(_AutoHotkeyPath(), AutoHotkey.exe, _AutoScript($script),
+                     _AutoQuote($a1), _AutoQuote($a2), _AutoQuote($a3));

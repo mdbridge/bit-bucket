@@ -1,0 +1,36 @@
+###
+### Lists for defining directory specifications. 
+###
+
+
+## 
+## Unix domain indicators:
+## 
+
+<D> := ( work colon = "work:"
+       | foil colon = "foil:"
+       );
+
+
+## 
+## "absolute" directories (starts with ~, / (Unix), or [cpw]:/ (PC)):
+## 
+##   currently ~ is permitted only at the start of one of these pathnames
+## 
+
+include "UNIX.vch";         # Unix namespace
+include "PC.vch";           # PC   namespace
+
+#
+# Both lists use "/" as a component separator.  ~ at the beginning
+# denotes my home directory (in that namespace).  Use UNIX(-) or
+# PC(-) respectfully from locale_*.vch to convert these pathnames into
+# local pathnames
+#
+
+
+## 
+## Pathname components:
+## 
+
+include "COM.vch";          # either namespace (no slashes)

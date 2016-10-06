@@ -1,0 +1,28 @@
+### 
+### Function definitions that depend on the particular details of the
+### current machine.
+### 
+
+## 
+## Normally we just indirect via the computer name (standard OS
+## environment variable):
+## 
+
+include "environment_$COMPUTERNAME.vch";
+
+
+
+## 
+## Sometimes when setting up a new computer we just hardcode things initially:
+## 
+
+#IfHome(home, work) := $work;
+#
+#PCHome() := "C:/Users/LillibridgeM/Documents";
+#
+#PF32()   := "C:/Program Files (x86)";  # 64-bit OS
+##PF32()   := "C:/Program Files";
+#
+#Cygwin() := "C:/cygwin64/bin";
+#
+#XSize() := 1600;  YSize() := 1200;

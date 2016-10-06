@@ -1,0 +1,59 @@
+### 
+### Information for generating folder components:
+### 
+
+## automatically includes components from UNIX directories, PC directories
+
+## 
+## Additional component names, which override the above
+## 
+##   Each non-blank line after comments removal has the form:
+##     <component_filename>[, <special name>]
+## 
+
+.., dot dot
+.., parent directory
+
+
+#
+# from /
+#
+
+bin
+dev
+etc
+home
+lib
+proc
+root
+sbin,S bin
+sys
+tmp # override Tmp
+usr, user
+var
+
+
+#
+# 
+#
+
+test
+
+h, Hotel
+
+Alist, A. list
+
+
+src
+src, source
+
+config
+doc
+include
+share
+tests
+experiments
+
+
+foo
+Do Not Backup

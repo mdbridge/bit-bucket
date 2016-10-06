@@ -1,0 +1,79 @@
+include "emacs.mvh";
+
+
+##
+## Navigation by month and/or year:
+##
+
+FindYear(year)                  := 
+	{esc}< "{ctrl+s}(" $year "){enter}" {home};
+
+FindMonth(month, year)          := 
+	{esc}< LeapRegex(d, "^" $month "=.*(" $year "):");
+
+FindMonthNo(month-number, year) := 
+	{esc}< LeapRegex(d, "^[a-zA-Z]*=" $month-number " (" $year "):");
+
+
+FindRecentMonth(month)          :=
+	{esc}> LeapRegex(u, "^" $month "=.*([0-9]+):");
+
+FindRecentMonthNo(month-number)        :=
+	{esc}> LeapRegex(u, "^[a-zA-Z]*=" $month-number " ([0-9]+):");
+
+
+
+money <recent-year>         = FindYear($1);
+money <month> <recent-year> = FindMonth($1, $2);
+
+money <month>               = FindRecentMonth($1) {ctrl+u}0{ctrl+l};
+
+
+
+find entry 1..12 slash <this-day> =
+	FindRecentMonthNo($1) {down}
+	LeapRegex(d, 
+	  '\(' "  " Right("00$1",2) "/" '\($2\)' '\)'
+	  "\|^ [A-Z].*=.*):\|\'"
+	);
+
+
+
+
+new month = 
+	"{enter 2}" 
+	Eval("MonthName(Month(Now))") "=" Eval("Month(Now)")
+	" (" Eval("Year(Now)") "):{enter 2}";
+
+
+rent for <month> =
+	"  [rent for $1 was \$1390; water was ]{left}";
+
+
+next entry 1..12 slash <my0to99> =
+	"{end}{enter}  {ctrl+space}"
+        Right("00$1",2) "/" Right("00$2",2) CopyToRegister(d) " ";
+
+next entry = "{end}{enter}  " YankFromRegister(d) "{end} ";
+
+
+<money-entry> = $1 "{ctrl+r}^{enter}{ctrl+d}";
+
+paycheck for 1..12 slash <my1to100> through 1..12 slash <my1to100> =
+	"   [paycheck of ^ for $1/$2-$3/$4, direct deposited]" 
+	"{ctrl+r}^{enter}{ctrl+d}";
+
+
+
+
+
+
+unbelievable 1..12 slash <next-day> =
+	FindRecentMonthNo($1) {down}
+	LeapRegex(d, 
+	  '\(' "  " Right("00$1",2) "/" '\(' Second($2,",") '\)' '\)'
+	  "\|^ [A-Z].*=.*):\|\'"
+	)
+	{ctrl+o} "  " {ctrl+space}
+        Right("00$1",2) "/" First($2,",") "{ctrl+x}xd" " "
+	;

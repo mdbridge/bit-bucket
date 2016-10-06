@@ -1,0 +1,92 @@
+### 
+### Functions for synchronizing directories
+### 
+### Options:
+### 
+###   -force:   copy a file even if destination file has same time and
+###             size; $which must be "" for this option to work correctly
+###   -replace: delete destination files that no longer exist in the source
+### 
+### "" for $which means all files (including recursively) in the
+### source directory.
+### 
+
+include "extended_string.vch";
+include "control.vch";
+include "file_access.vch";
+
+
+## 
+## Robocopy command: source and destination are both PC paths of directories
+## 
+##   Warning: do not use folder names ending with backslashes
+## 
+
+Robocopy(source, destination, which, options) :=
+    'robocopy.exe '
+    '"$source" "$destination" '
+    IF3(EQ($which,""), "", '"$which"')
+    ' /E /W:1 '
+    Replace2($options, -force, /IS, -replace, /PURGE);
+
+
+## 
+## Rsync command: source and destination are directories with special
+## 	 	  Rsync paths (see conversion functions below)
+## 
+
+# note: use -e 'ssh -v -v -v' arguments to rsync to debug it
+
+Rsync(source, destination, which, options) :=
+    '"' PCfromPC(~pf32/cwRsync/bin/rsync.exe) '" '
+    ' -t --progress -z -p -r '
+    Replace2($options, -force, --ignore-times, -replace, --delete)
+    ' "$source' IF3(EQ($which,""), "/", /$which) '" "$destination"';
+
+Unix2Rsync(path) :=
+    Replace4($path, 
+        "work:~", "lillibridgem@ts-rhel6.hpl.hp.com:",
+        "foil:~", mdl@ IfHome(192.168.1.2,foil.strangled.net) ":",
+	"~",      IfHome(mdl@192.168.1.2,lillibridgem@ts-rhel6.hpl.hp.com) ":",
+	":",      ":~");
+
+  # here $path must be an absolute path on drive C:
+PC2Rsync(path) :=
+    '/cygdrive/c/' Replace3($path, "\", "/", "C:/", "", "c:/", "");
+
+
+RsyncDown(Unix, PC, which, options) := Rsync(Unix2Rsync($Unix), PC2Rsync($PC), $which, $options);
+
+
+
+## 
+## 
+## 
+
+# 
+# Import all files of one UNIX directory matching $pattern into a PC
+# directory if they are more recent than any existing file, if any
+# 
+TypeImportInc(UNIX, PC, pattern) := 
+    IF3(1, 
+	RsyncDown($UNIX, PCfromPC($PC), $pattern, ""),
+	Robocopy(UNIXfromPC($UNIX), PCfromPC($PC), $pattern, "")
+    );
+
+ImportInc(UNIX, PC, pattern) := 
+    ShellExecute(TypeImportInc($UNIX, $PC, $pattern));
+
+
+# 
+# Import all files of one UNIX directory into a PC directory:
+# 
+ImportAll(UNIX, PC) := 
+    #ShellExecute(
+    RsyncDown($UNIX, PCfromPC($PC), "", "-force");#);
+
+
+# 
+# check arguments here...  <<<>>>
+# 
+CopyPC(PC_1, PC_2) :=
+    ShellExecute('xcopy /y /h "' $PC_1 '" "' $PC_2 '"');

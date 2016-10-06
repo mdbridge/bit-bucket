@@ -1,0 +1,114 @@
+include "extensions/switch-to.mvh";
+
+## 
+## One off's:
+## 
+
+Outlook window         =
+        SwitchToAndExit("Outlook")
+        AppBringUp("Outlook", "OUTLOOK.EXE");
+
+Java converter window  =
+        SwitchToAndExit("exe4j")
+        AppBringUp("exe4j", "C:\Program Files\exe4j\bin\exe4j.EXE");
+
+iTunes window          =
+        SwitchToAndExit("iTunes")
+        AppBringUp("iTunes", "iTunes.EXE");
+
+
+
+
+emacs window           = SwitchTo("primary emacs");
+
+
+
+reflection window =
+        SwitchToAndExit("Reflection X Manager - (Untitled)") 
+        AppBringUp("Reflection", "C:\Program Files\Attachmate\Reflection\Rx.EXE");
+
+
+
+macro messages         = SwitchTo("Messages from Python Macros");
+macro messages close   = SwitchTo("Messages from Python Macros") {alt+f4};
+
+command browser        = SwitchToAndExit("Command Browser")
+                         SwitchToAndExit("Command Browser - Browse")
+                         SwitchToAndExit("Command Browser - Manage")
+			 HeardWord(bring, up, command, browser);
+
+DragonPad window       = SwitchTo("DragonPad - Document");
+
+
+
+## 
+## 
+## 
+
+# 
+# Emacs:
+# 
+
+red    area = SwitchTo("primary emacs");
+orange area = SwitchTo("secondary emacs");
+green  area = SwitchTo("green emacs");
+yellow area = SwitchTo("yellow emacs");
+
+white  area = SwitchToAndExit("emacs@LILLIBRIDGEM")
+              SwitchToAndExit("emacs@MLILLIBRID1")
+              SwitchToAndExit("emacs@MDL2")
+              SwitchTo("emacs@MDL");
+    
+# 
+# Xterm:
+# 
+
+startup xterm                     = SwitchTo("startup xterm");
+
+new xterm          <window-suffix> =
+	SwitchToAndExit("xterm $1")
+	'xterm -geometry =80x42 -T "xterm $1" -n "xterm $1" &{enter}';
+
+    xterm          <window-suffix> = SwitchTo("xterm $1");
+
+nice new xterm          <window-suffix> =
+	SwitchToAndExit("xterm $1")
+	'nice-xterm -geometry =80x42 -T "xterm $1" -n "xterm $1" &{enter}';
+
+
+
+# 
+# Windows command prompt:
+# 
+
+new command prompt <window-suffix> = 
+	SwitchToAndExit("command prompt $1")
+				     # Vista hack:
+	SwitchToAndExit("Administrator:  command prompt $1")
+	AppBringUp("cmd$1", 'cmd /k "title command prompt $1"');
+
+    command prompt <window-suffix> = SwitchToAndExit("command prompt $1")
+				     # Vista hack:
+			     SwitchTo("Administrator:  command prompt $1");
+
+
+# 
+# Putty:
+# 
+
+  # <<<>>>
+<my-machines-short> putty = SwitchToAndExit("$1 putty")
+		    SwitchTo("$1.hpl.hp.com - putty");
+
+
+
+## 
+## window-specific operations:
+## 
+
+iTunes space = SwitchTo("iTunes") Wait(1000) " "          {alt+space}n;
+iTunes skip  = SwitchTo("iTunes") Wait(1000) {ctrl+right} {alt+space}n;
+
+
+Windows media player space = SwitchTo("Windows Media Player") Wait(1000)
+                      {space} {alt+space}n;

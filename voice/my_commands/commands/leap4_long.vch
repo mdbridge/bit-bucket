@@ -1,0 +1,32 @@
+### 
+### Long leap4 commands.
+### 
+###   Requires Mark Lillibridge's leap4 API 2.0 already implemented.
+### 
+
+include "leap3_long.vch";
+
+
+
+## 
+## Target: one of a set of prespecified targets:
+## 
+
+      <kill> <leap_point>                 = Leap4($1, $2, 1, x);
+shift <leap> <leap_point>                 = Leap4($1, $2, 1, s);
+
+
+##
+## Target: a (partially) spelled-out target:
+## 
+
+      <kill> keys <prn> [<prn> [<prn> [<prn>]]] = Leap4($1, $2$3$4$5, 1, x);
+shift <leap> keys <prn> [<prn> [<prn> [<prn>]]] = Leap4($1, $2$3$4$5, 1, s);
+
+
+## 
+## Target: an arbitrary phrase:
+## 
+
+      <kill> phrase <_anything>           = Leap4($1, $2, 1, x);
+shift <leap> phrase <_anything>           = Leap4($1, $2, 1, s);

@@ -1,0 +1,90 @@
+###
+### Concise phonetic alphabet
+###
+
+<short> := (
+    arch  = a |
+    brov  = b |
+    char  = c |
+    dell  = d |
+    etch  = e |
+    #fomp = f |
+    fame  = f |
+    goof  = g |
+    hark  = h |
+    ice	  = i |
+    jinks = j |
+    koop  = k |
+    lug	  = l |
+    mouse = m |
+    nerd  = n |
+    ork	  = o |
+    pooch = p |
+    quash = q |
+    rip	  = r |
+    sung  = s |
+    teek  = t |
+    urn	  = u |
+    verge = v |
+    womp  = w |
+    trex  = x |
+    yang  = y |
+    Zulu  = z
+);
+
+<Short> := (
+    arch  = a |
+    brov  = b |
+    char  = c |
+    dell  = d |
+    etch  = e |
+    #fomp = f |
+    fame  = f |
+    goof  = g |
+    hark  = h |
+    ice	  = i |
+    jinks = j |
+    koop  = k |
+    lug	  = l |
+    mouse = m |
+    nerd  = n |
+    ork	  = o |
+    pooch = p |
+    quash = q |
+    rip	  = r |
+    sung  = s |
+    teek  = t |
+    urn	  = u |
+    verge = v |
+    womp  = w |
+    trex  = x |
+    yang  = y |
+    Zulu  = z |
+
+    sky arch  = A |
+    sky brov  = B |
+    sky char  = C |
+    sky dell  = D |
+    sky etch  = E |
+    sky fame  = F |
+    sky goof  = G |
+    sky hark  = H |
+    sky ice   = I |
+    sky jinks = J |
+    sky koop  = K |
+    sky lug   = L |
+    sky mouse = M |
+    sky nerd  = N |
+    sky ork   = O |
+    sky pooch = P |
+    sky quash = Q |
+    sky rip   = R |
+    sky sung  = S |
+    sky teek  = T |
+    sky urn   = U |
+    sky verge = V |
+    sky womp  = W |
+    sky trex  = X |
+    sky yang  = Y |
+    sky Zulu  = Z 
+);

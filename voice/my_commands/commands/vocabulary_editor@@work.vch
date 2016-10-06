@@ -1,0 +1,42 @@
+### 
+### Functions for controlling the DNS vocabulary editor
+### 
+
+  #
+  # precondition: Vocabulary Editor is opened and has focus ("edit words");
+  #               Display is set to "all words" (default)
+  #
+Word(written, spoken) := WaitForWindow("Vocabulary Editor",,30000) Wait(50)
+                         {alt+w} $written Wait(50) 
+			 {tab}   $spoken {tab};
+
+
+Done() := MsgBoxConfirm("Done loading words.", 64, "Word Compiler");
+
+
+Add()    := {alt+a} Wait(50)  {alt+i}{space}{alt+s}{tab}; 
+Delete() := {alt+d} Wait(100) y Wait(50); 
+ 
+
+POpen()  := Wait(50) {alt+p} WaitForWindow("Word Properties",,30000);
+PClose() := {enter};
+
+
+SetSpacing(before, after) :=  {alt+n}$before {alt+d}$after;
+
+
+prefix() := SetSpacing(1, 0);
+suffix() := SetSpacing(0, 1);
+tight()  := SetSpacing(0, 0);
+normal() := SetSpacing(1, 1);
+
+p() := prefix();
+s() := suffix();
+t() := tight();
+n() := normal();
+
+
+alt(written) := {alt+u}{alt+o}{space}{alt+u}{alt+u} # force alt 1 on
+	        {tab} $written;
+
+alt_s() := {alt+f} WaitForWindow("Alternate Written Form Formatting") s() {enter};

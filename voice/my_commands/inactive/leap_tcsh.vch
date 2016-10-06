@@ -1,0 +1,20 @@
+## 
+## Leap for tcsh (does not work in Emacs):
+## 
+
+#
+# needs key bindings in .tcshrc:
+#
+
+#  # bindings for leaping (see .Xdefaults):
+#bindkey ^Xs i-search-fwd
+#bindkey ^Xr i-search-back
+
+
+  # this is case-sensitive...  <<<>>>
+ShellLeap(direction, pattern) := 
+	_IfUp($direction, {left}, {right})
+	{ctrl+x}
+	_IfUp($direction, r, s)
+	$pattern {esc} 
+	_AdjustLeap($direction, $pattern);

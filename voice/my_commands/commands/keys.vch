@@ -1,0 +1,106 @@
+### 
+### Lists of base keys and their modifiers
+### 
+
+include "string.vch";
+
+
+
+## 
+## Allowable sets of modifiers:  (note imposed order to reduce combinations)
+## 
+
+  # SendDragonKeys modifiers only:
+<modifiers> := (
+       shift             = shift+
+     | control           = ctrl+
+     | control shift     = ctrl+shift+
+     | alt               = alt+
+     | alt shift         = alt+shift+
+     | alt control       = alt+ctrl+
+     | alt control shift = alt+ctrl+shift+
+);
+  # SendInput modifiers also:
+<extended_modifiers> := (
+               shift             = shift+
+     |         control           = ctrl+
+     |         control shift     = ctrl+shift+
+     |         alt               = alt+
+     |         alt shift         = alt+shift+
+     |         alt control       = alt+ctrl+
+     |         alt control shift = alt+ctrl+shift+
+     | Windows                   = win+
+     | Windows shift             = win+shift+
+     | Windows control           = win+ctrl+
+     | Windows control shift     = win+ctrl+shift+
+     | Windows alt               = win+alt+
+     | Windows alt shift         = win+alt+shift+
+     | Windows alt control       = win+alt+ctrl+
+     | Windows alt control shift = win+alt+ctrl+shift+
+);
+
+
+#_Name(prn_or_non) := Replace(Replace($prn_or_non, " ", space), "}", "shift+]");
+_Name(prn_or_non) := Replace($prn_or_non, " ", space);
+
+Key(modifiers, prn_or_non, count_suffix) :=
+        {$modifiers _Name($prn_or_non) $count_suffix};
+
+
+
+## 
+## printable base keys (including space):
+## 
+
+include "printables.vch";
+
+
+
+## 
+## Most non-printable base keys mapped to their SendDragonKeys name:
+## 
+## E.g., {$non} is the corresponding key sequence.
+## 
+
+<non> := (
+       up          = up
+     | down        = down
+     | left        = left
+     | right       = right
+
+     | page up     = PgUp
+     | page down   = PgDn
+
+     | home        = home
+     | end         = end
+
+     | backspace   = backspace | back = backspace
+     | delete      = Del       | erase = Del
+     | insert      = Ins
+     | pause       = Pause
+     | break       = Break
+
+     | tab         = tab
+     | enter       = enter
+     | slap        = enter  # <<<>>>
+     | escape      = esc
+
+     | function 1  = f1
+     | function 2  = f2
+     | function 3  = f3
+     | function 4  = f4
+     | function 5  = f5
+     | function 6  = f6
+     | function 7  = f7
+     | function 8  = f8
+     | function 9  = f9
+     | function 10 = f10
+     | function 11 = f11
+     | function 12 = f12
+
+     # left out numeric keypad keys: ({NumKey<key>}'s
+
+     # SendInput only:
+     | LeftButton
+     | RightButton
+);

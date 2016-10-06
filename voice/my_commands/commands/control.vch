@@ -1,0 +1,44 @@
+### 
+### Functions for control flow
+### 
+###   Requires Python 2.5 or better because uses conditional expressions
+### 
+
+## 
+## Branching on string comparisons:
+## 
+
+  # are two strings equal?  Case-sensitive.
+EQ(first, second) := EvalTemplate("%s == %s", $first, $second);
+
+
+CASE3(value, target_1,case_1) :=
+    If(EQ($value,$target_1), $case_1);
+CASE5(value, target_2,case_2, target_1,case_1) :=
+    If(EQ($value,$target_2), $case_2, 
+       CASE3($value, $target_1,$case_1)
+    );
+CASE7(value, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    If(EQ($value,$target_3), $case_3, 
+       CASE5($value, $target_2,$case_2, $target_1,$case_1)
+    );
+CASE9(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    If(EQ($value,$target_4), $case_4, 
+       CASE7($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1)
+    );
+
+CASE4(value, target_1,case_1, default) :=
+    If(EQ($value,$target_1), $case_1, $default);
+
+CASE6(value, target_2,case_2, target_1,case_1, default) :=
+    If(EQ($value,$target_2), $case_2, 
+       CASE4($value, $target_1,$case_1, $default)
+    );
+CASE8(value, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    If(EQ($value,$target_3), $case_3, 
+       CASE6($value, $target_2,$case_2, $target_1,$case_1, $default)
+    );
+CASE10(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    If(EQ($value,$target_4), $case_4, 
+       CASE8($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1, $default)
+    );
