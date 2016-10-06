@@ -1,0 +1,6 @@
+## 
+## Extracting information from work's exported Outlook information
+## 
+
+addresses: new_rolodex.rb import_Outlook.rb outlook.csv
+	ruby import_Outlook.rb > addresses

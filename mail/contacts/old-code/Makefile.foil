@@ -1,0 +1,117 @@
+RUBY    = ruby
+
+all: whos_where.rol whos_where_email evite.rol phone-lists \
+	to_evite.csv to_phone.csv
+
+
+### 
+### Generating/maintaining Rolodexes:
+### 
+
+ROLODEX = rolodex.rb    patch.rb
+
+
+## 
+## Allowing human editing of personal addresses (addresses):
+## 
+
+addresses.rol: addresses     step.rb ${ROLODEX}
+	$(RUBY) step.rb
+
+clean::
+	rm -f addresses.rol
+
+
+show: addresses.rol
+	diff addresses addresses.rol
+
+step: addresses.rol
+	${RUBY} backup.rb
+	mv addresses.rol addresses
+
+
+## 
+## Extracting information from scraped evite page:
+## 
+
+evite.rol: evite.htm    ${ROLODEX} import_evite.rb
+	$(RUBY) import_evite.rb < evite.htm > $@
+
+clean::
+	rm -f evite.rol
+
+
+## 
+## Extracting information from work's exported Outlook information
+## 
+
+HP.rol: 
+	echo "Run make HP.rol in ~/mail/contacts on ts-rhel6.hpl.hp.com"
+	exit 1
+
+clean::
+	rm -f HP.rol
+
+
+
+### 
+### Using Rolodexes:
+### 
+
+## 
+## Generating phone lists:
+## 
+
+PHONE_LIST = phone_list.rb     ${ROLODEX}
+
+phone-lists: work-phones.txt personal-phones.txt
+
+work-phones.txt: HP.rol     ${PHONE_LIST}
+	$(RUBY) phone_list.rb < HP.rol > $@
+
+personal-phones.txt: addresses.rol    ${PHONE_LIST}
+	$(RUBY) phone_list.rb < addresses.rol > $@
+
+clean::
+	rm -f work-phones.txt personal-phones.txt
+
+
+
+## 
+## Dealing with Florey sub-Rolodex/mailing list:
+## 
+
+whos_where.rol whos_where_email: addresses.rol   florey.rb ${ROLODEX}
+	$(RUBY) florey.rb
+
+clean::
+	rm -f whos_where.rol whos_where_email
+
+
+lame: addresses.rol
+	$(RUBY) lame.rb
+
+
+
+## 
+## Generate CSV file of selected people for use in uploading to web
+## sites like evite:
+## 
+
+to_evite.csv: addresses.rol   export_evite.rb ${ROLODEX}
+	ruby export_evite.rb
+
+clean::
+	rm -f to_evite.csv
+
+
+
+## 
+## Generate CSV file of selected people for use in setting up a phone's contacts:
+## 
+
+to_phone.csv: addresses.rol   export_phone.rb ${ROLODEX}
+	ruby export_phone.rb
+
+clean::
+	rm -f to_phone.csv
