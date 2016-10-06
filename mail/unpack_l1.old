@@ -1,0 +1,23 @@
+#!/bin/csh -f
+
+rm -rf ~/Tmp/Export
+mkdir ~/Tmp/Export
+
+#cp ~/Tmp/l1 ~/Tmp/Export/
+ln -s ~/Tmp/l1 ~/Tmp/Export/
+
+cd ~/Tmp/Export
+
+  # installed version of munpack, 1.6, extracts filenames incorrectly:
+#munpack -t l1 > _contents_
+~/mail/mpack-1.6-4/munpack -t ../l1 > _contents_
+cat _contents_
+
+foreach i (part?)
+   ln -s $i $i.html
+   ln -s $i $i.txt
+end
+
+cat _contents_ > _text.txt
+echo "=======================================" >> _text.txt
+cat part1 >> _text.txt
