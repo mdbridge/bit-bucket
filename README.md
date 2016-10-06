@@ -1,5 +1,5 @@
 This repository contains a snapshot of Mark Lillibridge's voice control
-infrastructure circa September 2016.
+infrastructure circa October 2016.
 
 
 Its contents are currently completely uncurated; I hope later to clean
@@ -13,7 +13,7 @@ symbol matching, etc.).
 * A new major Vocola mode for Emacs that provides syntax coloring.
 
 * Code for making Emacs and xterms work correctly with Dragon's
-correction and sending non-ASCII characters code.
+correction code and sending non-ASCII characters code.
 
 * A lot of other code to enable or enhance voice control:
 
@@ -29,7 +29,6 @@ correction and sending non-ASCII characters code.
     * elastic space, which types a space only if there is not already one there
     * Vi's start-word
     * selected code templates
-    * rename file and buffer
     * moving by fragments of camel case words (e.g., Case in CamelCaseWord)
   * AutoHotkey scripts for:
     relocating correct that dialogue, volume control, killing Firefox
