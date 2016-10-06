@@ -1,0 +1,3 @@
+#!/bin/csh -f
+
+head -n $1 $2 | sort -k 2 | more
