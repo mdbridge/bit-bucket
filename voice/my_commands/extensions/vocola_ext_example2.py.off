@@ -1,0 +1,31 @@
+import os
+
+# Vocola function: Env.Get2,1-2
+def get(name, if_undefined=None):
+    try:
+        return os.environ[name]
+    except KeyError:
+        if if_undefined!=None:
+            return if_undefined
+        else:
+            raise
+
+# Vocola function: Math.Mult,0-
+def product(*numbers):
+    p = 1
+    for n in numbers:
+        p = p * long(n)
+    return p
+
+# Vocola function: Polynomial.Eval,3
+def polynomial(x, y,
+               z):
+    # compute x^2 + 3y + z:
+    return long(x)**2 + long(y)*3 + long(z)
+
+
+# Vocola procedure: File.Append
+def append(filename, line):
+    f = open(filename, 'a')
+    f.write(line + "\n")
+    f.close()
