@@ -1,0 +1,42 @@
+###
+### Extended functions for manipulating strings
+###
+###   Version 0.1
+###
+
+include "string.vch";
+
+
+# 
+# Sequential repeated replacing:
+# 
+
+Replace1(string, from_1, to_1) := 
+    Replace($string, $from_1, $to_1);
+
+Replace2(string, from_1, to_1, from_2, to_2) := 
+    Replace(Replace($string, $from_1, $to_1), $from_2, $to_2);
+
+Replace3(string, from_1, to_1, from_2, to_2, from_3, to_3) := 
+    Replace(Replace(Replace($string, $from_1, $to_1), $from_2, $to_2), $from_3, $to_3);
+
+Replace4(string, from_1, to_1, from_2, to_2, from_3, to_3, from_4, to_4) := 
+    Replace(Replace(Replace(Replace($string, $from_1, $to_1), $from_2, $to_2), $from_3, $to_3), $from_4, $to_4);
+
+Replace5(string, from_1, to_1, from_2, to_2, from_3, to_3, from_4, to_4, from_5, to_5) := 
+    Replace(Replace(Replace(Replace(Replace($string, $from_1, $to_1), $from_2, $to_2), $from_3, $to_3), $from_4, $to_4), $from_5, $to_5);
+
+
+  #
+  # CapitalizeStart(string): Returns a copy of the string with only its
+  # 			     first character capitalized.
+  #
+CapitalizeStart(string)  := EvalTemplate('%s.capitalize()', $string);
+
+
+  #
+  # Capitalize(string): Returns a copy of the string where words start
+  #                     with upper case letters and all other letters
+  #                     are lowercase.
+  #
+Capitalize(string)  := String.Capitalize($string);

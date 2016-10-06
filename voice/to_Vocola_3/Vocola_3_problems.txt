@@ -1,0 +1,85 @@
+    I've been playing around with Vocola 3 (the normal version on the
+website) using a slightly modified version of my new Python compiler as
+a preprocessor to turn my Vocola 2 macros into Vocola 3 macros. It
+removes contexts, in lines includes, quotes all action words (especially
+<'s), remove spaces between function name and ('s, and for now comments
+out all commands using extensions other than String and Variable.
+
+I've run into some problems:
+
+  * The default keystrokes sending mechanism sends the wrong keys for
+    many special keys.  For example, for example, {up} sends <kp-up>
+    rather than <up>.  (Use emac's view lossage - ^h l to see the
+    difference.)  While this works for up, it fails for many other keys.
+    I believe the kp- prefix means that the numpad version rather than
+    the regular version of the key is being sent.
+
+  * AppBringUp is mistakenly claiming it cannot take two arguments (it
+    may have one through four arguments)
+
+  * If I delete my command files via file Explorer, Vocola 3 goes into
+    an infinite loop (Max CPU) and continues to allocate memory -- I've
+    killed it at 800 MB.
+
+  * Likewise, if I copy new versions of my files to an empty command
+    directory from remote Samba (slow), I get repeated error messages
+    that it cannot open the same file because a process has it open.
+
+  * At least one case, it held a command file open when it shouldn't
+    have. Perhaps you're missing a close somewhere?
+
+  * I'm getting the error message " Exception creating SAPI grammar: The
+    caller has specified an unsupported format." a lot and some of my
+    command files' appear to be being ignored. The error message doesn't
+    give a file name so I don't know which grammar(s) are causing the
+    problem.
+I have tracked it down to the use of "/" as a spoken form; all of these
+lines by themseleves produce "Exception creating SAPI grammar: The
+caller has specified an unsupported format.":
+
+  * I'm getting a huge number of spurious noise words, but maybe that is
+    due to DNS and WSR fighting over the microphone level.
+yup, was microphone level
+
+  * Unsurprisingly, a number of Legacy routines aren't supported: Beep,
+    ShiftKey, MsgBoxConfirm, TTSPlayString, SendDragonKeys
+
+  * EvalTemplate isn't implemented yet.
+
+  * Variable is slightly different than mine; no Reset and Get doesn't
+    appear to take a default argument
+
+*  ButtonClick clicks the wrong mouse button if the primary and
+   secondary mouse buttons have been switched by the user.  E.g., it
+   clicks the right mouse button instead of the left mouse button.
+
+*  recognition of (go|line|row) 0..99 is poor at times.   Do I also have
+   to use spelled-out numbers for WSR?   I thought that was only an
+   issue with DNS.
+Yes, spelling out numbers improves recognition with WSR as well.
+Part of this appears to have been my using -s in number spoken forms
+
+*  there is not any way to turn on command sequences for only some grammars.
+
+==========
+
+see also README.txt for other issues
+
+Foo() := ; gives a syntax error
+
+See WSR notes for WSR-specific problems.
+
+Base $using Vocola 2  default is wrong; need:
+Custom: Library,Library.DragonLegacy,Library.Main
+
+
+
+[2/3/2013] Emacs *command* issues:
+
+  * keep accidentally trying to use command sequences
+  * "erase" is poorly recognized and doesn't work any ways due to kp-bug
+  * "Top of file" doesn't work with local emacs due to kp-due
+  * "go #"  doesn't work because of built-in WSR command
+
+Firefox: pick puts 'next' link in reedit in different tab -- kp-
+related?

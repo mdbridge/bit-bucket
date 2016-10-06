@@ -1,0 +1,10 @@
+String.Replace,3,3,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Len,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Left,2,2,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Right,2,2,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Split,3,3,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Length,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.ToLower,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.ToUpper,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+String.Capitalize,1,1,0,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button
+Library.Main.HearCommand,1,-1,1,vocola_ext_winGuiAuto,vocola_ext_winGuiAuto.click_button

@@ -1,0 +1,62 @@
+* ctrl+windows key = toggle sleep/listening
+
+
+Issues:
+
+* #s better recognized if spelled-out also
+
+* go # is a built-in that is not replaceable
+
+! no word formatting properties
+
+* writes out numbers like 40,000,000
+
+* Spoken forms like "twenty-two" and "LowerWord" are not recognized
+
+* punctuation characters have different names making things like <prn>
+  potentially need changes
+
+* "dictation shortcuts": ability to add vocabulary with different spoken
+  and written forms
+  * recognition was pretty pour, however
+
+
+Accuracy [DNS not running, microphone volume readjusted]:
+
+    rainbow passage (330 words): 20 error bursts: 94% accuracy
+      [DNS was 7 errors, or 97.9% accuracy]
+
+    "erase" is poorly recognized even after trained
+
+    Vocabulary seems smaller
+
+    get lots of noise words if DNS running at the same time because of
+      microphone volume conflict
+
+
+Correction:
+
+  * WSR-friendly windows (subset of DNS full-text-control windows):
+    not too bad;  if dictate replacement text, need to do # OK afterwards
+
+  * everything else:
+    WSR completely clueless of recent dictation/text
+    Vocola 2 remembers last several phrases (emptying when a command occurs)
+      * "fix that" brings up correction panel for entire last phrase
+      * get only one try: once correct first time, "fix that" no longer available
+      * no way to correct a sub phrase
+        * appears can use "fix it" on whole phrase then use WSR
+          correction on phrase in fix it window
+        * this doesn't always seem to work
+      * no ability to use "select X" and the like on the recent phrases
+        * can write commands to alter text "X" where X is a recent series of
+          dictate words but not correct them
+      * Vocola does not see mouse clicks or typed keys so "fix that" and
+        spacing gets mixed up when you intermix typing and dictating
+
+
+
+
+Notes:
+
+  * <anything> gives unformatted text

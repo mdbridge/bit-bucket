@@ -1,0 +1,45 @@
+### 
+### 
+### 
+
+  # conditional if requires Python 2.5 or better
+EQ(first, second) := Eval(' $first+"" == $second+"" ? 1 : 0 ');
+
+
+IF(condition, then_part) := 
+    Repeat($condition, $then_part);
+IF3(condition, then_part, else_part) :=
+    Repeat($condition, $then_part) Repeat(Eval(1-$condition), $else_part);
+
+
+CASE3(value, target_1,case_1) :=
+    IF(EQ($value,$target_1), $case_1);
+CASE5(value, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_2), $case_2, 
+        CASE3($value, $target_1,$case_1)
+    );
+CASE7(value, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_3), $case_3, 
+        CASE5($value, $target_2,$case_2, $target_1,$case_1)
+    );
+CASE9(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1) :=
+    IF3(EQ($value,$target_4), $case_4, 
+        CASE7($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1)
+    );
+
+CASE4(value, target_1,case_1, default) :=
+    IF3(EQ($value,$target_1), $case_1, $default);
+
+CASE6(value, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_2), $case_2, 
+        CASE4($value, $target_1,$case_1, $default)
+    );
+CASE8(value, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_3), $case_3, 
+        CASE6($value, $target_2,$case_2, $target_1,$case_1, $default)
+    );
+CASE10(value, target_4,case_4, target_3,case_3, target_2,case_2, target_1,case_1, default) :=
+    IF3(EQ($value,$target_4), $case_4, 
+        CASE8($value, $target_3,$case_3, $target_2,$case_2, $target_1,$case_1, $default)
+    );
+

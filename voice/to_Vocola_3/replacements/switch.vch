@@ -1,0 +1,170 @@
+### 
+### Lists and functions for switching between applications/Windows.
+### 
+
+include "environment.vch";
+include "control.vch";
+
+
+## 
+## Procedures for switching windows/applications:
+## 
+
+include "AutoHotkey.vch";
+
+
+#
+# Attempt to switch to a given window; if fail, run $otherwise:
+#
+#SwitchTo2(name, otherwise) := AutoHotkeyForce1(switch, $name) 
+#SwitchTo2(name, otherwise) := Window.SwitchTo($name)
+#			      Repeat(Variable.Get(exit_code), $otherwise);
+SwitchTo2(name, otherwise) := ShellExecute('"' _AutoHotkeyPath() '"'
+                " " _AutoScript(bounce) " " _AutoQuote($name)) Wait(250);
+
+
+
+#
+# Switch to a given window or produce an error dialog box which fades
+# after a few seconds.
+#
+SwitchTo(name) := SwitchTo2($name,
+	                    AutoHotkeyAsync3(async_message,
+		                "SwitchTo", "$name: no such window found", 3)
+                            Future.Abort());
+
+#
+# Switch to window with name name if it exists, otherwise create it
+# via AppBringUp:
+#
+SwitchToApp(name, app)   := SwitchTo2($name, AppBringUp($name, $app));
+
+
+# 
+# Switch to window were at before last SwitchTo command:
+# 
+#OldWindow() := SwitchTo("ahk_id " Variable.Get(previous_window));
+OldWindow() := SwitchTo("foil emacs");
+
+
+
+
+## 
+## Designatable windows:
+## 
+
+<area> := (blue | black | purple | gray | brown | crimson | 
+           West | East | North | South );
+
+  # default is "startup xterm"
+#AreaTitle(color) := Variable.Get  ($color _area_title, "startup xterm");
+AreaTitle(color) := CASE6($color, blue,"startup xterm", black,"xterm whiskey",
+                          "startup xterm");
+
+  SetArea(color) := Variable.Set  ($color _area_title, "ahk_id " Window.ID());
+ResetArea(color) := Variable.Reset($color _area_title);
+
+   GoArea(color) := SwitchTo(AreaTitle($color));
+
+
+<simple_op> := ( repeat          = {up}{enter}
+               | repeat 2        = {up_2}{enter}
+               | repeat 3        = {up_3}{enter}
+               | paste           = {shift+Ins}
+               | dump            = {shift+Ins} OldWindow()
+               | dump repeat     = {up}{enter} OldWindow()
+                     # for use with Ruby's irb:
+               | load            = {ctrl+r} load {ctrl+e} {enter}
+                     # for use with browsers:
+               | reload          = {ctrl+r}
+	       | space           = {space}
+               );
+
+<aborting_op> := (      make          = make{enter}
+                 | dump make          = make{enter} OldWindow()
+                 |      make test     = "make test" {enter}
+                 |      make parallel = "make clean; make -j" {enter}
+                 |      hard repeat   = {up}{enter}
+                 | dump hard repeat   = {up}{enter} OldWindow()
+                 );
+
+
+
+## 
+## Distinguishers for application instances:
+## 
+
+<window_suffix> := (
+       Alpha
+     | Bravo
+     | Charlie
+     | Delta
+     | Echo
+     | Hotel
+     | India
+     | Juliet
+     | Lima
+     | Mike
+     | November
+     | Oscar
+     | Papa
+     | Romeo
+     | Sierra
+     | Victor
+     | Yankee
+     | Zulu
+     | foxtrot
+     | golf
+     | kilo
+     | tango
+     | uniform
+     | whiskey
+     | x-ray
+);
+
+
+<color> := ( red   = "work emacs"    | orange = "secondary emacs"
+	   | green = "green emacs"   | yellow = "yellow emacs"    
+	   | white = "PC emacs"
+	   | pink  = "foil emacs"
+	   );
+
+
+
+InternetExplorerPattern() :=
+	IfHome("R)Windows Internet Explorer$",
+	       "R)Internet Explorer configured for HP Labs$");
+
+<browser> := ( browser           = InternetExplorerPattern() ",iexplore.exe"
+             | Internet Explorer = InternetExplorerPattern() ",iexplore.exe"
+	       # below works only no Internet Explorer browsers already exist:
+             | no plug-ins       = InternetExplorerPattern()",iexplore.exe -extoff"
+             | Firefox           = "R)Mozilla Firefox$,firefox.exe"
+             );
+
+DefaultBrowser()         := "R)- Mozilla Firefox$,firefox.exe";
+
+BringUpBrowser (browser) := SwitchToApp(Split($browser, ',', 0),
+	       		    		Split($browser, ',', 1));
+
+
+
+
+## 
+## Mailing clipboard to someone; leaves point at end of subject line:
+## 
+
+DefaultMailContext() := IfHome("foil","work") " emacs";
+
+<context_mail> := ( work  mail="work emacs" | personal mail="foil emacs" 
+	          | local mail="PC emacs"
+	          |       mail=DefaultMailContext() );
+
+
+MailClipboard(mail_context, recipients) := 
+	SwitchTo($mail_context)
+        {esc}x message-mail{enter}
+	{esc}> {enter}{ctrl+y}{down}
+	{esc}< {ctrl+s}To:{enter}      {end} 
+	Replace($recipients, ",", ", ")
+	{esc}< {ctrl+s}Subject:{enter} {end};
