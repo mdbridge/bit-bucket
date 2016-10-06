@@ -1,0 +1,18 @@
+NATLINK=~/voice/NatLink/trunk/NatlinkSource
+NatLink:
+	ruby -E Windows-1252 extract_C_symbols.rb \
+	     ${NATLINK}/*.cpp \
+	     ${NATLINK}/*.h \
+	     > symbols.txt
+
+
+standard-library:
+	ruby -E binary new_extract_C_symbols.rb \
+	    ${CLIB} ${UNIX} ${PTHREADS} \
+	    > symbols.txt
+
+
+test:
+	ruby -E binary new_extract_C_symbols.rb \
+	    ${CLIB} \
+	    | sort >  ~/Tmp/symbols/standard
