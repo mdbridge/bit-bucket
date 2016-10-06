@@ -1,0 +1,67 @@
+!!!
+
+%html(lang="en-US")
+  %head 
+    %meta{charset: "UTF-8"}
+    %title #{kind} Accelerators
+    :css
+      body      { font-family: Helvetica, Arial, sans-serif; }
+      li        { list-style-type: none; padding-left: 0; margin-left: 0;}
+      a         { text-decoration: none; }
+      a:visited { color: black;}
+      h2        { margin-top: 2em; }
+      .sublist  { padding-left: 1.5em; } 
+      .second   { margin-left: 2em; }
+      .third    { margin-left: 2em; }
+
+  %body
+    %h1 #{kind} Accelerators
+
+    %nav
+      %ul
+        %li<
+          %a{href: "\#top"} Top level
+        - @subfolders.each do |name, folder|
+          %li<
+            %a{href: "\##{name}"}= name
+            - if not folder.subfolders.empty? 
+              %ul.sublist
+                - folder.subfolders.each do |name2, folder2|
+                  %li<
+                    %a{href: "\#second_#{name2}"}= name2
+                    - if not folder2.subfolders.empty? 
+                      %ul.sublist
+                        - folder2.subfolders.each do |name3, folder3|
+                          %li<
+                            %a{href: "\#third_#{name3}"}= name3
+
+
+    %h2#top Top level
+    %dl
+      - @links.each do |text, url|
+        %dt<
+          %a{href: url}= text
+
+    - @subfolders.each do |name, folder|
+      .first
+        %h2{id: name}= name
+        %dl
+          - folder.links.each do |text, url|
+            %dt<
+              %a{href: url}= text
+  
+        - folder.subfolders.each do |name2, folder2|
+          .second
+            %h3{id: "second_#{name2}"}= name2
+            %dl
+              - folder2.links.each do |text, url|
+                %dt<
+                  %a{href: url}= text
+              
+              - folder2.subfolders.each do |name3, folder3|
+                .third
+                  %h4{id: "third_#{name3}"}= name3
+                  %dl
+                    - folder3.links.each do |text, url|
+                      %dt<
+                        %a{href: url}= text
