@@ -1,0 +1,59 @@
+###
+### Configuration file for GNU readline
+###
+###   Attempt to make many short editing commands work (e.g., using word
+###   boundaries)
+###
+
+##
+## Moving and killing by standard words (not to start of word):
+##
+
+Control-u: universal-argument
+
+  # by default only {ctrl+@} is bound to set-mark:
+Control-space: set-mark
+
+  # need this to allow rebinding of {ctrl+w}:
+set bind-tty-special-chars off
+
+Control-w: kill-region
+"\ew": copy-region-as-kill
+
+
+##
+## Moving and killing by word start (unsuccessful):
+##
+
+  # this binding doesn't work because control C cannot be a prefix
+  # character :-(:
+#"\C-cs": vi-next-word
+
+
+##
+## Single character leap:
+##
+
+"\e[C": forward-char
+"\e[D": backward-char
+
+  # exit is different from tcsh (always exits after 1 char) :-(
+"\C-xr": character-search-backward
+
+  # OLD BUG? this fails to load correctly *first* time... (vs. TUI &
+  # next-keymap)
+"\C-xs": character-search
+
+  # using this to exit search (used to use esc for tcsh):
+"\C-r":  redraw-current-line
+
+
+##
+## Playing with these settings:
+##
+## ^x^r reloads this file (does not clear settings first, however)
+##
+
+  # to list all available key findings:
+#Control-a: dump-functions
+#Control-b: dump-variables

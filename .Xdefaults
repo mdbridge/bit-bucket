@@ -1,0 +1,222 @@
+!! 
+!! Inherited from original SRC .XDefaults file:
+!! 
+
+!******************** DEC Windows Clients
+!*background: gray95
+*foreground: black
+*Highlight: black
+*pointerColor: black
+menu*MenuFont: 8x13
+
+
+
+!! 
+!! Stuff I have changed:
+!! 
+
+!======== Emacs:
+
+! defaults for all Emacs clients:
+
+!Emacs.menuBar: off
+!  this cannot be an xft font:
+Emacs*menubar.font:             -adobe-helvetica-bold-r-normal--17-*-*-*-*-*-*-*
+Emacs*menubar.background:       Gold
+Emacs*menubar.horizontalSpacing:8
+Emacs*menubar.verticalSpacing:  0
+Emacs*menubar.shadowThickness:  3
+
+!  this cannot be an xft font:
+Emacs*popup*font:               -adobe-helvetica-bold-r-normal--14-*-*-*-*-*-*-*
+Emacs*popup*background:         Gold
+Emacs*popup*shadowThickness:    1
+Emacs*popup*borderWidth:        1
+
+Emacs*font:     9x15
+Emacs*geometry: 90x40
+Emacs*toolBar:  0
+
+
+! deltas for specific clients (by executable name):
+
+emacs23.font:   -*-DejaVu Sans Mono-*-*-*--14-*-*-*-m-*-*-*
+emacs24.font:   -*-DejaVu Sans Mono-*-*-*--14-*-*-*-m-*-*-*
+emacs24_3.font: -*-DejaVu Sans Mono-*-*-*--14-*-*-*-m-*-*-*
+emacs24_4.font: -*-DejaVu Sans Mono-*-*-*--14-*-*-*-m-*-*-*
+emacs24_5.font: -*-DejaVu Sans Mono-*-*-*--14-*-*-*-m-*-*-*
+
+
+
+!======== Xterm
+xterm*jumpScroll: on
+xterm*saveLines: 2000
+xterm.font: 8x13
+xterm*borderColor: skyblue
+xterm*pointerColor: black
+  ! stop annoying blinking of ls output:
+xterm*showBlinkAsBold: true
+xterm*showMissingGlyphs: true
+
+
+! 
+! Prior = page up, Next = page down
+!   standard xterms require shift to page up/down, moves only half a page
+!   at a time
+! 
+! Bind backspace to 0x08 to avoid need for stty dec
+!
+! Make xterm select also does a copy to CLIPBOARD
+!   make sure "reflection selection bound to clipboard" is set to PRIMARY
+!
+! Handle Dragon NaturallySpeaking corrections for editors that
+! understand ^@ (set-mark=0x00) and ^w (kill-to-mark=0x17).
+!   side effect: sets mark when a Dragon selection/correction is done
+!
+! Ignore F5, {ctrl+shift+a} to allow clearing utterance buffer.
+!
+! Hack translation of Emacs leap so it mostly works with tcsh; more
+!   precisely, count=1 and after only with 1 character targets work.
+!   This prevents using Emacs in an xterm window, however.
+!
+XTerm.VT100.Translations: #override \n\
+	<KeyPress>Prior:  scroll-back(1,page) \n\
+	<KeyPress>Next:   scroll-forw(1,page) \n\
+	\
+	\
+	<Key>BackSpace:   string(0x08) \n\
+	\
+	\
+	~Ctrl ~Meta <Btn2Up>: \
+                         insert-selection(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	<BtnUp>:         select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	Shift<KeyPress>Select: \
+			 select-cursor-start() \
+			 select-cursor-end(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	\
+	\
+	Shift<Key>Left:   string(0x00) string(0x1b) string("[D") \
+			  keymap(selection) \n\
+	Shift<Key>Right:  string(0x00) string(0x1b) string("[C") \
+			  keymap(selection) \n\
+	\
+	\
+        Shift Ctrl<Key>a: ignore() \n\
+        <Key>F5: ignore() \n\
+	\
+	\
+	Ctrl Shift<Key>s: string(0x1b) string("[C") string(0x18) string(s) \n\
+	Ctrl Shift<Key>r: string(0x1b) string("[D") string(0x18) string(r) \n\
+	Ctrl <Key>_:	  keymap(search) \n
+
+XTerm.VT100.searchKeymap.translations: \
+        <Key>a:           ignore()                               keymap(None)\n\
+        <Key>l:           string(0x12)                           keymap(None)\n\
+        <Key>r:           string(0x12) string(0x1b) string("[C") keymap(None)\n
+
+XTerm.VT100.selectionKeymap.translations: \
+	Shift<Key>Left:   string(0x1b) string("[D") \n\
+	Shift<Key>Right:  string(0x1b) string("[C") \n\
+	\
+	~Shift<Key>Right: string(0x1b) string("[C") keymap(None) \n\
+	~Shift<Key>Left:  string(0x1b) string("[D") keymap(None) \n\
+	\
+	Ctrl<Key>c:       ignore() \n\
+	<Key>BackSpace:   string(0x17) keymap(None) \n\
+	\
+	<Key>Shift_L:	  ignore() \n\
+	<Key>Shift_R:	  ignore() \n\
+	<Key>Control_L:	  ignore() \n\
+	<Key>Control_R:	  ignore() \n\
+	<Key>:		  insert() keymap(None) \n
+
+
+
+
+
+! 
+! Keymap for making what keys Dragon NaturallySpeaking sends visible.
+! 
+! Use by "xterm -class visible"
+! 
+visible.VT100.Translations: #override \n\
+        <Key>BackSpace:  string(~)\n\
+        <Key>space:      string(_)\n\
+        \
+	<KeyPress>Shift_L:	 string(S) \n\
+	<KeyRelease>Shift_L:	 string(s) \n\
+	\
+        None<Key>Left:   string("`") \n\
+        None<Key>Right:  string("'") \n\
+        Shift<Key>Left:  string(<) \n\
+        Shift<Key>Right: string(>) \n\
+        \
+        Ctrl<Key>c:      string(^C) \n
+
+
+! 
+! Keymap to handle Dragon NaturallySpeaking corrections for editors
+! that understand ^@ (set-mark=0x00) and ^w (kill-to-mark=0x17)
+!
+! Side effect: sets mark when a Dragon selection/correction is done
+!
+correction.VT100.Translations: #override \n\
+	<Key>BackSpace:   string(0x08)\n\
+	\
+	Shift<Key>Left:   string(0x00) string(0x1b) string("[D") \
+			  keymap(selection) \n\
+	Shift<Key>Right:  string(0x00) string(0x1b) string("[C") \
+			  keymap(selection) \n
+
+correction.VT100.selectionKeymap.translations: \
+	Shift<Key>Left:   string(0x1b) string("[D") \n\
+	Shift<Key>Right:  string(0x1b) string("[C") \n\
+	\
+	~Shift<Key>Right: string(0x1b) string("[C") keymap(None) \n\
+	~Shift<Key>Left:  string(0x1b) string("[D") keymap(None) \n\
+	\
+	Ctrl<Key>c:       ignore() \n\
+	<Key>BackSpace:   string(0x17) keymap(None) \n\
+	\
+	<Key>Shift_L:	  ignore() \n\
+	<Key>Shift_R:	  ignore() \n\
+	<Key>Control_L:	  ignore() \n\
+	<Key>Control_R:	  ignore() \n\
+	<Key>:		  insert() keymap(None) \n
+
+
+! 
+! Alternative idea: use many states to remember size and direction of
+! selection; this will work with any program
+! 
+
+
+! make sure "reflection selection bound to clipboard" is set to PRIMARY
+
+paste.VT100.Translations: #override \n\
+	<Key>BackSpace:   string(0x08)\n\
+	\
+	<KeyPress> Prior: scroll-back(1,page) \n\
+	<KeyPress> Next:  scroll-forw(1,page) \n\
+	\
+	Shift<Key>Left:   string(0x1b) string("[D") \n\
+	Shift<Key>Right:  string(0x1b) string("[C") \n\
+	\
+	\
+	\
+	<BtnUp>:         select-end(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	Shift<KeyPress>Select: \
+			 select-cursor-start() \
+			 select-cursor-end(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	\
+	~Ctrl ~Meta <Btn2Up>: \
+                         insert-selection(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	Shift<KeyPress>Insert: \
+			 insert-selection(PRIMARY, CLIPBOARD, CUT_BUFFER0) \n\
+	Ctrl<KeyPress>Insert: \
+			 insert-selection(CLIPBOARD, CUT_BUFFER0) \n\
+	\
+	Shift<Key>s: select-cursor-start() select-cursor-end(CLIPBOARD) \n\
+	Shift<Key>p: insert-selection(PRIMARY) \n\
+	Shift<Key>c: insert-selection(CLIPBOARD) \n\
+	Shift<Key>b: insert-selection(CUT_BUFFER0) \n

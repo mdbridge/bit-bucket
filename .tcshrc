@@ -1,0 +1,32 @@
+#
+# This is my .tcshrc file; it first sources .cshrc then does some tcsh
+# specific commands.
+#
+
+source ~/.cshrc
+
+
+# bind delete key to delete next character for compatibility with Windows:
+#  (this messes up Cygwin's backspacing; I remove the bindkey line in the 
+#   Makefile for bootstrap)
+bindkey "" delete-char
+
+# need to find shift-left separately on some versions of tcsh:
+#  (switched to rebinding shift-left and shift-right in xterm)
+# bindkey "^[[1;2D" backward-char
+
+
+  # get emacs-style word movement:
+set wordchars='$%'
+
+
+  # bindings for leaping (see .Xdefaults):
+  # note: {, ^ don't work due to tcsh bug with globbing
+bindkey ^Xs i-search-fwd
+bindkey ^Xr i-search-back
+bindkey ^r  tty-flush-output   # use this to exit search
+
+
+  # in theory, in future versions of tcsh, this will highlight the
+  # region between the point and mark:
+set highlight=on

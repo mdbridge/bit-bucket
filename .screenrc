@@ -1,0 +1,26 @@
+# 
+# Initialization file for screen command
+# 
+
+vbell off
+
+startup_message off              # get rid of the annoying splash screen
+
+defscrollback 5000
+
+
+#
+# this makes ctrl+] screen's command key and doesn't break anything
+# important in emacs (C-] runs the command abort-recursive-edit, which i
+# never need)
+#
+escape ^]]
+
+
+
+#caption always "%-w%{= BW}%50>%n %t%{-}%+w%<"
+
+#caption always "%-w%{= BW}%50>%n %t%{-}%+w%<"
+
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %Y-%m-%d %{W}%c %{g]'
