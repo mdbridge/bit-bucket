@@ -1,0 +1,255 @@
+Steps to follow to set up my browsers:
+
+
+
+>>>>> Firefox:
+
+ * Download Firefox 47+ and install
+   ?* custom install: use maintenance service, no icon on desktop
+
+  * menu widget (three horizontal lines on top right)->customize
+     show/hide toolbars->menu bar
+
+ * Set options (tools->options):
+
+   general->homepage: https://www.google.com/
+            always ask me where to save files
+   search->default search engine: Google
+   	   !provide search suggestions
+   privacy->manage your do not track settings->use do not track
+   advanced->data choices->!enable crash reporter
+
+ * Download and install the following extensions:
+
+   * mouseless browsing
+     * see Firefox.vcl for configuration instructions
+     * [work only for JIRA] set !general->show IDs before images...
+   [optionally also]
+   * VimFx 0.17.2
+     * configure options per Firefox.vcl:
+       hints chars: 012345678 9
+       blacklist: *
+
+   #* new tab homepage 0.5.2
+   #* new tab homepage focus 0.4.3.1
+      did not work (change focus to new tab)
+   * my homepage
+   * cookie exporter 1.5.1 [to export cookies for wget]
+ [rest home only]
+   * Ghostery 5.4.10
+     * skip Wizard
+     * turn on block all categories except widgets; auto update
+     * [default] to turn off alert bubble,
+         Tools> Ghostery> Manage Ghostery Options in Firefox, then click
+           on the Advanced Tab and uncheck the box for "Show Alert
+	   Bubble", you won't get the annoying display when visiting pages.
+   * NoScript 2.6.5.8
+    * [default] options->notifications->place message at the bottom
+   * AdBlock plus 2.2.3 add-in
+     * [default] easy list subscription, some nonintrusive advertising
+   * Adobe shockwave player 12.0.0.112
+
+ * Ideally, use "pull bookmarks" to restore bookmarks to last backup
+    * may need to clean out links in update folder
+
+ * view->toolbars->bookmarks toolbar
+
+ * Go to the following URL to opt out of tracking [repeat when lose cookies]:
+
+     http://www.networkadvertising.org/managing/opt_out.asp
+
+   May take repeated tries over time to get all of them.
+
+ * Install HPE root certificate:
+
+  [was: Go to the following URL to install the HP root certificate:
+
+     https://hpedia.osp.hpe.com/wiki/Get_a_digital_badge
+       ->
+       https://digitalbadge.corp.hp.com/hp/CAs/HPE_PrivateRootCA.base64.zip
+       ...
+  ]
+
+    Current HPE root certificates saved to: 
+      work:~/.ssh/HPE_PrivateRootCA.cer
+      work:~/.ssh/HP_Ent_Private_SSL_CA.cer
+  
+    Firefox: tools->options->advanced->certificates->view certificates
+             ->authorities->import
+             trust for all purposes (three checkmarks)
+
+ * [home] use Firefox persona "clean brushed steel" by vanityFlair
+   http://www.getpersonas.com/en-US/persona/219524
+   [needs noscript permission]
+
+ * [work] Install my digital badge class B:
+    * tools->options->advanced->certificates->view certificates
+      ->your certificates->import
+      from: work:~/.ssh/digital badge class B expires 2017.pfx
+
+ ?* install latest version of flash, 11.6, *but*
+    * seems to work much better to let FF add it when need media
+      * adobe download site wouldn't show download button on firefox
+    * notify me when updates are available
+    * this will break SendKeys, SetMousePosition and the like
+    * add the following line:
+ProtectedMode=0
+      to the following files:
+        c:/Windows/SysWOW64/Macromed/Flash/mms.cfg
+    * [home] be EXTREMELY careful to change adminstrator version not normal one
+      (Vista UAC issue)
+      * open an administrator command prompt then:
+cd C:\Windows\SysWOW64\Macromed\Flash
+copy mms.cfg + con
+ProtectedMode=0
+^Z
+type mms.cfg
+    * verify file has ProtectedMode line from a non-administrator command prompt
+    * then exit browser and restart DNS; SendKeys should be working again
+  * [home] Go to
+       http://www.macromedia.com/support/documentation/en/flashplayer/help/settings_manager07.html 
+       and set flash privacy policy
+         * global storage settings: 0 KB, no 3rd party storage, never ask again
+
+  * [experiment at work]
+    installed the "print pages to PDF" 0.1.9.3 plug-in
+
+  * [experiment at home]
+    https://www.eff.org/HTTPS-EVERYWHERE
+
+  * [experiment at home]  Try just url below; looks good on newer FF
+    Open a new tab, enter "about:config" into the location bar and hit
+    the "Enter" key. If you get a warning page, click "I'll be careful,
+    I promise!" This will bring you to the Firefox configuration
+    settings. In the search bar up top, type ".dhe_" and hit the "Enter"
+    key. This should result in two settings being displayed:
+    "security.ssl3.dhe_rsa_aes_128_sha" and
+    "security.ssl3.dhe_rsa_aes_256_sha". Double-click both of them to
+    change the value from "true" to "false".
+    https://www.howsmyssl.com/ allows checking those cipthers are gone
+
+
+
+>>>>> Internet Explorer:
+
+  * If asked, turn off Phishing filter.
+
+  * Right-click on tabs line empty part & Enable menu toolbar
+    disable McAfee and/or Bing toolbars if present
+
+  * Set homepage to https://encrypted.google.com/
+
+  * Configure options:
+
+    * Internet Explorer->tools->options:
+      ->general->tabs: open homepage for new tabs
+      ?->programs->manage add-ons: disable Microsoft live search toolbar,
+        norton toolbar
+
+  * Go to the following URL to opt out of tracking [repeat when lose cookies]:
+
+    http://www.networkadvertising.org/managing/opt_out.asp
+
+ * [home] Install HPE root certificate:
+
+    [was: Go to the following URL to install the HP root certificate:
+  
+       http://intranet.hp.com/HPIT/GetIT/DigitalBadge/Pages/page.aspx?q=InstallCACertificate_IE
+    ]
+
+    Current HPE root certificates saved to: 
+      work:~/.ssh/HPE_PrivateRootCA.cer
+      work:~/.ssh/HP_Ent_Private_SSL_CA.cer
+  
+    IE: Internet options->content->certificates->trusted root certificates
+        ->import     
+
+
+  * Ideally, restore old bookmarks by:
+    * delete initial bookmarks: "destroy all favorites"
+    * "import bookmarks"
+      * reorder bookmark folders to match bookmark_folders.vch
+      * may need to restart Internet Explorer to have favorites bar show up
+        * may need to actually drag bookmarks into Favorites Bar
+          subdirectory via Windows Explorer for the directory gotten by
+          "destroy all favorites"
+      * actually looks like it suffices to go to 1st favorite and use
+        favorites->add to favorite bar  <<<>>>
+
+  * [work, not using FMA] Install my digital badge class B:
+    * tools->Internet options->content->certificates->import
+      from: work:~/.ssh/digital badge class B expires 2017.pfx
+
+
+
+>>>>> Chrome:
+
+  * Download Chrome 51+ and install
+
+  * menu icon->settings:
+    * on startup->open a specific page
+      https://www.google.com
+    * appearance->
+        show home button (new tab: https://www.google.com)
+        always show the bookmarks bar
+    * search: Google
+    * advanced->
+      * privacy
+        !use a prediction service to help complete searches
+        send do not track
+      * downloads: ask where to save each file
+
+ * Download and install the following extensions:
+
+   * click by voice
+   * cVim
+     * green V icon->settings:
+         add to cVimrc from ~/admin/cvimrc
+       then save
+   * HTTPS everywhere
+
+ [rest home only]
+
+AdBlock plus
+Disconnect
+
+? noscript
+? Exporting cookies for wget
+? new tab homepage
+? ghostery for chrome?
+Freesr interferes with chrome tabs
+
+  * must manually put a bookmark in Upload for bookmark that to work
+
+  * I believe chrome shares proxy and certificates with IE
+
+
+
+
+>>>>> Microsoft Edge:
+
+<<<>>>
+
+imported favorites from Internet Explorer, turned on the favorites bar
+
+  * menu icon (... in upper right)->settings
+    ->view advanced settings [need to scroll down]
+      show the home button
+      send do not track requests
+
+
+
+
+
+===============
+
+default Windows proxy (PC COE) is: http://autocache.hp.com/
+
+use system proxy settings
+
+setenv HTTP_PROXY web-proxy.labs.hpecorp.net:8080
+setenv FTP_PROXY  web-proxy.labs.hpecorp.net:8080
+
+at home, I am having Firefox remember most low security passwords
+
+

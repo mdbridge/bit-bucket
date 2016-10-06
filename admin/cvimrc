@@ -1,0 +1,51 @@
+set numerichints
+
+let mapleader = "@"
+
+unmapAll
+
+map <Leader>f createHint
+map <Leader>F createTabbedHint
+map <Leader>T createActiveTabbedHint
+map <Leader>W createHintWindow
+map <Leader>q createHoverHint
+
+map <Leader>h scrollLeft
+map <Leader>l scrollRight
+map <Leader>0 scrollToLeft
+map <Leader>$ scrollToRight
+map <Leader># resetScrollFocus
+map <Leader>gi goToInput
+map <Leader>gI goToLastInput
+
+map <Leader>A openLastHint
+map <Leader>Q createUnhoverHint
+map <Leader>mf createMultiHint
+map <Leader>I fullImageHint
+
+map <Leader>mr multiReverseImage
+map <Leader>my multiYankUrl
+map <Leader>gy yankUrl
+map <Leader>gr reverseImage
+
+map <Leader>]] nextMatchPattern
+map <Leader>[[ previousMatchPattern
+
+my_focus(link) -> {{
+    link.focus();
+}}
+map <Leader>G createScriptHint(my_focus)
+
+"unmapped 	createScriptHint(<FUNCTION_NAME>)
+"unmapped 	createEditHint
+
+
+" for blur hack:
+map <C-b> openCommandBar
+imap <C-b> nothing
+
+
+" when pages are loaded, automatically create and display link hints
+"site '*://*/*' {
+"  call createHint
+"}

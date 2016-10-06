@@ -1,0 +1,135 @@
+Steps to set up my voice infrastructure:
+
+
+0. If you previously had DNS already installed (any version):
+   * exit DNS, FreeSR
+   * uninstall NatLink from control panel
+     * optional: completely remove C:\NatLink
+       * see Windows permissions.txt in this directory
+       * will require reboot
+   * uninstall wxPython, Pythonwin, Python from control panel
+   * uninstall DNS from the control panel
+   * run appropriate DNS remover utility
+     [see ~/voice/DNS removal]
+
+
+1. Install DNS  [may require previous version's disk (not for my DPI 14)]
+
+1.5. Create a new profile
+   * set options:
+     * do not send usage data
+     * overall options:
+       corrections:
+	 !select commands bring up correction menu
+         select commands search backwards
+	 !auto add commands to vocabulary
+	 !show smart format rules
+       commands:
+         turn off web search, desktop search, e-mail and calendar,
+	   delete, copy commands
+	 more commands->disable: Facebook, twitter, WordPerfect commands
+       view:
+         anchor to bottom
+	 results box anchor, 10 seconds before going away
+	 show preliminary results
+       hotkeys:
+?         #remove sleep, menu  (MULTIPLY, DIVIDE)
+       misc:
+         mike asleep on open
+	 !auto save profile changes
+	 auto sleep only after maximum time
+	 !dictation box for unsupported applications
+       data:
+         never save audio with documents
+?     #* administration options:
+?     #  schedule: 
+?     #    disable data collection
+     * formatting options:
+       insert two spaces after period
+   * scan against e-mail but not documents
+?   * train against text
+?     audio->read text...
+
+2. Install NatLink/Vocola:
+   * install Python, Pythonwin, wxPython; currently using 2.7
+   * install combined installer
+   * create ~/NatLink, ~/NatLink/Vocola on PC
+   * enable NatLink & Vocola
+
+3. Load commands:
+   * ~/voice/my_commands/extensions/* -> C:\NatLink\NatLink\Vocola\extensions\
+     * then "load extensions"
+   * ~/voice/my_commands/to_Vocola/* -> PC: ~/NatLink/Vocola/
+     * "load all commands"
+   * ~/voice/my_commands/AutoHotkey/* -> PC: ~/NatLink/AutoHotkey  [create]
+     "import commands" should work if created
+   * from ~/voice/my_commands/NatLink, copy to "MacroSystem":
+     _alias.py
+     _logging.py
+   * no Advanced Scripting commands being used at this time
+   * update/create environment-<machine>.vch macros if needed
+
+4. Local Vocola improvements:
+    * prepare personal version of Vocola:
+      [foil]
+        cd ~/voice/Vocola_development/Vocola_2
+        git checkout Mark
+        make clean; make
+    * install it:
+      "import Vocola"
+      "install Vocola"
+    * restart DNS
+
+5. Load vocabulary:
+   * if scanned email:
+     use "edit words", custom words only, to prune bad words from
+     e-mail
+   * import my vocabulary:
+     * "load normal vocabulary"
+     * disable RSIGuard, Freesr
+     * "edit words", "load compiled words"
+     * enable RSIGuard
+   * train via corpus:
+     * make corpus in my commands  [prefer work corpus if available]
+     * copy to my documents/corpus
+     * help->improve my accuracy->learn from specific documents
+       * use folder corpus only
+       * uncheck all (add no words)
+       [2/2/2015 work: had to remove top_foil.txt because it was crashing dragon]
+     * remove corpus files from PC
+   * save user profile"
+
+
+6. load VBA macros into:
+   * Word 2013
+    * add developer tab to the ribbon:
+      * file->options->customize ribbon:
+        select the "main tabs" entry of the customize the ribbon drop
+	  box on the right top;
+        check the developer box below it on the right
+     * developer->Visual Basic
+     * click on normal then file->import: 
+       ~/voice/my_commands/word-macros/ ("dialogue word macros")
+           leap.bas, line_numbers.bas, emacs_words.bas
+     * (main Word)File->options->customize ribbon->keyboard shortcuts:customize
+       * pick category "Macros" 
+       * assign keys to macros (categories near bottom) as per bas file
+         comments  (ctrl+shift+{b,e,g,l,r,s}
+     * (Visual Basic pane)File->save normal  [may have to select Normal first]
+
+   * Excel 2013
+    * add developer tab to the ribbon:
+      * file->options->customize ribbon:
+        select the "main tabs" entry of the customize the ribbon drop
+	  box on the right top;
+        check the developer box below it on the right
+     * File->options->advanced->!allow editing directly in cells
+
+
+-----
+
+not listed above (see bootstrap instructions):
+
+installing AutoHotkey
+installing rsync/cygwin/ssh
+setting up Firefox

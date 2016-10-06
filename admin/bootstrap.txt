@@ -1,0 +1,223 @@
+Instructions for using bootstrap as of June 2016:
+
+[Next time use, consider putting AutoHotkey location in
+environment*.vch, moving to now standard location]
+
+[make sure have all needed hot fixes in place]
+
+
+In preparation:
+
+  * [home] have on hand external disk for obtaining SSH keys to foil
+
+  * download software as needed into C:\PC_setup according to 
+    ~/backups/downloads_needed.html
+
+  * adjust ~/voice/my_commands/commands/environment.vch as needed to  
+    reflect information known about new environment.
+
+  * update ~/backups/Vocola-patches.bat if needed; it may need expected
+    home directory location.
+
+  * Prepare bootstrap:
+    [foil]
+      cd ~/voice/Vocola_development/Vocola_2
+      git checkout Mark
+      make clean; make
+    [preparation computer]
+      cd ~/backups
+      make Vocola-prepare
+      make bootstrap-prepare
+      make bootstrap-print
+      make bootstrap
+      * make sure bootstrap-prepare doesn't complain about missing DPI
+        14 setup.exe or Vocola
+    * copy ~/backups/bootstrap to USB stick
+    * remove USB stick afterwards
+
+
+
+On target computer:
+
+  * insert USB stick
+    * copy bootstrap/* to PC ~/
+      * make sure get .emacs and.ssh by first doing:
+        * [Explorer]tools->folder options->view->show hidden files
+        * [Windows 8 Explorer]view->hidden items
+    * eject afterwards
+
+
+SmartNav?:
+
+  * 
+
+
+Basic voice control:
+
+  * install DPI 14 from PC ~/setup/DPI 14 setup.exe
+    * had to kill agent.exe (FlexConnect agent) when asked
+      * Dragon offers to do it, but will fail so kill first
+    * takes a *long* time; 30+ minutes?
+    * should ask you to download and apply hot fix 2 or 3
+    * have saved copies of hot fixes 2-3
+
+  * start DNS, create a profile
+    * set options per step 1 of voice-setup.txt
+    * do not scan documents or email
+    * export profile to PC ~/Dragon user backups
+
+  * install Python, Pythonwin, wxPython from PC ~/setup
+  * ditto for NatLink combined installer
+
+  * run PC ~/setup/Vocola-patches.bat
+
+  * enable NatLink and Vocola via NatLink GUI configuration tool
+
+  * restart DNS
+
+  * install AutoHotkey from PC ~/setup
+      * Custom install: 32-bit Unicode for now
+        * LOCATE IN: C:\Program Files (x86)\AutoHotkey   <<<>>>
+          * now attempts to put in ~pf no matter which version requested
+	    * breaks my Window.SwitchTo, AutoHotkey.vch
+            * Note: ProgramFiles always ~pf32 in NatLink Python
+
+
+==========
+Advanced voice (loading vocabulary; basically step 5 of voice-set up.txt):
+
+  * adjust environment.vch if needed on UNIX
+
+?  * train
+?    audio->read text...
+
+  * "load setup vocabulary"
+
+  * "edit words", "load compiled words"
+    [RSIGuard is not off (not installed yet) at this point]
+
+  * train via PC ~/corpus, remove it
+     * help->improve my accuracy->learn from specific documents
+       * use folder corpus only
+       * uncheck all (add no words)
+
+  * "save user profile", backup profile to PC ~/Dragon user backups
+
+  * installing VBA macros (step 6 of voice_setup.txt) is not included in
+    the bootstrap functionality
+
+
+Install local Emacs:
+
+  * install local PC Emacs:
+    * copy PC:~\setup\Emacs to C:\Program Files (x86)\
+      (not the shortcut labeled emacs)
+    * execute addpm.exe from ~pf32/Emacs/bin
+    * execute install_emacs.bat from PC:~/setup *as administrator*
+      [above relies on HOME environment variable being set by Vocola_patches.bat]
+
+
+Connection software:
+
+  * [work] ??
+
+  * run PC ~/setup/Cygwin-64bit-setup.exe   
+    [this takes long enough that you may want to do other steps in parallel]
+    * defaults except:
+      * use Internet Explorer proxy settings
+      * local package directory: ~/setup/Cygwin64   [already exists; browse]
+      * X11, editors, shells, net: install
+
+  * install VeraCrypt from PC ~/setup
+    * no icon
+    * [home] use drive R: to mount external drive when do so
+
+  * get appropriate ssh keys:
+      @HP:
+        from an Explorer window: "map W drive",
+        copy work:~/.ssh/id_rsa[_putty] to PC:~/.ssh/
+      @HOME:
+        mount external disk via True Crypt, then
+          copy external:keys/id_rsa[_putty] to PC:~/.ssh/
+
+  * "open Cygwin [terminal]"
+    * Set up home directory location based on whoami; move old /home
+      directory aside if needed:
+        cd /home; ln -s /cygdrive/c/Users/LillibridgeM/Documents LillibridgeM
+         -or-
+        cd /home; ln -s /cygdrive/c/Users/Mark/Documents Mark
+    * chmod og= ~/.ssh ~/.ssh/*
+    * add to /etc/fstab by using PC emacs to edit c:/cygwin64/etc/fstab
+      comment out the last line:
+none /cygdrive cygdrive binary,posix=0,user 0 0
+      and append the following line:
+none /cygdrive cygdrive binary,posix=0,user,noacl 0 0
+
+  * install putty from PC ~/setup
+    * want desktop icon
+    * [if not using follow me settings]:
+      start putty, change settings:
+        keyboard: backspace sends ^H
+        window: 80x30
+        appearance: font: Consolas, 10 point
+                    clearType
+          (was courier 10 point, default)
+        SSH->X11: enable X11 forwarding
+      save session settings as password
+        SSH->Auth->browse: PC: ~/.ssh/id_rsa_putty
+      save session settings as no-password
+    * edit shortcut on desktop to
+      [home] putty foil with shortcut:
+        "C:\Program Files (x86)\PuTTY\putty.exe" -load no-password -l mdl 192.168.1.2
+      [work] putty ts-rhel6 with shortcut:
+        "C:\Program Files (x86)\PuTTY\putty.exe" -load no-password -l mdl ts-rhel6.labs.hpecorp.net
+
+
+Connecting to foil:
+
+  * "local/remote foil putty"; "launch X" or "invoke login"; "invoke startup"
+    * may need to unblock xwin first time run
+
+
+Connecting to HP:
+
+  * [home] Install VPN software from PC ~/setup
+    * install pulse (5.1R4)
+      * uses OATH token
+    * not sure still need:
+      * install ActivClient
+        * reboot required
+      * install RA2HP
+        * reboot required
+      * insert Activclient USB key
+      * "connect to HP", "finish connecting"
+
+  * [fallback] Connect to the I drive via W:\:
+    [work/FMS] "folder samba"
+    otherwise try: "map W drive" from an Explorer window
+    fallback: manually map W-drive (\\spica.labs.hpecorp.net\mdl)
+
+
+Local utilities:
+
+  * install Firefox
+    * installer in PC ~/setup; see instructions in browsers-setup.txt
+    * don't import from Internet Explorer
+
+  * install Freesr
+    * from PC:~/setup
+      [new version may be free] <<<>>>
+    * "load setup Free SR"
+      fallback: copy PC:~/setup/voice/Mark.lang to 
+                     PC:~\Freesr\Voice Commands\Languages\User Defined
+    * settings->speech->enable microphone on startup
+                      ->set voice command language
+                          to Mark.Lang
+              ->program->run this program when the PC starts up
+                         *Don't* show side voice window
+
+  * [without follow me settings] right-click on task bar empty part->properties:
+      [windows 7&8] taskbar->taskbar buttons: never combine
+                    notification area->always show all icons
+  * unlock taskbar (from RC), increase taskbar size to two rows, then
+    relock the taskbar

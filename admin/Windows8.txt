@@ -1,0 +1,30 @@
+Notes from my brief experiment with a Windows 8 box:
+
+* Has much better focus indicator for Windows
+
+* Explorer Windows now has a ribbon; e.g.,
+  [Windows 8 Explorer]view->hidden items
+
+* WordPad also has a ribbon
+
+* win key by self => start window
+* win+f => start window, find files (can switch to apps or settings)
+
+* ExpanDrive 2 does not support Windows 8; need version 3 for that
+
+* with start window, can just start typing to search
+
+
+
+DNS 12 on Windows 8:
+
+* Vocola commands do work on start window
+
+* "start window", "open Control Panel"
+
+* no select and say of Windows 8 apps; ditto "click X"
+
+* show number plus doesn't work on start window
+
+* "scratch that" or built-in backspacing commands are very slow on start
+  window; dictation speed is reasonable, however.
