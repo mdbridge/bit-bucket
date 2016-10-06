@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.nuance.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="SendKeys variant test" group="" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	SendKeys "SendKeys variant test (SendKeys):{enter}"
+	For i = 1 To 5
+		For j = 1 To 10
+	       SendKeys(". ")
+	       SendKeys(", ")
+		Next
+		SendKeys "!{enter}"
+	Next
+	SendKeys "{space}{enter}"
+End Sub
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+	</Lists>
+
+</MyCommands>

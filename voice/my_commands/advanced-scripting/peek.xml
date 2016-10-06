@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="windows-1252"?>
+
+<!DOCTYPE MyCommands SYSTEM "http://www.scansoft.com/NaturallySpeaking/Support/MyCommands/MyCmds11.dtd">
+
+<MyCommands version="2.0" language="0x409">
+
+	<Commands type="global">
+
+		<Command name="peek [dirleftright] [0to99]" group="peek" enabled="true" states="">
+			<description></description>
+			<contents type="SCRIPT">
+<![CDATA[Sub Main
+	go_forward = True
+	If Left$(ListVar1,InStr(ListVar1+"\","\")-1) = "left" Then
+		go_forward = False
+	End If
+
+	argument = Val(Left$(ListVar2,InStr(ListVar2+"\","\")-1))
+
+
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys shift_move(go_forward, argument) + "{ctrl+c}"
+
+	selection = Replace$(Clipboard(), Chr(10), "^")
+	selection = Replace(selection, " ", ".")
+	selection = Replace(selection, Chr(13), "!")
+	MsgBox "'" + selection + "' " + Len(selection) + " "
+End Sub
+
+Function peek(direction, keys) As String
+	old = Clipboard()
+
+	Clipboard("")  ' in case copy fails
+	SendDragonKeys keys + "{ctrl+c}"
+	selection = Replace$(Clipboard(), Chr(10), "")
+	peek = selection
+
+	If selection = "" Then
+		Exit Function
+	End If
+
+	keys = "{shift+left " + Len(selection) + "}" ' keys to undo selection, leaving point in original location
+	keys = move(Not direction, 1)
+	SendDragonKeys keys
+End Function
+
+Function move(direction, distance) As String
+	If direction Then
+		key = "right"
+	Else
+		key = "left"
+	End If
+	move = "{" + key + Str(distance) + "}"
+End Function
+
+Function shift_move(direction, distance) As String
+	If direction Then
+		key = "right"
+	Else
+		key = "left"
+	End If
+	shift_move = "{shift+" + key + Str(distance) + "}"
+End Function
+]]>
+			</contents>
+		</Command>
+
+	</Commands>
+
+	<Lists>
+
+		<List name="0to99">
+			<Value><![CDATA[0]]></Value>
+			<Value><![CDATA[1]]></Value>
+			<Value><![CDATA[10]]></Value>
+			<Value><![CDATA[11]]></Value>
+			<Value><![CDATA[12]]></Value>
+			<Value><![CDATA[13]]></Value>
+			<Value><![CDATA[14]]></Value>
+			<Value><![CDATA[15]]></Value>
+			<Value><![CDATA[16]]></Value>
+			<Value><![CDATA[17]]></Value>
+			<Value><![CDATA[18]]></Value>
+			<Value><![CDATA[19]]></Value>
+			<Value><![CDATA[2]]></Value>
+			<Value><![CDATA[20]]></Value>
+			<Value><![CDATA[21\twenty-one]]></Value>
+			<Value><![CDATA[22]]></Value>
+			<Value><![CDATA[23]]></Value>
+			<Value><![CDATA[24]]></Value>
+			<Value><![CDATA[25]]></Value>
+			<Value><![CDATA[26]]></Value>
+			<Value><![CDATA[27]]></Value>
+			<Value><![CDATA[28\twenty-eight]]></Value>
+			<Value><![CDATA[29]]></Value>
+			<Value><![CDATA[3]]></Value>
+			<Value><![CDATA[30]]></Value>
+			<Value><![CDATA[31]]></Value>
+			<Value><![CDATA[32]]></Value>
+			<Value><![CDATA[33]]></Value>
+			<Value><![CDATA[34]]></Value>
+			<Value><![CDATA[35]]></Value>
+			<Value><![CDATA[36]]></Value>
+			<Value><![CDATA[37]]></Value>
+			<Value><![CDATA[38]]></Value>
+			<Value><![CDATA[39]]></Value>
+			<Value><![CDATA[4]]></Value>
+			<Value><![CDATA[40]]></Value>
+			<Value><![CDATA[41]]></Value>
+			<Value><![CDATA[42]]></Value>
+			<Value><![CDATA[43]]></Value>
+			<Value><![CDATA[44]]></Value>
+			<Value><![CDATA[45]]></Value>
+			<Value><![CDATA[46]]></Value>
+			<Value><![CDATA[47]]></Value>
+			<Value><![CDATA[48]]></Value>
+			<Value><![CDATA[49]]></Value>
+			<Value><![CDATA[5]]></Value>
+			<Value><![CDATA[50]]></Value>
+			<Value><![CDATA[51]]></Value>
+			<Value><![CDATA[52]]></Value>
+			<Value><![CDATA[53\fifty-three]]></Value>
+			<Value><![CDATA[54]]></Value>
+			<Value><![CDATA[55]]></Value>
+			<Value><![CDATA[56]]></Value>
+			<Value><![CDATA[57]]></Value>
+			<Value><![CDATA[58]]></Value>
+			<Value><![CDATA[59]]></Value>
+			<Value><![CDATA[6]]></Value>
+			<Value><![CDATA[60]]></Value>
+			<Value><![CDATA[61]]></Value>
+			<Value><![CDATA[62]]></Value>
+			<Value><![CDATA[63]]></Value>
+			<Value><![CDATA[64]]></Value>
+			<Value><![CDATA[65]]></Value>
+			<Value><![CDATA[66]]></Value>
+			<Value><![CDATA[67]]></Value>
+			<Value><![CDATA[68]]></Value>
+			<Value><![CDATA[69]]></Value>
+			<Value><![CDATA[7]]></Value>
+			<Value><![CDATA[70]]></Value>
+			<Value><![CDATA[71]]></Value>
+			<Value><![CDATA[72]]></Value>
+			<Value><![CDATA[73]]></Value>
+			<Value><![CDATA[74]]></Value>
+			<Value><![CDATA[75\seventy-five]]></Value>
+			<Value><![CDATA[76]]></Value>
+			<Value><![CDATA[77]]></Value>
+			<Value><![CDATA[78]]></Value>
+			<Value><![CDATA[79]]></Value>
+			<Value><![CDATA[8]]></Value>
+			<Value><![CDATA[80]]></Value>
+			<Value><![CDATA[81]]></Value>
+			<Value><![CDATA[82]]></Value>
+			<Value><![CDATA[83]]></Value>
+			<Value><![CDATA[84]]></Value>
+			<Value><![CDATA[85]]></Value>
+			<Value><![CDATA[86]]></Value>
+			<Value><![CDATA[87]]></Value>
+			<Value><![CDATA[88]]></Value>
+			<Value><![CDATA[89]]></Value>
+			<Value><![CDATA[9]]></Value>
+			<Value><![CDATA[90]]></Value>
+			<Value><![CDATA[91]]></Value>
+			<Value><![CDATA[92]]></Value>
+			<Value><![CDATA[93]]></Value>
+			<Value><![CDATA[94]]></Value>
+			<Value><![CDATA[95\ninety-five]]></Value>
+			<Value><![CDATA[96]]></Value>
+			<Value><![CDATA[97]]></Value>
+			<Value><![CDATA[98]]></Value>
+			<Value><![CDATA[99\ninety-nine]]></Value>
+		</List>
+
+		<List name="dirleftright">
+			<Value><![CDATA[back]]></Value>
+			<Value><![CDATA[forward]]></Value>
+			<Value><![CDATA[left]]></Value>
+			<Value><![CDATA[right]]></Value>
+		</List>
+
+	</Lists>
+
+</MyCommands>
