@@ -1,0 +1,37 @@
+$set MaximumCommands 4;
+
+
+include "string.vch";
+
+UpperCase(x) := Replace(Upper($x), " ", "");
+
+  # does not handle all cap-words correctly:
+#CamelCase(x) := Mid(Replace(Capitalize("x" $x), " ", ""),1);
+
+UpperCamelCase(x) := 
+    EvalTemplate('"".join([x[0].capitalize()+x[1:] for x in %s.split()])', $x);
+
+CamelCase(x) := Mid(UpperCamelCase("x" $x),1);
+
+<keyword> := (
+       abstract | boolean | break | case | catch | class | continue 
+     | double | else | extends | false | final | finally | float 
+     | for symbol = for	          # to distinguish from <prn> 4
+     | if | implements # | import too easily confused with clipboard
+     | instance of = instanceof
+     | int | interface | long | new | null | package | param | private
+     | protected | public | return | short | static | super | switch
+     | synchronized | this | throw | throws | true | try | void | while
+);
+
+#<keyword> <_anything> = $1 " " CamelCase($2) " ";
+<keyword> <_anything> = $1 " <" CamelCase($2) "> ";
+#<keyword> = $1 " ";
+
+
+<punctuation> := ( "left paren"="(" | "paren"="(" 
+| close paren = ") " | right paren = ")" 
+| dot = "." | comma = ", "
+);
+
+<punctuation> <_anything> = $1 CamelCase($2) " ";
