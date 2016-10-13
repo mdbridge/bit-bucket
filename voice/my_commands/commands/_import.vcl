@@ -133,6 +133,11 @@ include "letters.vch";
   # from a Cygwin window/xterm:
 backup foil <letter> = 
     "rsync --progress -t -z -p -r mdl@192.168.1.2:~/../backups/now.tar $1.tar";
+backup HP <letter> = 
+    "rsync --progress -t -z -p -r hp@192.168.1.2:~/../HP-backups/now.tar.gz HP-$1.tar.gz";
+SFTP backup HP <letter> = 
+    "scp hp@foil.strangled.net:~/../HP-backups/now.tar.gz HP-$1.tar.gz";
+
 
 
 ## 

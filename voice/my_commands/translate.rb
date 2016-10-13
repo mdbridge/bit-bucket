@@ -3,6 +3,7 @@ require 'digest/md5'
 # should we try and make most grammars global?
 $make_global = false
 $make_global = true if `hostname` =~ /foil/
+$make_global = true
 
 $location = "work"
 $location = "home" if `hostname` =~ /foil/

@@ -191,7 +191,8 @@ Line(file) := EraseToStart() $file {enter};
 ## 
 
 #MatrixHelp() := ~/bin IfHome("","_6") /mairix-0.22/mairix.1);
-MatrixHelp() := IfHome("mairix","~/bin_6/mairix-0.23/mairix.1");
+#MatrixHelp() := IfHome("mairix","~/bin_6/mairix-0.23/mairix.1");
+MatrixHelp() := "mairix";
 
 matrix help   = Do2(man, MatrixHelp()) Wait(1000)
        	        {ctrl+x}b "*Man " MatrixHelp() "*"{enter}

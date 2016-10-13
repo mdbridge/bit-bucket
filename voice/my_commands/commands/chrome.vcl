@@ -46,6 +46,10 @@ Focus() := Action(f, G);
 blur me	   = Blur();
 
 show numbers = {ctrl+shift+space} Wait(500) :+{enter};
+show image numbers = {ctrl+shift+space} Wait(500) :+Ic{enter};
+show before numbers = {ctrl+shift+space} Wait(500) :+b{enter};
+show contrast numbers = {ctrl+shift+space} Wait(500) :+c{enter};
+
 hide numbers = {ctrl+shift+space} Wait(500) :-{enter};
 
 show hints = Blur() Vim(f) SetO(f);
@@ -56,6 +60,10 @@ escape	   = {esc} SetO("");
 
 <pick> := (        pick = Action("", "")
           | proceed     = Action("", "")
+          | hit pick    = Action("c", "")
+
+          | old pick    = Action("c", "")
+          | new pick    = Action("C", "")
 
           | push   pick = Action(b, F)     # stay but open new tab w/ link
           | tab    pick = Action(t, T)

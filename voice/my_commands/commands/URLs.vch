@@ -13,7 +13,8 @@ LookupIn(browser, URL) :=
 
 #Lookup(URL) := LookupIn(DefaultBrowser(), $URL);
 
-Lookup(URL) := AppBringUp(direct$URL, "firefox.exe $URL");  # <<<>>>
+#Lookup(URL) := AppBringUp(direct$URL, "firefox.exe $URL");  # <<<>>>
+Lookup(URL) := AppBringUp(direct$URL, "chrome.exe $URL");  # <<<>>>
 
 
 

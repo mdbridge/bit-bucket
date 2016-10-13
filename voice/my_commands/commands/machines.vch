@@ -28,9 +28,6 @@ ShortMachine(machine) := Split(Machine($machine), ".", 0);
      | [build] L four T M  = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
      | [build] Linux for T M  = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
      | build   L four   = lillibridgem@build-l4tm-1.u.labs.hpecorp.net
-         # depreciated, mirrors broken:
-     | build Fedora     = lillibridgem@build-fedora19-1.u.labs.hpecorp.net
-     | build Debian     = lillibridgem@build-debian-3.u.labs.hpecorp.net
 
         # The Machine machines:
      | moonshot	      = lillibridgem@ms02010-013.labs.hpecorp.net # <<<>>>
@@ -44,4 +41,5 @@ ShortMachine(machine) := Split(Machine($machine), ".", 0);
         # My (non-HP) personal machines:
      | remote foil      = mdl@foil.strangled.net
      | local  foil      = mdl@192.168.1.2
+     | remote HP        = hp@foil.strangled.net
 );

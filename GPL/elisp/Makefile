@@ -56,7 +56,7 @@ compile-24:
 	    | grep -v ruby-mode.el \
 	    | grep -v vertical-motion-patch.el \
 	    | grep -v wb-line-number-patched.el \
-	    | xargs emacs24_3 -batch -f batch-byte-compile
+	    | xargs emacs24_5 -batch -f batch-byte-compile
 
 
 
