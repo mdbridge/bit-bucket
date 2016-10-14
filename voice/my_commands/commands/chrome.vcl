@@ -49,6 +49,7 @@ show numbers = {ctrl+shift+space} Wait(500) :+{enter};
 show image numbers = {ctrl+shift+space} Wait(500) :+Ic{enter};
 show before numbers = {ctrl+shift+space} Wait(500) :+b{enter};
 show contrast numbers = {ctrl+shift+space} Wait(500) :+c{enter};
+show test numbers = {ctrl+shift+space} Wait(500) :+iic{enter};
 
 hide numbers = {ctrl+shift+space} Wait(500) :-{enter};
 
