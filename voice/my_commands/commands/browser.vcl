@@ -111,8 +111,7 @@ GoBack(count) := Address() SendSystemKeys({alt+left_$count})  Wait(100) FixFocus
 # 
 
   # Dragon limits these to bizarre places:
-#open new tab = Address() {ctrl+t};
-open [new]  tab = OpenNewURL(HomePage());  # workaround for new tab not working with FF 4 <<<>>>
+open [new]  tab = OpenNewURL(HomePage());  # new tab doesn't always go home
 reopen      tab = {ctrl+shift+t};
 close       tab = Address() {ctrl+w};
 
@@ -164,6 +163,29 @@ MailHeadline(mail_context, recipients) :=
 
 
 ##
+## Searching the web:
+##
+
+Google(text) := OpenNewURL(https://www.google.com/) Wait(1000) $text {enter};
+
+Google phrase <_anything> = Google($1);
+Google clipboard          = Google({ctrl+v});
+
+
+define phrase <_anything> = 
+    OpenURL("https://www.google.com/search?q=define%3A+$1");
+
+
+# searching C++ reference:
+plus phrase <_anything> = 
+    OpenNewURL("http://en.cppreference.com/mwiki/index.php?search=" 
+    	       Replace($1," ","+"));
+
+J query phrase <_anything> = Google("jQuery " $1);
+
+
+
+##
 ## Miscellaneous:
 ##
 
@@ -172,23 +194,3 @@ save page = {ctrl+s};
 Print	  = Beep();    # stop misrecognitions...
 
 Copy That = {ctrl+c};  # Sometimes failed to be recognized
-
-
-define phrase <_anything> = 
-    OpenURL("https://www.google.com/search?q=define%3A+$1");
-
-Google(text) := OpenNewURL(https://www.google.com/) Wait(1000) $text {enter};
-#Google(text) := OpenNewURL(https://encrypted.google.com/) Wait(1000) $text {enter};
-#Google(text) := OpenNewURL(https://encrypted.google.com/) Wait(1000) 
-#                Address() {tab_7} $text {enter};
-
-Google clipboard          = Google({ctrl+v});
-Google phrase <_anything> = Google($1);
-
-plus phrase <_anything> = 
-    OpenNewURL("http://en.cppreference.com/mwiki/index.php?search=" 
-    	       Replace($1," ","+"));
-plus search <_anything> = 
-    OpenNewURL("http://en.cppreference.com/mwiki/index.php?search=" 
-    	       Replace($1," ","+"));
-

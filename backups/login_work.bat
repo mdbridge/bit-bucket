@@ -9,9 +9,9 @@ START %HOME%\AutoHotKey\detect.ahk
 START %HOME%\AutoHotKey\kill.ahk
 START %HOME%\AutoHotKey\volume.ahk
 
-::START c:\cygwin\bin\XWin.exe -listen tcp -nohostintitle -ac -multiwindow -clipboard
 START c:\cygwin64\bin\XWin.exe -listen tcp -nohostintitle -ac -multiwindow -clipboard
 
-:: START "connecting foil" "C:\Program Files (x86)\ExpanDrive\ExpanDrive.exe" connect foil
-
 :: START "starting putty" "C:\Program Files (x86)\PuTTY\putty.exe" -load no-password -l mdl 192.168.1.2
+
+rmdir C:\Users\Mark\Documents\scratch\imports /s /q
+mkdir C:\Users\Mark\Documents\scratch\imports

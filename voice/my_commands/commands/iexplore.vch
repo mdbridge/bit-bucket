@@ -10,7 +10,6 @@
 #     For example, webpages can capture {alt+X} keys (via the
 # accesskey attribute) and PDF documents capture most control keys
 # (e.g., {ctrl+t}, {ctrl+o}, {ctrl+1}) and function keys (e.g., {f4}).
-# HP Disclose also steals {f4}.
 # 
 #     When the address bar is selected, access keys are still in
 # effect, but the keys stolen by PDF work again.  Keys work normally

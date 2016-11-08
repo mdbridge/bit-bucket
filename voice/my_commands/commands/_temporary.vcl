@@ -20,10 +20,6 @@ media playback =
 exit Dragon = exit{enter};
 
 
-# <<<>>>
-include "machines.vch";
-include "switch.vch";
 
-new <machine> putty = SwitchToApp("new " ShortMachine($1) ".* PuTTY", 
-    PCfromPC(~pf32/PuTTy/putty.exe) " -load no-password -l " User($1) " $1");
-new <machine> putty = SwitchTo("new "ShortMachine($1) ".* PuTTY");
+type via SendInput	= Kludge.UseSendInput();
+type via SendDragonKeys = Kludge.UseSendDragonKeys();

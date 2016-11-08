@@ -43,7 +43,7 @@ run <routine> = Do($1);
 ## Byte compiling files:
 ## 
 
-  # only for foil and ts-rhel7.labs.hpecorp.net:
+  # only for foil and master work server:
 byte compile files = 
     Do(compile) EraseToStart() "(cd ~/elisp; make compile)" {enter};
 

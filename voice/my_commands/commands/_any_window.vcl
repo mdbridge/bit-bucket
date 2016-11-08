@@ -23,7 +23,7 @@ minimize rest   = SendSystemKeys({win+home});
 ## Commands for manipulating arbitrary windows, including dialog boxes
 ##
 
-include "new_windows.vch";
+include "windows.vch";
 
 # 
 # I disable these for several reasons:
@@ -36,29 +36,32 @@ click (Restore | Move | Size | Minimize | Maximize | Close) = Beep();
 
 other monitor = SendSystemKeys({win+shift+right});
 
-<state> := ( lengthen		 = {win+shift+up}
-	   | left  half 	 = {win+up}{win+left}
-	   | right half		 = {win+up}{win+right}
+  # this exits from snap another window state if it exists
+  # does not disturb application if not in that state
+EXIT() := SendSystemKeys({win} {esc});
+
+<state> := ( lengthen	  = SendSystemKeys({win+shift+up})
+
+              # these are for  Windows 10:
+	   | left  half	  = Restore() SendSystemKeys({win+left})  EXIT()
+	   | right half	  = Restore() SendSystemKeys({win+right}) EXIT()
+
+	   | top    left  = Restore() SendSystemKeys({win+left})  EXIT()
+                            Wait(100) SendSystemKeys({win+up})
+	   | top    right = Restore() SendSystemKeys({win+right}) EXIT()
+                            Wait(100) SendSystemKeys({win+up})
+	   | bottom left  = Restore() SendSystemKeys({win+left})  EXIT()
+                            Wait(100) SendSystemKeys({win+down})
+	   | bottom right = Restore() SendSystemKeys({win+right}) EXIT()
+                            Wait(100) SendSystemKeys({win+down})
 	   );
-<state> window = SendSystemKeys($1);
+
+<state> window = $1;
 
 
 
 # 
-# For most standard Windows applications and many dialog boxes,
-# {alt+space} (i.e., left alt key + space; equivalent to
-# {LeftAlt+space}) opens the system menu.
-#
-# See windows.vch for important exceptions...
-# 
-System(key) := SendSystemKeys({alt+space}) $key;
-
-include "windows.vch";
-
-
-
-# 
-# Tiling experiments via AutoHotkey hotkeys in kill.ahk
+# Tiling experiments via AutoHotkey hotkeys in kill.ahk <<<>>>
 # 
 # Hardwired for home for now...
 # 
@@ -66,8 +69,6 @@ Extend() := SendSystemKeys({win+shift+up}{win+shift+right}{win+shift+left});
 
 left  two thirds = SendSystemKeys("{alt+ctrl+(}") Extend();
 right two thirds = SendSystemKeys("{alt+ctrl+)}") Extend();
-#left  half       = SendSystemKeys("{alt+ctrl+<}") Extend();
-#right half       = SendSystemKeys("{alt+ctrl+>}") Extend();
 
 
 

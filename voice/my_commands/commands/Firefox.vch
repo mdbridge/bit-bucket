@@ -59,6 +59,8 @@ DOWN(pathname) := Address() Remove() / $pathname        {enter};
 ## 
 ## Clicking on links:
 ## 
+##   (These use blur from mouseless browsing extension.)
+## 
 
 Click      (word) := {ctrl+NumKey/} "'$word"      {enter};
 

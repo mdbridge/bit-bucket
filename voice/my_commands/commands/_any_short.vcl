@@ -61,8 +61,11 @@ Alter(text, kind) := CASE7( $kind, l,Lower($text), U,Upper($text),
                                    C,Capitalize($text) );
 
 ChangeWord(action, count) := 
-    WordMove(SelectRightEnd(), $count)              Copy()
-    Clipboard.Set( Alter(Clipboard.Get(),$action) ) Paste();
+    Clipboard.Set(453783454)
+      WordMove(SelectRightEnd(), $count)  Copy()
+    Clipboard.WaitForNew(453783454,5)
+    Clipboard.Set( Alter(Clipboard.Get(),$action) ) 
+    Wait(100) Paste();
 
 # 
 # Copying/killing to the extreme of a compass direction:

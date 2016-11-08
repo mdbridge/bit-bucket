@@ -24,12 +24,15 @@ failstop_system("ln -s ~/Tmp/l1 ~/Tmp/export/ZZZ_l1")
 failstop_system("cd ~/Tmp/export; munpack1.6 -t ZZZ_l1 > ZZZ_contents_")
 
 
+Tmp = "/home/" + ENV["USER"] + "/Tmp"
+
+
 no_parts = false
 text     = nil
 text1    = nil
 html     = nil
 calendar = nil
-File.open("/home/mdl/Tmp/export/ZZZ_contents_") do |contents|
+File.open(Tmp + "/export/ZZZ_contents_") do |contents|
   contents.each do |line|
     action = ""
 
@@ -69,12 +72,12 @@ end
 
 
 if no_parts then
-  message = File.read("/home/mdl/Tmp/l1", encoding:"binary")
+  message = File.read(Tmp + "/l1", encoding:"binary")
   if message =~ /\A((?:[^\n]+\n)+)\n(.*)\z/m then
     header, body = $1, $2
     if header =~ /^mime-version:/i and header =~ %r<^content-type: text/html>i then
       html = "inline_HTML.html"
-      File.open("/home/mdl/Tmp/export/#{html}", "w:binary") { |x| x.print body }
+      File.open(Tmp + "/export/#{html}", "w:binary") { |x| x.print body }
       puts "<message body> ->  #{html}"
     end
   end
@@ -82,7 +85,7 @@ end
 
 
 
-text_summary = "/home/mdl/Tmp/export/ZZB_text_summary.txt"
+text_summary = Tmp + "/export/ZZB_text_summary.txt"
 failstop_system("cat ~/Tmp/export/ZZZ_contents_ > #{text_summary}")
 File.open(text_summary, "a") do |output|
   output.puts "======================================="
@@ -120,11 +123,11 @@ if calendar then
 end
 
 
-if File.exist?("/home/mdl/Tmp/export/webpage.zip.gz") then
+if File.exist?(Tmp + "/export/webpage.zip.gz") then
   puts "ungzipping webpage.zip.gz..."
   failstop_system("(cd ~/Tmp/export; gunzip webpage.zip.gz) > /dev/null") 
 end
-if File.exist?("/home/mdl/Tmp/export/webpage.zip") then
+if File.exist?(Tmp + "/export/webpage.zip") then
   puts "unzipping webpage.zip..."
   failstop_system("(cd ~/Tmp/export; unzip webpage.zip) > /dev/null") 
 end

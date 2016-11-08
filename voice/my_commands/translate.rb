@@ -108,7 +108,7 @@ def translate_contents(basename, contents)
 
     #
     # The fake application "browser" provides commands good for 
-    # Internet Explorer, Firefox, and chrome.
+    # Internet Explorer, Firefox, and Chrome.
     #
   when "browser"
     switch_app(basename, contents, "Firefox_",  "Firefox")

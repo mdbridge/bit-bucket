@@ -1,5 +1,5 @@
 ### 
-### Voice commands for dealing with Rmail version 24.2 with commands
+### Voice commands for dealing with Rmail version 24.5 with commands
 ### changed to require shift key
 ###
 ###   Commands for composing messages are in gnu_composition.vcl
@@ -190,9 +190,8 @@ Line(file) := EraseToStart() $file {enter};
 ## Searching for messages anywhere:
 ## 
 
-#MatrixHelp() := ~/bin IfHome("","_6") /mairix-0.22/mairix.1);
-#MatrixHelp() := IfHome("mairix","~/bin_6/mairix-0.23/mairix.1");
 MatrixHelp() := "mairix";
+#MatrixHelp() := "mairix ~/bin/mairix-0.23/mairix.1";
 
 matrix help   = Do2(man, MatrixHelp()) Wait(1000)
        	        {ctrl+x}b "*Man " MatrixHelp() "*"{enter}
@@ -271,28 +270,22 @@ UnpackMessage() := ExportMIME() Shell("ruby ~/mail/unpack_l1.rb");
 ## Viewing MIME messages:
 ## 
 
-UnpackAndTranslate(filename) :=
-    Clipboard.Set("")
-    UnpackMessage()
-    Do2(mdl-local-pathname-to-PC-pathname, /home/mdl/Tmp/export$filename)
-      # wait for unpack and translation to finish:
-    Clipboard.WaitForNew("", 10);
-
+  # export directory will be at Local()
 UnpackAndDownload() :=
     Clipboard.Set("")
     UnpackMessage()
     Do2(mdl-local-pathname-to-PC-pathname, /home/mdl/Tmp/export)
       # wait for unpack and translation to finish:
     Clipboard.WaitForNew("", 10)
-    SyncRsync("-force -replace-dir", @
-                                      Replace2(Clipboard.Get(),
-				               "p:\Tmp\export", "foil:",
-				               "w:\Tmp\export", "work:")
-                                      ~/Tmp/export, ~/scratch);
+    MakeLocal(@ Replace2(Clipboard.Get(),
+                         "p:\Tmp\export", "foil:",
+			 "w:\Tmp\export", "work:")
+                ~/Tmp/export);
+
 
   # these are emergency backups in case clipboard is not working:
-import      export = Rsync("-force -replace-dir", @~/Tmp/export,      ~/scratch);
-import work export = Rsync("-force -replace-dir", @work:~/Tmp/export, ~/scratch);
+import      export = MakeLocal(@     ~/Tmp/export) AppBringUp(export, Local());
+import work export = MakeLocal(@work:~/Tmp/export) AppBringUp(export, Local());
 
 
 view text =
@@ -305,28 +298,13 @@ view text =
 	Elisp('(setq line-move-visual nil)');
 
 
-  # munpack current buffer to ~/Tmp/export then view that directory:
-#[mime] unpack buffer =
-unpack buffer = Beep();
-[mime] unpack message =
-    #UnpackAndTranslate("")
-    #AppBringUp("Export", Clipboard.Get())
-    UnpackAndDownload()
-
-    AppBringUp("Export", PCfromPC(~/scratch/export))
-    Wait(2000)
-    {ctrl+r}{ctrl+g};
-
+  # munpack current buffer to ~/Tmp/export then view a copy of that directory:
+[mime] unpack message = UnpackAndDownload() AppBringUp(export,  Local());
  # lookup text html part or whole message if none:
-#view HTML = UnpackAndTranslate(/_html.html) Lookup(Clipboard.Get());
-view HTML = UnpackAndDownload()
-            Lookup(PCfromPC(~/scratch/export/ZZA_html.html));
+view HTML	      = UnpackAndDownload()  Lookup(Local() /ZZA_html.html);
+view meeting request  = UnpackAndDownload()  Lookup(Local() /_meeting.ics);
 
-#view meeting request = UnpackAndTranslate(/_meeting.ics) 
-#                       AppBringUp("meeting", Clipboard.Get());
-view meeting request = 
-    UnpackAndDownload()
-    AppBringUp("meeting", PCfromPC(~/scratch/export/_meeting.ics));
+unpack buffer = TTSPlayString("use unpack message");  # old name for unpack message
 
 
 

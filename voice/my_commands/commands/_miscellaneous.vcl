@@ -57,7 +57,7 @@ bad computer = HeardWord(scratch, that) TTSPlayString(sorry);
 ## Other:
 ## 
 
-Windows search = SendSystemKeys({win+f});  # search for a file or folder
+Windows search = SendSystemKeys({win+s});  # search for a file or folder
 
 
 include "switch.vch";

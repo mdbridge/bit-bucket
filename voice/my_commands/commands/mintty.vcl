@@ -10,16 +10,6 @@ paste that = {shift+Ins};
 
 
 ## 
-## Window manipulation commands:
-## 
-
-System(key) := {alt+space};
-
-include "windows.vch";
-
-
-
-## 
 ## Cygwin window:
 ## 
 

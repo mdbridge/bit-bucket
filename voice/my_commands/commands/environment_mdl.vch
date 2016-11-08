@@ -1,5 +1,5 @@
 ### 
-### Definitions appropriate only for my new home Windows 7 machine:
+### Definitions appropriate only for my new home Windows 7 (now Windows 10) machine:
 ### 
 
 IfHome(home, work) := $home;

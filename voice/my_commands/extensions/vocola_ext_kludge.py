@@ -55,3 +55,19 @@ def p(key):
 def wheel(amount):
     amount = int(amount)
     SendInput.send_input([mouse_wheel_event(False, amount)])
+
+
+
+### 
+### 
+### 
+
+import VocolaUtils
+
+# Vocola procedure: Kludge.UseSendInput
+def set_send_input():
+    VocolaUtils.use_send_input = True
+
+# Vocola procedure: Kludge.UseSendDragonKeys
+def reset_send_input():
+    VocolaUtils.use_send_input = False

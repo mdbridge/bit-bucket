@@ -10,21 +10,31 @@ Vocola-prepare:
 clean::
 	rm -rf Vocola
 
+
+DPI14:
+	scp 'mdl@foil.strangled.net:~/voice/DNS\ software/DPI\ 14\ setup.exe' PC_setup/
+	scp 'mdl@foil.strangled.net:~/voice/DNS\ software/DNS14HF2.301.exe'   PC_setup/
+	scp 'mdl@foil.strangled.net:~/voice/DNS\ software/DNS14HF3.433.exe'   PC_setup/
+	scp -r 'mdl@foil.strangled.net:~/voice/DNS\ software/DPI14'	      PC_setup/
+
+clean-all: clean
+	rm -rf PC_setup/DNS12ServicePack1.exe
+	rm -rf PC_setup/DNS1251UPD.exe
+	rm -rf PC_setup/DPI\ 14\ setup.exe
+	rm -rf PC_setup/DNS14HF*.exe
+	rm -rf PC_setup/DPI14
+
+
 bootstrap-prepare:: Vocola-prepare
 	(cd ~/elisp;               make to_PC)
 	(cd ~/voice/my_vocabulary; make clean; make)
 	(cd ~/voice/my_commands;   make clean; make source; make)
 	(cd ~/voice/my_commands;   make corpus)
-	scp 'mdl@foil.strangled.net:~/voice/DNS\ software/DPI\ 14\ setup.exe' PC_setup/
 	@echo
 	ls -ld Vocola
 	grep version Vocola/README.html
 	ls -l "PC_setup/DPI 14 setup.exe"
 
-clean::
-	#rm -rf PC_setup/DNS12ServicePack1.exe
-	#rm -rf PC_setup/DNS1251UPD.exe
-	#rm -rf PC_setup/DPI 14 setup.exe
 
 bootstrap-print:
 	enscript -P$$PRINTER ~/admin/bootstrap.txt
@@ -40,12 +50,15 @@ bootstrap-print:
 bootstrap: #bootstrap-prepare
 	rm -rf bootstrap
 	mkdir                                   bootstrap
+	chmod og=                               bootstrap
 	#
 	cp ~/.cshrc                             bootstrap/.cshrc
 	cp ~/.emacs                             bootstrap/.emacs
 	#
 	mkdir                                   bootstrap/.ssh
 	chmod og=                               bootstrap/.ssh
+	cp ~/.ssh/id_rsa                        bootstrap/.ssh/
+	cp ~/.ssh/id_rsa_putty.ppk              bootstrap/.ssh/
 	#
 	#  fix Cygwin backspacing problem:
 	sed '/delete-char/d' ~/.tcshrc        > bootstrap/.tcshrc
@@ -79,8 +92,13 @@ bootstrap: #bootstrap-prepare
 	mkdir                                   bootstrap/NatLink
 	mkdir                                   bootstrap/NatLink/Vocola
 	cp ~/voice/my_commands/to_Vocola/*      bootstrap/NatLink/Vocola/
+	cp ~/voice/my_commands/to_Vocola/environment-bootstrap.vch   bootstrap/NatLink/Vocola/environment.vch
+	cp ~/voice/my_commands/to_Vocola/environment.vch             bootstrap/NatLink/Vocola/environment-normal.vch
 	#
 	mkdir                                   bootstrap/scratch
+	mkdir                                   bootstrap/scratch/imports
+	mkdir                                   bootstrap/scratch/incoming
+	mkdir                                   bootstrap/scratch/outgoing
 	mkdir                                   bootstrap/setup
 	#
 	#
@@ -92,7 +110,6 @@ bootstrap: #bootstrap-prepare
 	(cd bootstrap/setup; mkdir Emacs)
 	(cd bootstrap/setup; mv emacs-24.5-bin-i686-mingw32.zip Emacs/)
 	(cd bootstrap/setup/Emacs; unzip -q emacs-24.5-bin-i686-mingw32.zip)
-	cp ~/admin/software/ExpanDrive/*License                        bootstrap/setup/
 	cp ~/backups/Vocola-patches.bat                                bootstrap/setup/
 	##
 	mkdir                                                          bootstrap/setup/Cygwin64
@@ -122,3 +139,19 @@ clean::
 
 bootstrap-local::
 
+
+
+export-push-dots:
+	rm -rf ~/Tmp/outgoing/*
+	mkdir ~/Tmp/outgoing/bin ~/Tmp/outgoing/elisp
+	cd ~; cp -p \
+	    .login .tcshrc .cshrc .inputrc .Xdefaults .emacs .*spell* \
+            .screenrc \
+	  ~/Tmp/outgoing/
+	cd ~; cp -p \
+	    bin/fields bin/count_numbers bin/average_numbers bin/number_files \
+	    bin/number_remote_files \
+            bin/color_column.rb bin/secondary \
+	  ~/Tmp/outgoing/bin/
+	cp -r -p  ~/elisp/*.el  ~/Tmp/outgoing/elisp/
+	sed 's/cd ~//' ~/bin/push_dots > ~/Tmp/outgoing/push_dots

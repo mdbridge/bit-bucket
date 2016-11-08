@@ -1,5 +1,5 @@
 This repository contains a snapshot of Mark Lillibridge's voice control
-infrastructure circa October 2016.
+infrastructure circa November 2016.
 
 
 Its contents are currently completely uncurated; I hope later to clean

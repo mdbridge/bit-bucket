@@ -172,8 +172,8 @@ remote print =
 	      EraseToStart() ~/Tmp/buffer.ps {enter}
 	      Wait(10) # Xming bug... <<<>>>
 	      Shell("ps2pdf ~/Tmp/buffer.ps ~/Tmp/buffer.pdf")
-	      Shell("scp ~/Tmp/buffer.pdf mdl@ts-rhel7.labs.hpecorp.net:~/Tmp/")
-	      Shell("ssh mdl@ts-rhel7.labs.hpecorp.net 'lpr ~/Tmp/buffer.pdf'")
+	      Shell("scp ~/Tmp/buffer.pdf " PWork() ":~/Tmp/")
+	      Shell("ssh " PWork() " 'lpr ~/Tmp/buffer.pdf'")
 	      ;
 
 

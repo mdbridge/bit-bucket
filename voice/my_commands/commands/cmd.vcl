@@ -92,14 +92,14 @@ show history = {f7};
 
 PSFTP(machine) := '"' PF32() '\PuTTY\psftp" $machine{enter}';
 
-secure upload [to <machine>] = PSFTP(When($1,$1,mdl@ts-rhel7.labs.hpecorp.net));
+secure upload [to <machine>] = PSFTP(When($1,$1,PWork()));
 
 
   # {alt+f4} doesn't work for command prompt windows:
 Close()    := Window.Close()
 	      If(Window.Success(), "", SendSystemKeys({alt+space}c));
 
-  # override global command in _any_windows.vcl/new_windows.vch:
+  # override global command in _any_windows.vcl/windows.vch:
 close [the] window = Close();
 
 

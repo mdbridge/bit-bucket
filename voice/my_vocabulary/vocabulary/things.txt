@@ -14,6 +14,7 @@ POE:Poe
 The Machine :trademark the machine
 Win32Pad    :water pad
 charset	    :short character set
+jQuery: computer J query
 
 
 
@@ -58,6 +59,7 @@ Legend of Korra
 Lintel
 MD5:MD five
 Media Lamp
+Mercurial
 Musictella              # from limiter paper
 MySQL
 NetApp

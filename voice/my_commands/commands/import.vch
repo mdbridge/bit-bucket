@@ -24,16 +24,18 @@ include "file_access.vch";
 ## 
 ## Special pathname conventions are used with Rsync:
 ## 
-## Form is either @[{work,foil}:]<Unix pathname> 
-##             or an absolute C-drive <PC pathname> after PCfromPC(-) abbreviations
+## Form is one of:
+##   @[{work,foil}:]<Unix pathname> 
+##   @|user@host:<Unix pathname> 
+##   an absolute C-drive <PC pathname> after PCfromPC(-) abbreviations
 ## 
 
 _Unix2Rsync(path) :=
     Replace4(@@$path, 
-        "@@work:",   "mdl@ts-rhel7.labs.hpecorp.net:",
-        "@@Fedora:", "lillibridgem@build-fedora19-1.u.labs.hpecorp.net:", # <<<>>>
-        "@@foil:",    mdl@ IfHome(192.168.1.2,foil.strangled.net) ":",
-	"@@",         IfHome(mdl@192.168.1.2,mdl@ts-rhel7.labs.hpecorp.net) ":");
+        "@@work:",   PWork()	     ":",
+        "@@foil:",   PHomeFromPC()   ":",
+        "@@|",       "",
+	"@@",        PrimaryFromPC() ":");
 
   # here PCfromPC($path) must be an absolute path on drive C:
 _PC2Rsync(path) :=
@@ -79,3 +81,43 @@ SyncRsync(options, source, destination) :=
        TypeRsync(Mid($options,5), $source, $destination) " && ",
          # Subprocess.Run doesn't handle quoted arguments properly:
        Subprocess.System(TypeRsync($options, $source, $destination)));
+
+
+##
+## Making a local (current PC) temporary copy of a computer UNIX file
+## or directory; the file(s) last until the next reboot
+##
+
+Filename(source)  := Split($source, "/", -1);
+Directory(source) := Eval("$source[0:$source.rindex('\\')]");
+
+
+  # the PC location of the copy made by the last MakeLocal call
+Local() := Variable.Get(import:path);
+
+  # call this to make a temporary copy of $source on PC
+MakeLocal(source) :=
+    Variable.Set(import:path, PCfromPC(~/scratch/imports/ 
+                                         Experimental.Hash(Date.Now("%c"))
+				         "/" Filename($source)
+				       ))
+    Subprocess.System("mkdir " Directory(Local()))
+    SyncRsync("", $source, Directory(Local()) "/");
+
+
+##
+## Uploading output from a PC application to a computer UNIX directory
+##
+
+UploadDir() := Variable.Get(import:upload);
+
+PrepareUpload(target) :=
+    Variable.Set(import:target, $target)
+    Variable.Set(import:upload, PCfromPC(~/scratch/imports/ 
+                                         Experimental.Hash(Date.Now("%c"))
+				       ))
+    Subprocess.System("mkdir " UploadDir()) 
+    Wait(100);  # need to wait for System window to go away
+
+DoUpload() := Rsync("-force", UploadDir()/, Variable.Get(import:target))
+    Variable.Unset(import:target);

@@ -34,25 +34,14 @@ GoWindow(PDF, if_successful) :=
 ## Viewing PDFs:
 ## 
 
-ViewRemotely(PDF) := 
-    GoWindow($PDF, Wait(100) {alt+f4} Wait(2000))  # extra wait for Adobe exiting
-    AppBringUp($PDF, UNIX($PDF)) 
-    WaitFor() Wait(100) SetWindow($PDF);
-
-
-Current()   := Variable.Get(Adobe:counter, 1);
-Increment() := Variable.Set(Adobe:counter, Eval('(1 + ' Current() ')%3'));
-Local(PDF)  := ~/scratch/imported_ Left(Experimental.Hash($PDF),6) _ Current().pdf;
-
 ViewLocally(PDF) := 
-    GoWindow($PDF, Wait(200) {alt+f4} Wait(200))
-    Increment()
-    SyncRsync("-force", @$PDF, Local($PDF))
+    GoWindow($PDF, Wait(400) {alt+f4} Wait(200))
+    MakeLocal(@$PDF)
     Subprocess.Run(
         IfHome(
             PC("~pf32/Adobe/Acrobat Reader DC/Reader/AcroRd32.exe"),
 	    PC("~pf32/Adobe/Reader 11.0/Reader/AcroRd32.exe")
-        ), "/A pagemode=none " PC(Local($PDF))
+        ), "/A pagemode=none " Local()
      )
 #    Subprocess.System(
 #          # START runs Adobe reader in the background:
@@ -73,8 +62,6 @@ view          <PDF> [1..20 [(down={PgDn})]] =
     ViewLocally($1)   When($2, {shift+ctrl+n}$2{enter})  $3;
 view          <PDF> [fit [page] 1..20] = 
     ViewLocally($1)   When($2, {ctrl+0} {shift+ctrl+n}$2{enter});
-view remotely <PDF> [1..20 [(down={PgDn})]] = 
-    ViewRemotely($1)  When($2, {shift+ctrl+n}$2{enter})  $3;
 
 
 show    <PDF> = GoWindow($1, "");

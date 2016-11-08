@@ -133,16 +133,6 @@ skip break                     = RestBreak() s;
 invoke login  = AppBringUp(login, PC(~/login_ IfHome(home,work) .bat));
 
 
-#Connect to HP = AppBringUp("HP connection", PC("~pf\RA2HP\HPRA.exe"))
-#	      	Wait(2000)
-#                {alt+s}{alt+t}
-#		# want split tunneling DISABLED:
-#		  {space}  # for split tunneling disabled
-#		{enter};
-#finish connecting = {enter} ShellExecute(PC(~pf32/ExpanDrive/ExpanDrive.exe)
-#                                         " connect work");
-
-
 
 ### 
 ### Launching background processes:

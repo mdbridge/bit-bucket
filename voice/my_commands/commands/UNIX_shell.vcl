@@ -31,7 +31,7 @@ include "any_shell.vch";
 ## 
 
 CD(pathname)   := 'CD ' SHELL($pathname) {enter} Empty();
-DOWN(pathname) := CD(pathname);
+DOWN(pathname) := CD($pathname);
 UP(count)      := CD('.' Repeat($count, UNIX(/..)));
 
 
@@ -128,6 +128,21 @@ multiple get            = "mget ";
 local change directory  = "lcd ";
 
 local working directory = lpwd{enter};
+
+
+##
+## Copying between machines using incoming and outgoing directories:
+##
+
+# Analogs for to/from PC in import.vcl
+
+export to <machine> =
+    "rsync -t --progress -z -p -r --ignore-times --delete "
+    "~/Tmp/outgoing/ $1:~/Tmp/incoming"{enter};
+
+import from <machine> =
+    "rsync -t --progress -z -p -r --ignore-times --delete "
+    "$1:~/Tmp/outgoing/ ~/Tmp/incoming"{enter};
 
 
 ## 
@@ -259,10 +274,6 @@ set machine date = "sudo date " Date.Now("%m%d%H%M%Y.%S") {enter};
 
   # serve current directory via WebBrick at <localhost>:9090
 serve here	 = "ruby -run -e httpd . -p 9090"{enter};
-
-set HP proxy =
-    "setenv HTTP_PROXY web-proxy.labs.hpecorp.net:8080"{enter}
-    "setenv FTP_PROXY  web-proxy.labs.hpecorp.net:8080"{enter};
 
 
 

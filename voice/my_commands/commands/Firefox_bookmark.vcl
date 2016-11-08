@@ -1,12 +1,19 @@
 ### 
-### Voice commands for Firefox (version 28.0) dealing with bookmarks and cookies
+### Voice commands for Firefox (version 47.0) dealing with bookmarks and cookies
 ### 
 
 include "locale_PC.vch";
 include "Firefox.vch";
+include "import.vch";
 
 FixFocus() := Address() UnAddress();
 
+  # <<<>>>
+AwaitChange(actions) :=
+    Variable.Set(:target, Window.ID())
+    $actions
+    Repeat(50, 
+        If(Window.Match(ID> Variable.Get(:target)), Wait(100)));
 
 
 ##
@@ -81,22 +88,24 @@ Library() := Address() {ctrl+shift+b} WaitForWindow(Library) Wait(100);
 ImportAndBackup(letter) := Library() {alt+i} Wait(1000) $letter;
 
 Export0()    := ImportAndBackup(e) 
-	        WaitForWindow("Export Bookmarks File", "", 20000);
-
+	        WaitForWindow("Export Bookmarks File", "", 20000) Wait(2000);
   # this is more fragile than I would like...  <<<>>>
-Export(path) := Export0() Wait(2000) $path Wait(100) {enter};
+Export1(path) := Export0() AwaitChange( $path Wait(500) {enter} );
+
+Export(target, name) :=
+    PrepareUpload($target)
+    Export1( $name {home} UploadDir() \ )
+    DoUpload();
 
 
 manually export bookmarks = Export0();
-
 	 export bookmarks = 
-    IfHome(Export(UNIX(foil:~/backups/bookmarks/Firefox-home.htm)),
-	   Export(UNIX(work:~/backups/bookmarks/Firefox-work.htm)));
+	     Export(@~/backups/bookmarks, Firefox- IfHome(home,work) .htm);
 
+upload links [to (foil|work)] = 
+    Export(@ When($1,"$1:","") ~/http, Firefox-bookmarks.htm);
 
-upload links                = Export(UNIX(   ~/http/Firefox-bookmarks.htm));
-upload links to (foil|work) = Export(UNIX($1:~/http/Firefox-bookmarks.htm));  
-manually upload links       = Export(PC(~/scratch/Firefox-bookmarks.htm));  # <<<>>>
+manually upload links = Export1(PC(~/scratch/outgoing/Firefox-bookmarks.htm));  # <<<>>>
 
 
 
@@ -105,8 +114,10 @@ manually upload links       = Export(PC(~/scratch/Firefox-bookmarks.htm));  # <<
 ## 
 
 push bookmarks = 
+    PrepareUpload(@~/backups/bookmarks)
     ImportAndBackup(b) WaitForWindow("Bookmarks backup filename", "", 40000)
-    Wait(100) {ctrl+c} UNIX(~/backups/bookmarks/) {ctrl+v};
+    Wait(100) AwaitChange( {ctrl+c} UploadDir()\ {ctrl+v} Wait(500) {enter} )
+    DoUpload();
 
 pull bookmarks =
     ImportAndBackup(rc) WaitForWindow("Select a bookmarks backup") 

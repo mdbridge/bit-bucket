@@ -15,13 +15,8 @@ include "iexplore.vch";
 ## Window manipulation commands:
 ## 
 
-System(key) := SendSystemKeys({alt+space}) Wait(100) $key;
-
-  # to override global commands:
-include "windows.vch";
-
   # DNS IE built-ins are broken; replace with working versions:
-include "new_windows.vch";
+include "windows.vch";
 
 
 

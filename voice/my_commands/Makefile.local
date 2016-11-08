@@ -34,11 +34,9 @@ clean::
 source:: web.htm
 	(cd generators; ruby websites.rb web > ../commands/web_sites.vch)
 
-web.htm: ~/backups/bookmarks/Firefox-home.htm  ~/http/extract_folder.rb
+web.htm: ~/backups/bookmarks/Chrome-home.htm  ~/http/extract_folder.rb
 	ruby ~/http/extract_folder.rb \
-	    ~/backups/bookmarks/Firefox-home.htm Web  >  $@
-	ruby ~/http/extract_folder.rb \
-	    ~/backups/bookmarks/Firefox-home.htm Web2 >> $@
+	    ~/backups/bookmarks/Chrome-home.htm Web  >  $@
 
 clean::
 	rm -f web.htm
@@ -49,7 +47,7 @@ clean::
 # <home_bookmark_folder> list:
 # 
 
-source:: ~/backups/bookmarks/Firefox-home.htm generators/generate_accelerators.rb
+source:: ~/backups/bookmarks/Chrome-home.htm generators/generate_accelerators.rb
 	(cd generators; ruby generate_accelerators.rb home)
 
 clean::
@@ -75,8 +73,9 @@ clean::
 
 local-corpus::
 	ruby ~/mail/analysis/extract_email.rb 240 \
-	    ~/Rmail/RMAIL ~/Rmail/personal_hold ~/Rmail/computer_hold \
-	    ~/Rmail/reading > corpus/top_foil.txt
+	     ~/Rmail/RMAIL ~/Rmail/personal_hold ~/Rmail/computer_hold \
+	     ~/Rmail/reading ~/Rmail/pile ~/Rmail/pile_2 \
+	   > corpus/top_foil.txt
 
 
 

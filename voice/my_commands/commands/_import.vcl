@@ -1,9 +1,11 @@
 ### 
-### Voice commands for moving files/directories to the local PC
+### Voice commands for moving files/directories to/from the local PC
 ### 
 
 include "locale_PC.vch";
 include "import.vch";
+include "URLs.vch";
+include "machines.vch";
 
 
 ## 
@@ -49,11 +51,7 @@ LoadVocabulary(PC_pathname) :=
      Wait(3000) {alt+n}
      ;
 
-#<source> := ( normal = UNIX(~/voice/my_vocabulary/normal_words_list.txt)
-<source> := ( normal = 
-                SyncRsync(-force, @~/voice/my_vocabulary/normal_words_list.txt,
-                                  ~/scratch/)
-                PC(~/scratch/normal_words_list.txt)        
+<source> := ( normal = MakeLocal(@~/voice/my_vocabulary/normal_words_list.txt) Local()
             | setup  = PC(~/setup/voice/normal_words_list.txt)
             );
 
@@ -91,36 +89,22 @@ load <source2> Free SR =
               "~\Freesr\Voice Commands\Languages\User Defined");
 
 
-## 
-## Make a local copy of the Elephant Store client:
-## 
-##   (duplicate of a command in old _elephant.vcl)
-## 
-
-#copy client to my computer =
-#    SyncRsync(-force, @work:~/deduplication/client/Windows/client.exe, c:\);
-
-
-
 ##
-## Importing and exporting trade area:  <<<>>>
+## Importing and exporting via incoming and outgoing directories:
+##
+## Analogs for between Linux machines can be found in UNIX_shell.vcl
 ##
 
-clear trade area = "rm -rf ~/Tmp/trade_area/*";
+PC export [to <machine>] =
+    Rsync("-force -replace-dir", ~/scratch/outgoing/,
+	    When($1,"@|$1:","@") ~/Tmp/incoming);
 
-<location> := ( work | foil );
-
-import [<location>] trade area = 
-    SyncRsync("-force -replace-dir", @ When($1,"$1:","") ~/Tmp/trade_area, 
-				     ~/scratch)
-    AppBringUp("trade area", PCfromPC(~/scratch/trade_area))
+PC import [from <machine>] =
+    SyncRsync("-force -replace-dir", When($1,"@|$1:","@") ~/Tmp/outgoing/,
+                ~/scratch/incoming)
+    AppBringUp("incoming", PCfromPC(~/scratch/incoming))
     Wait(2000)
     {ctrl+r}{ctrl+g};
-
-
-upload to <location> = 
-    Rsync("-force -replace-dir", ~/scratch/export-area/, @$1:~/Tmp/import-area)
-    ;
 
 
 
@@ -144,4 +128,5 @@ SFTP backup HP <letter> =
 ## Experimental <<<>>>
 ## 
 
-import webpages = Rsync("-force -replace-dir", @~/http/pages, ~/scratch);
+  # Warning: synchronous and possibly slow
+import webpages = MakeLocal(@~/http/pages) Lookup(Local() "/index.html");

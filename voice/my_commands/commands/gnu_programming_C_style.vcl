@@ -64,9 +64,10 @@ Climb() := Leap(D, '}') {end};
   # must follow:
 [<climb>] ( catch          = Place("catch (", " e)")
           | wildcard catch = "catch (...)" EndBlockPair()
+          | empty catch	   = "catch (e) {}"                  # for JavaScript
           | finally        = "finally" EndBlockPair()
-          ) statement = When($1,$1,{home} Climb()) {tab}{end} 
-	    	      	MonoSpace() $2 Empty();
+          ) statement	   = When($1,$1,{home} Climb()) {tab}{end} 
+                             MonoSpace() $2 Empty();
 
 ## 
 ## Loops:

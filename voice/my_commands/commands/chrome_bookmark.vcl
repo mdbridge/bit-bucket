@@ -1,12 +1,14 @@
 ### 
-### Voice commands for Chrome (version 51) dealing with bookmarks and cookies
+### Voice commands for Chrome (version 54) dealing with bookmarks and cookies
 ### 
 
 include "locale_PC.vch";
 include "chrome.vch";
+include "import.vch";
 
 FixFocus() := Address() UnAddress();
 
+  # <<<>>>
 AwaitChange(actions) :=
     Variable.Set(:target, Window.ID())
     $actions
@@ -53,13 +55,10 @@ include "work_bookmark_folders.vch";
 
 organize (favorites|bookmarks) = Address() {ctrl+shift+o};
 
-#Library:
-#  file <home_bookmark_folder> = File($1);
-#  file <work_bookmark_folder> = File($1);
 #
-#    # first select the folder you wish to sort:
-#  sort by name = {shift+f10}r;
-#:
+# Keyboard commands for organizing bookmarks are crude at best.
+# Doesn't seem worth trying to make commands for this.
+#
 
 
 
@@ -67,27 +66,28 @@ organize (favorites|bookmarks) = Address() {ctrl+shift+o};
 ## Exporting bookmarks:
 ## 
 
-import bookmarks = {alt+f}b i;
-
-
-Organize() := OpenNewURL("chrome://bookmarks/#1") Wait(500) {tab_3};
+Organize() := OpenNewURL("chrome://bookmarks/#1") Wait(700) {tab_3};
 
 organize menu = Organize();
 
-Export0()    := Organize() {alt+down} {up} {enter} WaitForWindow("Save As");
-Export(path) := Export0() $path Wait(100) {enter};
+Export0()     := Organize() {alt+down} {up} {enter} 
+ 	         WaitForWindow("Save As") Wait(1000);
+Export1(path) := Export0() AwaitChange( $path{enter} );
+
+Export(target, name) :=
+    PrepareUpload($target)
+    Export1( $name {home} UploadDir() \ )
+    DoUpload();
 
 
 manually export bookmarks = Export0();
-
 	 export bookmarks = 
-    IfHome(Export(UNIX(foil:~/backups/bookmarks/Chrome-home.htm)),
-	   Export(UNIX(work:~/backups/bookmarks/Chrome-work.htm)));
+	     Export(@~/backups/bookmarks, Chrome- IfHome(home,work) .htm);
 
+upload links [to (foil|work)] = 
+    Export(@ When($1,"$1:","") ~/http, Chrome-bookmarks.htm);
 
-upload links                = Export(UNIX(   ~/http/Chrome-bookmarks.htm));
-upload links to (foil|work) = Export(UNIX($1:~/http/Chrome-bookmarks.htm));  
-manually upload links       = Export(PC(~/scratch/Chrome-bookmarks.htm));  # <<<>>>
+manually upload links = Export1(PC(~/scratch/outgoing/Chrome-bookmarks.htm));  # <<<>>>
 
 
 
@@ -95,21 +95,7 @@ manually upload links       = Export(PC(~/scratch/Chrome-bookmarks.htm));  # <<<
 ## Backing up bookmarks:
 ## 
 
-#push bookmarks = 
-#    ImportAndBackup(b) WaitForWindow("Bookmarks backup filename", "", 40000)
-#    Wait(100) {ctrl+c} UNIX(~/backups/bookmarks/) {ctrl+v};
-#
-#pull bookmarks =
-#    ImportAndBackup(rc) WaitForWindow("Select a bookmarks backup") 
-#    Wait(100) UNIX(~/backups/bookmarks/) Wait(100) {enter};
+push bookmarks = Export(@~/backups/bookmarks, {ctrl+c} Chrome- {ctrl+v});
 
-
-
-## 
-## Exporting cookies (via cookie exporter 1.5 add-in):
-## 
-
-#UploadCookies(location) := Address() {alt+t} Wait(100) e WaitForWindow("Save As")
-# 			   UNIX($location ~/http/cookies.txt) {enter}; 
-#
-#upload cookies [to (foil|work)] = UploadCookies(When($1,"$1:"));
+# could also do this via {alt+f}b i...
+pull bookmarks = Organize() {alt+down} {up_2} {enter} WaitForWindow("Open");

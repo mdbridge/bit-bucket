@@ -22,6 +22,7 @@ Steps to set up my voice infrastructure:
        corrections:
 	 !select commands bring up correction menu
          select commands search backwards
+	 correct commands bring up spelling window
 	 !auto add commands to vocabulary
 	 !show smart format rules
        commands:
@@ -32,8 +33,6 @@ Steps to set up my voice infrastructure:
          anchor to bottom
 	 results box anchor, 10 seconds before going away
 	 show preliminary results
-       hotkeys:
-?         #remove sleep, menu  (MULTIPLY, DIVIDE)
        misc:
          mike asleep on open
 	 !auto save profile changes

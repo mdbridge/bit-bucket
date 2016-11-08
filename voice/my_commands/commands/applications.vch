@@ -50,10 +50,10 @@ OutlookReminder() := SwitchTo("Reminder(|s|\(s\))$");
     | PowerPoint           = App("(^Microsoft |- |^)PowerPoint$",          powerpnt.exe) 
     | Word                 = IfHome(AppCommand("(^Microsoft |- |^)Word$",  Subprocess.Async(PC("~pf/Microsoft Office 15/root/office15/winword.exe"), winword.exe)),
                                     App("((^|- )Microsoft |- |^)Word$",    winword.exe))
-    | Word 2007            = App("(^Microsoft |- |^)Word$",         	     winword.exe)  # <<<>>>
-    | chat                 = App("(^Microsoft |- |^)Lync$",        	     lync.exe)
+    | Word 2007            = App("(^Microsoft |- |^)Word$",         	   winword.exe)  # <<<>>>
+    | chat                 = App("(^Microsoft |- |^)Lync$",        	   lync.exe)
     | message              = SwitchTo("Message \(Plain Text|HTML\) ?$")        # Outlook [draft] message window
-    | reminder             = OutlookReminder()                                   # Outlook reminder dialog box
+    | reminder             = OutlookReminder()                                 # Outlook reminder dialog box
 
         # Other text editing programs:
     | Notepad              = App(" - Notepad$", notepad.exe)
@@ -65,7 +65,7 @@ OutlookReminder() := SwitchTo("Reminder(|s|\(s\))$");
     | D X [player]         = App("^DivX Player$",                 "~pf32\DivX\DivX Player\DivX Player.exe")
     | iTunes               = App("^iTunes$",                      iTunes.exe)
     | media player         = App("^Windows Media Player$",        wmplayer.exe)
-    | VLC player           = App("^VLC Media Player$",            "~pf32\VideoLAN\VLC\vlc.exe")
+    | VLC player           = App("VLC media player$",            "~pf32\VideoLAN\VLC\vlc.exe")
 
         # Games:
     | Infocom              = App("^Windows Frotz$", "~pf32/Windows Frotz/Frotz.exe")
@@ -75,32 +75,29 @@ OutlookReminder() := SwitchTo("Reminder(|s|\(s\))$");
     | Zork                 = SwitchTo("^DOSBox")
 
         # System utilities:
+       # AppBringUp doesn't work correctly with SFTP Net Drive:
+    | SFTP       	   = AppCommand("^SFTP Net",                 Subprocess.Run(PC("~pf32/SFTP Net Drive/SftpNetDrive.exe")))
     | RSI guard            = App(^RSIGuard$,                         ~pf32/RSIGuard/RSIGuard.exe)
     | SmartNav             = App(^SmartNAV,                          ~pf32/NaturalPoint/SmartNAV/SmartNAV.exe)
-    | [HP] solution center = App("^HP solution center$",             "~pf32\HP\Digital Imaging\bin\Hpqdirec.exe")
+    | HP scan              = App("^HP Scan",             	     "~pf32\HP\HP ENVY 4500 series\bin\HPScan.exe")
 
-    | host prevention      = App("^McAfee Host Intrusion Prevention$", "~pf32/McAfee/Host Intrusion Prevention/McAfeeFire.exe")
+    | action center        = Keys.SendInput({win+a})
     | process explorer     = App("^Process Explorer",               "~pf32\Process Explorer\procexp.exe")
     | reflection           = App("^Reflection X Manager$",           ~pf/Attachmate/Reflection/Rx.exe)
     | sound                =                                         ShellExecute("mmsys.cpl") WaitForWindow("Sound") {down}
-    | task [manager]       = App("^Windows Task Manager$",           taskmgr)
+    | task [manager]       = App("^Task Manager$",           	     taskmgr)
     | volume [mixer]       = App("^Volume Mixer$",                   "sndvol /rec")
     | folder               = SwitchTo(FolderPattern())
     | true crypt           = App(^TrueCrypt$,                        ~pf/TrueCrypt/TrueCrypt.exe)
     | vera crypt           = App(^VeraCrypt$,                        ~pf/VeraCrypt/VeraCrypt.exe)
     | Free SR              =                                         AppBringUp("C:\Program Files (x86)\Freesr\Freesr.exe")
-    | HP pulse             = AppCommand(^Pulse$,                     Subprocess.Sync(PC("~pf32/Common Files/Juniper Networks/JamUI/Pulse.exe"), Pulse.exe, -show))
+
 
         # Miscellaneous applications:
     | Adobe [reader]       = SwitchTo("- Adobe (Reader|Acrobat)")
-    | Java converter       = App(^exe4j$,                          ~pf/exe4j/bin/exe4j.exe)
     | Kindle               = App("^Mark's Kindle for PC",           ~/../AppData/Local/Amazon/Kindle/application/Kindle.exe)
     | Photosmart           = App("^HP Photosmart Essential 3.5$",    "~pf32\HP\Digital Imaging\bin\hpqpse.exe")
     | detective            = App("^Window Detective$",               "~pf32\Window Detective\Window Detective.exe")
     | e-books              = App("^calibre -",                      ~pf/Calibre2/calibre.exe)
     | egg timer            = App("^[0-9][0-9]:",                   "~pf32/Egg Timer/eggtimer.exe")
-
-
-    # temporary:
-
 );

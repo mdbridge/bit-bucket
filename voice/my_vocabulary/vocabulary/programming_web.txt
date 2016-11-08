@@ -1,1 +1,15 @@
+###
+### Vocabulary for programming JavaScript, CSS; HTML is in separate file
+###
+
 iframe: I frame
+iframes: I frames
+
+.css:dot CSS:s
+
+attr: short attribute
+
+hinted
+hintable
+
+z-index:Z index

@@ -1,7 +1,8 @@
 ### 
 ### Vocabulary useful for programming in given programming languages:
 ### 
-###   Covered separately: (E)list, Java, shell commands, HTML, Voice, C[++]
+###    Covered separately: (E)list, Java, shell commands, HTML, Voice,
+###                        C[++], web (JavaScript and CSS)
 ### 
 
 

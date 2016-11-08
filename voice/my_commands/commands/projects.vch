@@ -27,11 +27,7 @@
 	     | temporary two   = temporary_2
 	     | temporary three = temporary_3
 	     | temporary four  = temporary_4
-
-	        # bold:
-
-	        # express:
-	     | latching
+             | refactoring
 
 	        # Vocola
 	     | 2.8.5
@@ -45,6 +41,7 @@
 
 	     | Mark 
 	     | at-patch | extended-eval
+	     | with input = with-input
 
 	     | beta | hotfix
 );
@@ -166,10 +163,9 @@ Tube(directory) := "work:~/tube/papers/$directory/main.pdf";
 
          | work	  saved PDF = "work:~/Tmp/buffer.pdf"  
          | foil	  saved PDF = "foil:~/Tmp/buffer.pdf"  
-         | Fedora saved PDF = "Fedora:~/Tmp/buffer.pdf"
 
 
-    | Amazon = "~/interview/Amazon/innovation.pdf"
+	 | Amazon = "~/interview/Amazon/Mark_Lillibridge_innovation.pdf"
 
 
 

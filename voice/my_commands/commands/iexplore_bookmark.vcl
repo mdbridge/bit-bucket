@@ -6,8 +6,15 @@
 
 include "locale_PC.vch";
 include "switch.vch";
-
 include "iexplore.vch";
+include "import.vch";
+
+  # <<<>>>
+AwaitChange(actions) :=
+    Variable.Set(:target, Window.ID())
+    $actions
+    Repeat(50, 
+        If(Window.Match(ID> Variable.Get(:target)), Wait(100)));
 
 
 
@@ -115,8 +122,13 @@ manually export bookmarks   = Export0();
   # this fails to save ordering of bookmarks (sorts them):
   #   (original order is stored in a registry key)
 push bookmarks =
-    Export("", UNIX(work:~/backups/bookmarks/IE-bookmarks- 
-	              Date.Now("%Y-%m-%d") .htm));
+    PrepareUpload(@~/backups/bookmarks)
+    Export("", UploadDir() /IE-bookmarks- Date.Now("%Y-%m-%d") .htm)
+    Wait(2000) # <<<>>>
+    DoUpload();
+
+manually push bookmarks =
+    Export("", PC(~/scratch/outgoing/IE-bookmarks- Date.Now("%Y-%m-%d") .htm));
 
 
 CD_FOLDER(pathname) := AppBringUp("explorer@" $pathname, "$pathname");
@@ -129,3 +141,5 @@ destroy all favorites = CD_FOLDER(PC(~/../Favorites)) {ctrl+a};
   # also fails to restore file://'s and empty folders :-(
 import bookmarks = ImportAndExport() {alt+i}{enter} {space}{enter}
 	             UNIX(work:~/backups/bookmarks/IE-bookmarks-);
+
+manually import bookmarks = ImportAndExport() {alt+i}{enter} {space}{enter};

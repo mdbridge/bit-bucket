@@ -1,0 +1,50 @@
+### 
+### Function definitions that depend on the particular details of the
+### current machine.
+### 
+### This version is used only while bootstrapping.
+### 
+
+
+##
+## Common definitions:
+##
+
+  # Primary work machine
+PWork() := fake@foil.strangled.net;
+
+
+
+## 
+## These definitions are normally defined in a
+## "environment_$COMPUTERNAME.vch" file, but we hardcode them for
+## bootstrapping.
+## 
+
+IfHome(home, work) := $work;
+#IfHome(home, work) := $home;
+
+#PCHome() := "C:/Users/Mark/Documents";
+include "string.vch";
+PCHome() := Replace(Env.Get("HOME", "C:\Users\Mark\Documents"), "\", "/");
+
+#XSize() := 1600;  YSize() := 1200;  # home monitors
+XSize() := 2560;  YSize() := 1440;   # WQHD/X1 Yoga laptop
+
+
+PF32()   := "C:/Program Files (x86)";  # 64-bit OS
+#PF32()   := "C:/Program Files";
+
+Cygwin() := "C:/cygwin64/bin";
+
+
+
+##
+## Derived definitions:
+##
+
+  # My home master Linux server *from* local PC::
+PHomeFromPC() := mdl@ IfHome(192.168.1.2,foil.strangled.net);
+
+  # My local master Linux server *from* local PC:
+PrimaryFromPC() := IfHome(mdl@192.168.1.2, PWork());

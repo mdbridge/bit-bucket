@@ -109,9 +109,7 @@ ResetArea(color) := Variable.Unset($color _area_title);
 
 
 
-InternetExplorerPattern() :=
-	IfHome("Internet Explorer$",
-	       "Internet Explorer configured for HP Labs$");
+InternetExplorerPattern() := "Internet Explorer$";
 
 <browser> := ( IE                = InternetExplorerPattern() ",iexplore.exe"
              | Internet Explorer = InternetExplorerPattern() ",iexplore.exe"
@@ -119,7 +117,7 @@ InternetExplorerPattern() :=
 	     | chrome		 = "Google Chrome$,chrome.exe"
              );
 
-DefaultBrowser()         := "- Mozilla Firefox$,firefox.exe";
+DefaultBrowser()         := "Google Chrome$,chrome.exe";
 
 BringUpBrowser (browser) := SwitchToApp(Split($browser, ',', 0),
 	       		    		Split($browser, ',', 1));

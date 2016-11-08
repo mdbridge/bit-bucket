@@ -64,6 +64,7 @@ Item2(hundreds, ones) := Item(Eval(When($hundreds,$hundreds,0)*100 + $ones));
 <command> := (
       cat                       = cat
     | cleanup                   = cleanup
+    | clip                      = "cat  | xclip"{left_8}
     | copy                      = cp
     | delete                    = rm
     | DF                        = df
@@ -114,7 +115,7 @@ Item2(hundreds, ones) := Item(Eval(When($hundreds,$hundreds,0)*100 + $ones));
     | tail
     | tar extract               = "tar xvf "
     | tar list                  = "tar tf "
-    | trade                     = Place("cp ", " ~/Tmp/trade_area/") 
+    | cue up                    = Place("cp ", " ~/Tmp/outgoing/") 
     | touch
     | unzip                     = unzip
     | word count                = wc

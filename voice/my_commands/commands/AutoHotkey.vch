@@ -6,7 +6,7 @@ include "string.vch";
 include "file_access.vch";
 
 
-_AutoHotkeyPath()   := PCfromPC(~pf32/AutoHotkey/AutoHotkey.exe);
+_AutoHotkeyPath()   := PCfromPC(~pf/AutoHotkey/AutoHotkey.exe);
 _AutoScript(script) := PCfromPC(~/AutoHotkey/$script.ahk);
 
   # Need weird quoting to protect arguments to AutoHotkey:

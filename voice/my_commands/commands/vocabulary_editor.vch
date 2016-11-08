@@ -25,12 +25,16 @@ Add() := {alt+a} WaitForWindow("Add word or phrase")
             Vocola.Print("  Dragon") N WaitForWindow("Add word or phrase") {esc}, 
             If(Window.Match("Guess Pronunciation of Word"),
                {space}))
-         WaitForWindow("Vocabulary Editor",,30000);
+	 Wait(50)# <<<>>>
+         WaitForWindow("Vocabulary Editor",,30000)
+	 Wait(50)# <<<>>>
+;
          
 
   # gives runtime error if word doesn't already exist
-POpen() := Dragon.open_properties( Variable.Get(:written), Variable.Get(:spoken) );
-PClose() := {enter};
+POpen() := Dragon.open_properties( Variable.Get(:written), Variable.Get(:spoken) )
+	   Wait(50);  		# wait needed for SendInput only
+PClose() := Wait(100) {enter};  # wait needed for SendInput only
 
 
 Delete() := Add()  POpen() PClose()  {alt+d} Wait(100) y Wait(50); 

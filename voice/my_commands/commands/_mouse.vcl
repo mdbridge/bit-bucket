@@ -45,6 +45,7 @@ include "string.vch";
 
 <kind> := (absolute | window | interior);
 
+  # must have desired window selected when using non-absolute:
 set [<kind>] <letter> point = 
    Variable.Set($2, Mouse.Position(When($1,$1,absolute)));
 
@@ -52,7 +53,7 @@ set [<kind>] <letter> point =
 code for       <letter>	point = "Mouse.Go("    Variable.Get($1) ")";
 code for click <letter> point = "Mouse.Click(" Variable.Get($1) ")";
 
-  # <<<>>>
+  # <<<>>> useless because must have desired window selected when using non-absolute:
 code for       <kind> point = "Mouse.Go("    Mouse.Position($1) ")";
 code for click <kind> point = "Mouse.Click(" Mouse.Position($1) ")";
 

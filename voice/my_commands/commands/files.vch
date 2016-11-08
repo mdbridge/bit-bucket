@@ -37,6 +37,7 @@ Development() := ~/voice/Vocola_development/Vocola_2/;
      | projects         = ~/private/to-do/projects.txt
      | reminders        = ~/private/to-do/reminders.txt
      | work streams     = ~/private/to-do/workstreams.txt
+     | primary work stream     = ~/private/to-do/primary-workstream.txt
      | home computer    = foil:~/private/to-do/computer.txt
 
 

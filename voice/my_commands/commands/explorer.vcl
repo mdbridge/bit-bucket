@@ -48,17 +48,13 @@ Map()	   := Computer() n{enter} WaitForWindow("Map Network Drive");
 
 map network drive = Map();
 
-map W drive	  = Map() {shift+tab}w{tab}
-		    {backspace} \\spica.labs.hpecorp.net\mdl {enter}
-		    #WaitForWindow(Windows) y
-		    #WaitForWindow("Connect to spica.labs.hpecorp.net")
-		    WaitForWindow("Windows Security")
-		    Americas\LillibridgeM{tab};
-
-map alternative W drive = Map() {shift+tab}z{tab}
-                          {backspace} \\ts-rhel7.labs.hpecorp.net\mdl {enter}
-			  WaitForWindow("Windows Security")
-			  Americas\LillibridgeM{tab};
+  # <<<>>>
+# map W drive	  = Map() {shift+tab}w{tab}
+# 		    {backspace} \\spica.labs.hpecorp.net\mdl {enter}
+# 		    #WaitForWindow(Windows) y
+# 		    #WaitForWindow("Connect to spica.labs.hpecorp.net")
+# 		    WaitForWindow("Windows Security")
+# 		    Americas\LillibridgeM{tab};
 
 
 ## 
@@ -117,7 +113,7 @@ please delete = {Del} WaitForWindow("Delete F*") HeardWord(click, Yes);
 ## Other operations:
 ## 
 
-new folder = {ctrl+shift+n};
+new folder = Home() w f; # {ctrl+shift+n} doesn't work for some reason
 
 open first = {end}{home}{enter};
 

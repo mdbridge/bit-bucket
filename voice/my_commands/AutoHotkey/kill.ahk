@@ -26,10 +26,6 @@ MsgBox, 4144, Dragon Sanctum,Dragon has been killed, 3
 return
 
 #+r::
-Run C:\Program Files (x86)\Nuance\NaturallySpeaking12\Program\natspeak.exe
-return
-
-#+d::
 Run C:\Program Files (x86)\Nuance\NaturallySpeaking14\Program\natspeak.exe
 return
 
@@ -50,5 +46,3 @@ return
 
 !^(::WinMove,A,,0,0,1280,1100
 !^)::WinMove,A,,640,0,1280,1100
-!^<::WinMove,A,,0,0,960,1100
-!^>::WinMove,A,,960,0,960,1100

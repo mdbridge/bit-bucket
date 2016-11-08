@@ -4,6 +4,7 @@
 ### 
 
 include "string.vch";
+include "AutoHotkey.vch";  # just for _AutoHotkeyPath()
 
 
 ## 
@@ -146,18 +147,18 @@ time switching = Repeat(50, Window.Go("command prompt Alpha")
 include "locale_PC.vch";
 
 invoke in background =
-    Subprocess.Async(PC(~pf32\AutoHotkey\AutoHotkey.exe), 'AutoHotkey.exe', 
+    Subprocess.Async(_AutoHotkeyPath(), 'AutoHotkey.exe', 
        PC(~/AutoHotkey/subprocess_test.ahk), 99, arg2, arg3) foreground;
 
 bad background invoke = Subprocess.Async(nowhere, nowhere);
 
 
 invoke 0..10 in foreground =
-    Subprocess.Sync(PC(~pf32\AutoHotkey\AutoHotkey.exe), 'AutoHotkey.exe', 
+    Subprocess.Sync(_AutoHotkeyPath(), 'AutoHotkey.exe', 
        PC(~/AutoHotkey/subprocess_test.ahk), $1, arg2, arg3) foreground;
 
 unchecked invoke 0..10 in foreground =
-    Subprocess.Sync(PC(~pf32\AutoHotkey\AutoHotkey.exe-), 'AutoHotkey.exe', 
+    Subprocess.Sync(_AutoHotkeyPath() -, 'AutoHotkey.exe', 
        PC(~/AutoHotkey/subprocess_test.ahk), $1, arg2, arg3) foreground;
   
   # does not set exit code, but rather runtime errors out...
@@ -172,7 +173,7 @@ wait for me = Subprocess.System("timeout 5 && timeout 5");
 
 
 time spawning = Repeat(100, 
-    Subprocess.Sync(PC(~pf32\AutoHotkey\AutoHotkey.exe), 'AutoHotkey.exe',
+    Subprocess.Sync(_AutoHotkeyPath(), 'AutoHotkey.exe',
        PC(~/AutoHotkey/subprocess_test.ahk), -1)) done;
 
 
@@ -238,7 +239,7 @@ code for monster <_anything> = Symbols.Monster($1);
 AwaitChange(actions) :=
     Variable.Set(:target, Window.ID())
     $actions
-    Repeat(5where0, 
+    Repeat(50, 
         If(Window.Match(ID> Variable.Get(:target)), Wait(100)));
 
 

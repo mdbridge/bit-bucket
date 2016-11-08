@@ -1,5 +1,5 @@
 ###
-### Functions for chrome (version 51)
+### Functions for chrome (version 54)
 ###
 
 include "control.vch";
@@ -13,7 +13,7 @@ include "control.vch";
 ##
 
 #Address() := {ctrl+l} Wait(500);  # also {alt+d}
-Address() := Mouse.Click(interior,610,50);
+Address() := Mouse.Click(interior,610,50) Wait(100);
 
 
 
@@ -32,10 +32,10 @@ UnAddress() := {shift+f6};
 ## Going to Bookmarks:
 ##
 
-   OpenURL(URL) := Address() {ctrl+a} Wait(100) $URL Wait(100) {enter};
+   OpenURL(URL) := Address() {ctrl+a} Wait(100) $URL{Del} Wait(100) {enter};
 
   #  open URL in a new tab:
-OpenNewURL(URL) := Address() {ctrl+a} Wait(100) $URL Wait(100) {alt+enter};
+OpenNewURL(URL) := Address() {ctrl+a} Wait(100) $URL{Del} Wait(100) {alt+enter};
 
 
 

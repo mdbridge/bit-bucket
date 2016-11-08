@@ -54,4 +54,4 @@ double control Charlie		= {ctrl+c}{ctrl+c};  # <<<>>>
   # for selecting from menus:
 under <letter> [<letter>] = {alt+$1} $2;
 
-key <prn> <my0to99> = Repeat($2, PrintablesToKeys($1));  # {}_5} fails
+key <prn> times <my0to99> = Repeat($2, PrintablesToKeys($1));  # {}_5} fails

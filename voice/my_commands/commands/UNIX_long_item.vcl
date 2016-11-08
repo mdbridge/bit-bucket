@@ -7,6 +7,7 @@
 include "numbers.vch";
 include "directories.vch";
 include "machines.vch";
+include "import.vch";
 
 include "item_operation.vch";
 
@@ -105,3 +106,26 @@ FItem(n)               := \$_$n {ctrl+x}\$;
 FItem2(hundreds, ones) := FItem(Eval(When($hundreds,$hundreds,0)*100 + $ones));
 
 far item [1..9 hundred] <my0to99> = Variable.Get(:remote) FItem2($1,$2) {space};
+
+
+##
+## Opening local copies of files or directories
+##
+
+ItemToLocal(filename) :=
+    Clipboard.Set(xyzzy)
+    "set _dir=`pwd | sed 's|.*/home/[^/]*/*|%%/|'`"{enter}
+    "echo -n `whoami`@`hostname --fqdn`:\$_dir @@" 
+        $filename " | xclip"{enter}
+    Clipboard.WaitForNew(xyzzy)
+      # this passes @|mdl@foil.strangled.net:~/my/directory/$filename:
+    MakeLocal('@|' Replace2(Clipboard.Get(), " @@ ",/, "%%","~"));
+
+
+Windows open item [1..9 hundred] <my0to99> = 
+    ItemToLocal(Item2($1,$2))
+    AppBringUp(windows-open, Local());
+
+Windows copy item [1..9 hundred] <my0to99> = 
+    ItemToLocal(Item2($1,$2))
+    AppBringUp(windows-open, Directory(Local()));

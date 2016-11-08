@@ -107,6 +107,7 @@ tab:      written tab
 # most symbols whose names do not contain a hyphen in symbols.in
 # automatically have generated written forms.
 
-point:    written point:  alt(point)
-dash:     written dash:	  alt(dash)
-period:   written period: alt(period)
+point:    written point:    alt(point)
+dash:     written dash:	    alt(dash)
+period:   written period:   alt(period)
+ellipsis: written ellipsis: alt(ellipsis)

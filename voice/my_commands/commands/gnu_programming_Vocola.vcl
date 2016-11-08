@@ -29,7 +29,7 @@ Vocola include <include_file> = 'include "' Split($1,"/",-1)  '";' {enter};
 
   # I didn't bother to properly handle x.vcl
 PCFilename(command_filename) := Replace4(.\ $command_filename,
-					\browser, \Firefox_,
+					\browser, \Chrome_,
                                         \gnu_,    \emacs__, 
 					\UNIX_,   \xwin___,
 					\x_,      \xwin__);

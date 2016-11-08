@@ -34,6 +34,8 @@ git:	  Unix git
 gem:      Unix gem
 gnuemacs: Unix GNU Emacs
 grep:     Unix grep
+grep:     Unix search
+hq:       Unix merc
 kill:     Unix kill
 ln -s:    Unix symlink
 ln:       Unix link
@@ -124,6 +126,7 @@ rmdir:remove dir
 renice:re nice
 rmdir:RM dir
 setenv:set environment
+sftp:SFTP
 sh:SH
 ssh:SSH
 strace:S trace
@@ -137,6 +140,7 @@ unalias
 unlimit
 unsetenv:unset environment
 wc:WC
+xclip:X clip
 xdvi:XD VI
 xprop:X prop
 xtelnet:X telnet

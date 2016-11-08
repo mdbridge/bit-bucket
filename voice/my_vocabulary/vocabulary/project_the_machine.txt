@@ -1,16 +1,10 @@
 ### 
-### Vocabulary for The Machine project:
+### Remaining vocabulary from The Machine project:
 ### 
 
 ## 
 ## Non-obvious spoken names:
 ## 
-
-Psylocke:trademark Psylocke
-Psylockes:trademark Psylockes
-
-HDFS4TM:H D F S for the machine
-4TM:for the machine:s
 
 JSON: computer Jason
 
@@ -28,8 +22,6 @@ bold_ptr: bold pointer
 (void*):    cast void star:p
 (size_t):   cast size:p
 
-/lfs:slash LFS:s
-
 Epoque::-
 epoch:Epoque
 
@@ -44,11 +36,9 @@ RVMA
 
 DL580:D L five eighty
 DragonHawk
+Gen-Z:Jen Z
 L4TM:L for T M     # this has bad recognition? <<<>>>
 L4TM:Linux for T M
-Mystique
-Psylocke
-Psylockes
 SS4TM:S S for T M
 TrustZone
 Zbridge:Z bridge
@@ -56,16 +46,11 @@ Zswitch:Z switch
 
 MFT
 
-open_region: open underscore region
-close_region: close underscore region
-
 LFS
 pmem:P mem
 libpmem:lib P mem
 fba:FBA
 
-hLinux:H linux
-pregion:P region
 TMAS:T mass
 
 Kaz::-

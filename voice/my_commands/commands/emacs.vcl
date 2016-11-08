@@ -7,17 +7,8 @@ include "gnu.vch";
 
 
 ## 
-## Window manipulation commands:
+## Avoiding misrecognitions:
 ## 
-
-#
-# Local emacs always treats alt as meta
-#
-# Thus, we are instead using a right click at the top left of the window.
-#
-System(key) := Mouse.Click(right, window, 10, 10) Wait(100) $key Wait(10);
-
-include "windows.vch";
 
 close = Beep();
 

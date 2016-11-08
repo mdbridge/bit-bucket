@@ -25,9 +25,7 @@ latex footnote = "\footnote{{}" {enter} %{enter} %{enter} } {up}{home}{ctrl+o};
 
 <style> := ( emphasis='\emph{' | bold='\textbf{' | small caps='\textsc{'
 	   | underline='\underline{'
-	   | typewriter='\texttt{' | register=YankFromRegister(e) '{' 
-	   | HP simplified='\textHP{' | HP light='\textHPLite{' 
-	   | HP blue='\textcolor{HPblue}{' );
+	   | typewriter='\texttt{' | register=YankFromRegister(e) '{' );
 
 <style> word [0..10] = $1 {ctrl+u} When($2,$2,1){esc}f "}" 
     If(Eval(When($2,$2,1) '==0'),{left});

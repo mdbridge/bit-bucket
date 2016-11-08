@@ -216,7 +216,9 @@ from vocola_ext_subprocess import subprocess_sync
 from vocola_ext_variables  import variable_get
 
 def switch_to1(window_ID):
-    executable    = os.getenv("ProgramFiles") + r'\AutoHotkey\AutoHotkey.exe-'
+    # Note: ProgramFiles always ~pf32 in NatLink Python
+    #executable    = os.getenv("ProgramFiles") + r'\AutoHotkey\AutoHotkey.exe-'
+    executable    = r'c:\Program Files\AutoHotkey\AutoHotkey.exe-'
     script        = os.getenv("HOME") + r'\AutoHotkey\switch.ahk'
     specification = '"ahk_id ' + str(window_ID) + '"'
 

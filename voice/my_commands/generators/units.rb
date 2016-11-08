@@ -69,10 +69,11 @@ end
 #$directories = ["deduplication/tube/Eiger/auction_simulator/"]
 #$directories = ["deduplication/tube/Eiger/metadata/"]
 #$directories = ["past/HP/express/repository/Zero/src/sm/"]
-$directories = ["the_machine/bold/src/",
-                "the_machine/bold/include/**/", 
-                "the_machine/bold/examples/",
-                "the_machine/bold/tests/**/"]
+# $directories = ["the_machine/bold/src/",
+#                 "the_machine/bold/include/**/", 
+#                 "the_machine/bold/examples/",
+#                 "the_machine/bold/tests/**/"]
+$directories =["bin/emacs-24.5/emacs-24.5/src/"]
 
 
 $units     = PriorityList.new()
@@ -86,7 +87,7 @@ $directories.each do |directory_pattern|
       filename = $2
 
       case filename
-      when /\.cpp$/
+      when /\.cpp$/, /\.c$/
         add_file($units, filename, "", folder)
 
       when /\.h$/, /\.hpp$/

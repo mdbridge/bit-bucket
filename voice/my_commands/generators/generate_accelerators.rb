@@ -95,10 +95,10 @@ fail unless ARGV.length == 1
 Name = ARGV[0]
 
 
-top_folder = Folder.parse_file("/home/mdl/backups/bookmarks/Firefox-#{Name}.htm")
+top_folder = Folder.parse_file("/home/#{ENV['USER']}/backups/bookmarks/Chrome-#{Name}.htm")
 #folders.sort! if Name == "work"  # needed for IE
 
-File.open("/home/mdl/Tmp/#{Name}-accelerators.html", "w") do |out|
+File.open("/home/#{ENV['USER']}/Tmp/#{Name}-accelerators.html", "w") do |out|
   out.puts generate_HTML(Name.capitalize(), top_folder)
 end
 

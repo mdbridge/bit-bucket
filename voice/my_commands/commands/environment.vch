@@ -2,27 +2,35 @@
 ### Function definitions that depend on the particular details of the
 ### current machine.
 ### 
+### See also environment-bootstrap.vch
+### 
+
+
+##
+## Common definitions:
+##
+
+  # Primary work machine
+#PWork() := hp@foil.strangled.net;  # <<<>>>
+PWork() := fake@foil.strangled.net;  # <<<>>>
+
+
 
 ## 
-## Normally we just indirect via the computer name (standard OS
-## environment variable):
+## Indirect via the computer name (standard OS environment variable)
+## for computer specific values:
 ## 
 
 include "environment_$COMPUTERNAME.vch";
 
 
 
-## 
-## Sometimes when setting up a new computer we just hardcode things initially:
-## 
+##
+## Derived definitions:
+##
 
-#IfHome(home, work) := $work;
-#
-#PCHome() := "C:/Users/LillibridgeM/Documents";
-#
-#PF32()   := "C:/Program Files (x86)";  # 64-bit OS
-##PF32()   := "C:/Program Files";
-#
-#Cygwin() := "C:/cygwin64/bin";
-#
-#XSize() := 1600;  YSize() := 1200;
+  # My home master Linux server *from* local PC::
+PHomeFromPC() := mdl@ IfHome(192.168.1.2,foil.strangled.net);
+
+  # My local master Linux server *from* local PC:
+PrimaryFromPC() := IfHome(mdl@192.168.1.2, PWork());
