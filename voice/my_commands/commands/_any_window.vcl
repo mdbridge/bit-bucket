@@ -38,7 +38,7 @@ other monitor = SendSystemKeys({win+shift+right});
 
   # this exits from snap another window state if it exists
   # does not disturb application if not in that state
-EXIT() := SendSystemKeys({win} {esc});
+EXIT() := SendSystemKeys({win}) Wait(100) SendSystemKeys({esc});
 
 <state> := ( lengthen	  = SendSystemKeys({win+shift+up})
 

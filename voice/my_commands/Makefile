@@ -74,6 +74,8 @@ corpus:
 	#
 	make local-corpus
 	#
+	-cp corpus-in/* corpus/
+	#
 	# loop over top-level Rmail directories:
 	for p in `cd ~/Rmail; find . -maxdepth 1 -mindepth 1 -type d ! -name .svn -print | sed 's|^\./||'` ;do \
 	    echo "scanning $$p..."; \

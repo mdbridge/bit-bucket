@@ -78,59 +78,64 @@ MoveMouse() := Clipboard.Set("xyzzy") Action("X")  Clipboard.WaitForNew("xyzzy",
 
 blur me	   = Blur();
 
+<place>          hints  = Show(       $1);
+<place> <kind>  [hints] = Show(?CE3 $2 $1);
+<place> <kind2> [hints] = Show(    $2 $1);
+place nothing		= CbV("", "-");
 
-<show> <kind> numbers = Show(CE3 $2 $1);
-<show>  numbers	      = Show(       $1);
+<place> := ( place="" | place contrast="c" | place all="+c" );
 
-<show> := ( show="" | show contrast="c" | show all="+c" );
-
+  # these get my standard tweaks:
 <kind> := (
-      image	     = oc\$img
-    | tooltip	     = 'oc\$[title]'
-
-    | inline	     = i
+      inline 	     = i
     | overlay	     = o
     | hybrid	     = h
 
     | start overlay  = os
     | start hybrid   = hs
 
+    | robust overlay = or
+    | robust hybrid  = hr
+
        # dealing with overflowing text:
     | before  hybrid = h
     | overlay hybrid = h>
     | risky   hybrid = h.
-
-    | old	     = '#'
-
-
-
 );
 
 New() := C oE3?;
 Old() := C oE3;
 
-<show> <kind2> numbers = Show($2 $1);
-
 <kind2> := (
-      test	     = New()
+      image	     = oc\${img}
+    | tooltip	     = 'oc\${[title]}'
+
+    | old	     = '#'
+
+    | test	     = New()
     | control	     = Old()
     | Delta	     = New() Vocola.Abort()
 
         # hack for Facebook comments; must hit, not go pick this
-    | comment = ':+oc$.UFIInputContainer > div[class!=UFICommentAttachmentButtons]'
+    | comment = ':+oc${.UFIInputContainer > div[class!=UFICommentAttachmentButtons]}'
 
-    | re-edit = ":+i\$a.title, .next-button a, .prev-button a, a.comments"
+    | re-edit = ":+i\${a.title, .next-button a, .prev-button a, a.comments}"
 );
 
 
 inspect events = SetH(2) Action(INSPECT);
 
 
-
-
+#
+# old names:
+#
+<show> <kind> numbers = Show(CE3 $2 $1);
+<show> <kind2> numbers = Show($2 $1);
+<show>  numbers	      = Show(       $1);
+<show> := ( show="" | show contrast="c" | show all="+c" );
 # refresh numbers?
-
 hide numbers = CbV("", "-");
+
 
 
 <pick> 0..9 [0..9 [0..9 [0..9]]] = SetH($2$3$4$5) $1;

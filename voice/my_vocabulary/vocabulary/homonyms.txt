@@ -63,6 +63,9 @@ sum	:computer sum
 # sink
 sync	:computer sync
 
+txt     :short text
+text    :long text    # for .text
+
 their	:India their
 there   :echo  there
 

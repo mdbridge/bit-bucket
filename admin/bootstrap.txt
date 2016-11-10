@@ -33,10 +33,10 @@ In preparation:
       make Vocola-prepare
       make DPI14
       make bootstrap-prepare
-      make bootstrap-print
-      make bootstrap
       * make sure bootstrap-prepare doesn't complain about missing DPI
         14 setup.exe or Vocola
+      make bootstrap-print
+      make bootstrap
  
   * mount my 64 GB USB stick, open its encrypted volume [creation
     instructions in home-2013.txt]

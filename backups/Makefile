@@ -103,7 +103,6 @@ bootstrap: #bootstrap-prepare
 	#
 	#
 	cp ~/admin/bootstrap.txt                                       bootstrap/setup/
-	cp ~/admin/home*.txt                                           bootstrap/setup/
 	cp ~/admin/browser-setup.txt                                   bootstrap/setup/
 	cp ~/backups/downloads_needed.html                             bootstrap/setup/
 	cp -r ~/backups/PC_setup/*                                     bootstrap/setup/

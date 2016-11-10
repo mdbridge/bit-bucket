@@ -144,6 +144,9 @@ import from <machine> =
     "rsync -t --progress -z -p -r --ignore-times --delete "
     "$1:~/Tmp/outgoing/ ~/Tmp/incoming"{enter};
 
+show outgoing = "ls -A ~/Tmp/outgoing"{enter};
+
+
 
 ## 
 ## Process control:

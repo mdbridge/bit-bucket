@@ -13,3 +13,5 @@ hinted
 hintable
 
 z-index:Z index
+
+var:V var  # var by itself too easily misrecognized
